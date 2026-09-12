@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#FAF8F3" />
+<title>Memento AI — Style Guide</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --c-primary: #0E7C7B;
+  --c-primary-light: #4DB6AC;
+  --c-secondary: #9B7EDE;
+  --c-blue: #5B9BD5;
+  --c-navy: #0F2C4C;
+  --c-slate: #5A6C7D;
+  --c-bg: #FAF8F3;
+  --c-card: #FFFFFF;
+  --c-border: #EAE6DE;
+  --c-error: #E57373;
+  --c-success: #4CAF50;
+  --c-warning: #FF9800;
+  --c-fire: #FF6B35;
+
+  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
+  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+
+  --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
+
+  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+  --sh-glow: 0 20px 60px rgba(14, 124, 123, 0.18);
+
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: var(--f-en);
+  -webkit-font-smoothing: antialiased;
+  background: var(--c-bg);
+  color: var(--c-navy);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+body {
+  padding: 40px 24px 80px;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.08), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.06), transparent 50%),
+    var(--c-bg);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ============================================
+   HEADER
+============================================ */
+.page-header {
+  text-align: center;
+  margin-bottom: 50px;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeDown 0.7s ease 0.1s forwards;
+}
+
+@keyframes fadeDown {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px;
+  background: var(--g-brand);
+  border-radius: var(--r-pill);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 30px rgba(14, 124, 123, 0.3);
+}
+
+.brand-mark svg {
+  width: 16px; height: 16px;
+  stroke: #fff;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.page-title {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  background: var(--g-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+
+.page-sub {
+  font-size: 15px;
+  color: var(--c-slate);
+  font-weight: 500;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ============================================
+   SECTION
+============================================ */
+.section {
+  margin-bottom: 48px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.section:nth-child(1) { animation-delay: 0.15s; }
+.section:nth-child(2) { animation-delay: 0.25s; }
+.section:nth-child(3) { animation-delay: 0.35s; }
+.section:nth-child(4) { animation-delay: 0.45s; }
+.section:nth-child(5) { animation-delay: 0.55s; }
+.section:nth-child(6) { animation-delay: 0.65s; }
+.section:nth-child(7) { animation-delay: 0.75s; }
+.section:nth-child(8) { animation-delay: 0.85s; }
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--c-border);
+}
+
+.section-num {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  background: var(--g-brand);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(14, 124, 123, 0.3);
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -0.5px;
+}
+
+.section-desc {
+  font-size: 13px;
+  color: var(--c-slate);
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+.section-header-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* ============================================
+   CARDS (Generic preview containers)
+============================================ */
+.preview-card {
+  background: var(--c-card);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  box-shadow: var(--sh-soft);
+}
+
+/* ============================================
+   COLORS
+============================================ */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 14px;
+}
+
+.color-swatch {
+  background: var(--c-card);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.color-swatch:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(15, 44, 76, 0.1);
+}
+
+.color-preview {
+  height: 70px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-preview.gradient { background: var(--g-brand); }
+
+.color-preview svg {
+  width: 20px; height: 20px;
+  stroke: rgba(255, 255, 255, 0.8);
+  stroke-width: 2;
+  fill: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.color-swatch:hover .color-preview svg { opacity: 1; }
+
+.color-info {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.color-name {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: 0.1px;
+}
+
+.color-hex {
+  font-size: 10.5px;
+  color: var(--c-slate);
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* ============================================
+   TYPOGRAPHY
+============================================ */
+.typo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.typo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.typo-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+.typo-sample {
+  flex: 1;
+  min-width: 0;
+}
+
+.typo-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.typo-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--c-primary);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.typo-spec {
+  font-size: 10.5px;
+  color: var(--c-slate);
+  font-family: 'Monaco', 'Courier New', monospace;
+  letter-spacing: 0.2px;
+}
+
+/* ============================================
+   BUTTONS
+============================================ */
+.btn-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: var(--r-md);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid transparent;
+}
+
+.btn svg {
+  width: 15px; height: 15px;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.btn-primary {
+  background: var(--g-brand);
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.28);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(14, 124, 123, 0.4);
+}
+
+.btn-secondary {
+  background: var(--c-card);
+  color: var(--c-navy);
+  border-color: var(--c-border);
+  box-shadow: var(--sh-soft);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  border-color: var(--c-primary);
+}
+
+.btn-ghost {
+  background: rgba(14, 124, 123, 0.08);
+  color: var(--c-primary);
+}
+
+.btn-ghost:hover { background: rgba(14, 124, 123, 0.15); }
+
+.btn-danger {
+  background: linear-gradient(135deg, #E57373, #EF5350);
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(229, 115, 115, 0.32);
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(229, 115, 115, 0.45);
+}
+
+.btn-pill { border-radius: var(--r-pill); }
+
+/* ============================================
+   INPUTS
+============================================ */
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.2px;
+}
+
+.form-input-wrap {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.form-input-wrap:focus-within {
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 4px rgba(14, 124, 123, 0.12);
+}
+
+.form-input-icon {
+  width: 18px; height: 18px;
+  margin-inline-start: 14px;
+  stroke: var(--c-slate);
+  stroke-width: 2;
+  fill: none;
+  flex-shrink: 0;
+}
+
+.form-input-wrap:focus-within .form-input-icon { stroke: var(--c-primary); }
+
+.form-input {
+  flex: 1;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-navy);
+  border: none;
+  outline: none;
+  background: transparent;
+  letter-spacing: 0.1px;
+  font-family: inherit;
+}
+
+.form-input::placeholder {
+  color: #B0B8C1;
+  font-weight: 400;
+}
+
+/* ============================================
+   TOGGLES
+============================================ */
+.toggle-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.toggle-label-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.toggle-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-navy);
+}
+
+.toggle-sub {
+  font-size: 12px;
+  color: var(--c-slate);
+  font-weight: 500;
+}
+
+.toggle {
+  position: relative;
+  width: 48px; height: 28px;
+  border-radius: var(--r-pill);
+  background: rgba(14, 124, 123, 0.15);
+  transition: background 0.3s ease;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(15, 44, 76, 0.2);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.toggle.on { background: var(--g-brand); }
+.toggle.on::after { transform: translateX(20px); }
+
+/* ============================================
+   CHIPS
+============================================ */
+.chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--r-pill);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+
+.chip svg {
+  width: 12px; height: 12px;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chip-primary {
+  background: var(--g-brand);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(14, 124, 123, 0.3);
+}
+
+.chip-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(14, 124, 123, 0.4);
+}
+
+.chip-success {
+  background: rgba(76, 175, 80, 0.12);
+  color: var(--c-success);
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+.chip-warning {
+  background: rgba(255, 152, 0, 0.12);
+  color: var(--c-warning);
+  border-color: rgba(255, 152, 0, 0.3);
+}
+
+.chip-error {
+  background: rgba(229, 115, 115, 0.12);
+  color: var(--c-error);
+  border-color: rgba(229, 115, 115, 0.3);
+}
+
+.chip-neutral {
+  background: rgba(14, 124, 123, 0.08);
+  color: var(--c-primary);
+}
+
+.chip-outline {
+  background: transparent;
+  color: var(--c-slate);
+  border-color: var(--c-border);
+}
+
+.chip-outline:hover {
+  border-color: var(--c-primary);
+  color: var(--c-primary);
+}
+
+/* ============================================
+   RADIUS + SHADOWS
+============================================ */
+.shape-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+.shape-box {
+  background: linear-gradient(135deg, rgba(14, 124, 123, 0.08), rgba(155, 126, 222, 0.08));
+  border: 1.5px solid var(--c-border);
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.3px;
+}
+
+.shadow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.shadow-box {
+  height: 80px;
+  background: var(--c-card);
+  border-radius: var(--r-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.3px;
+}
+
+/* ============================================
+   FOOTER
+============================================ */
+.page-footer {
+  text-align: center;
+  margin-top: 60px;
+  padding-top: 30px;
+  border-top: 1.5px solid var(--c-border);
+  color: var(--c-slate);
+  font-size: 12.5px;
+  font-weight: 500;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 1s forwards;
+}
+
+.page-footer b {
+  color: var(--c-primary);
+  font-weight: 700;
+}
+
+/* ============================================
+   TOAST
+============================================ */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--c-navy);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: var(--r-pill);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  box-shadow: 0 12px 30px rgba(15, 44, 76, 0.35);
+  z-index: 300;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 640px) {
+  body { padding: 24px 16px 60px; }
+  .page-title { font-size: 32px; }
+  .section-title { font-size: 19px; }
+  .typo-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .typo-meta { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 3 L13.5 9 L19.5 10.5 L13.5 12 L12 18 L10.5 12 L4.5 10.5 L10.5 9 Z"></path>
+      </svg>
+      <span>Memento AI · Design System</span>
+    </div>
+    <h1 class="page-title">Style Guide</h1>
+    <p class="page-sub">A complete reference of all design tokens, colors, typography, and components used across the Memento AI platform. Click any color to copy its hex code.</p>
+  </div>
+
+  <!-- 1. COLORS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-header-text">
+        <div class="section-title">Colors</div>
+        <div class="section-desc">Primary palette and status colors</div>
+      </div>
+    </div>
+
+    <div class="color-grid" id="colorGrid">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+
+  <!-- 2. TYPOGRAPHY -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-header-text">
+        <div class="section-title">Typography</div>
+        <div class="section-desc">Poppins (English) · Cairo (Arabic)</div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="typo-list">
+        <div class="typo-item">
+          <div class="typo-sample" style="font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1.2;">Display Heading</div>
+          <div class="typo-meta">
+            <div class="typo-name">Display</div>
+            <div class="typo-spec">32px / 800 / -1px</div>
+          </div>
+        </div>
+
+        <div class="typo-item">
+          <div class="typo-sample" style="font-size:24px;font-weight:800;letter-spacing:-0.5px;line-height:1.2;">Heading 1</div>
+          <div class="typo-meta">
+            <div class="typo-name">H1</div>
+            <div class="typo-spec">24px / 800 / -0.5px</div>
+          </div>
+        </div>
+
+        <div class="typo-item">
+          <div class="typo-sample" style="font-size:20px;font-weight:700;letter-spacing:-0.3px;line-height:1.3;">Heading 2</div>
+          <div class="typo-meta">
+            <div class="typo-name">H2</div>
+            <div class="typo-spec">20px / 700 / -0.3px</div>
+          </div>
+        </div>
+
+        <div class="typo-item">
+          <div class="typo-sample" style="font-size:16px;font-weight:700;letter-spacing:-0.2px;">Heading 3</div>
+          <div class="typo-meta">
+            <div class="typo-name">H3</div>
+            <div class="typo-spec">16px / 700</div>
+          </div>
+        </div>
+
+        <div class="typo-item">
+          <div class="typo-sample" style="font-size:14px;font-weight:500;line-height:1.6;">Body text — the quick brown fox jumps over the lazy dog.</div>
+          <div class="typo-meta">
+            <div class="typo-name">Body</div>
+            <div class="typo-spec">14px / 500 / 1.6</div>
+          </div>
+        </div>
+
+        <div class="typo-item">
+          <div class="typo-sample" style="font-size:12.5px;font-weight:500;color:var(--c-slate);line-height:1.6;">Caption text — smaller supporting information</div>
+          <div class="typo-meta">
+            <div class="typo-name">Caption</div>
+            <div class="typo-spec">12.5px / 500</div>
+          </div>
+        </div>
+
+        <div class="typo-item">
+          <div class="typo-sample" style="font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:var(--c-primary);">Overline Label</div>
+          <div class="typo-meta">
+            <div class="typo-name">Overline</div>
+            <div class="typo-spec">11px / 700 / 0.6px</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. BUTTONS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-header-text">
+        <div class="section-title">Buttons</div>
+        <div class="section-desc">5 variants · 2 shapes</div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="btn-grid">
+        <button class="btn btn-primary">
+          <span>Primary</span>
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+
+        <button class="btn btn-secondary">
+          <span>Secondary</span>
+        </button>
+
+        <button class="btn btn-ghost">
+          <span>Ghost</span>
+        </button>
+
+        <button class="btn btn-danger">
+          <span>Danger</span>
+        </button>
+
+        <button class="btn btn-primary btn-pill">
+          <span>Pill</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. INPUTS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-header-text">
+        <div class="section-title">Inputs</div>
+        <div class="section-desc">Text fields with icon support</div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="input-grid">
+        <div class="form-field">
+          <label class="form-label">Name</label>
+          <div class="form-input-wrap">
+            <svg class="form-input-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <input type="text" class="form-input" placeholder="Lamia Ahmed">
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Email</label>
+          <div class="form-input-wrap">
+            <svg class="form-input-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <input type="email" class="form-input" placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Password</label>
+          <div class="form-input-wrap">
+            <svg class="form-input-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <input type="password" class="form-input" placeholder="••••••••">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. TOGGLES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-header-text">
+        <div class="section-title">Toggles</div>
+        <div class="section-desc">On / Off states with smooth animation</div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="toggle-demo">
+        <div class="toggle-row">
+          <div class="toggle-label-group">
+            <div class="toggle-title">Toggle — On</div>
+            <div class="toggle-sub">Active state with gradient</div>
+          </div>
+          <div class="toggle on"></div>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-label-group">
+            <div class="toggle-title">Toggle — Off</div>
+            <div class="toggle-sub">Inactive state</div>
+          </div>
+          <div class="toggle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. CHIPS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-header-text">
+        <div class="section-title">Chips</div>
+        <div class="section-desc">6 variants for tags and filters</div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="chip-grid">
+        <div class="chip chip-primary">
+          <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span>Primary</span>
+        </div>
+
+        <div class="chip chip-success">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Completed</span>
+        </div>
+
+        <div class="chip chip-warning">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span>Pending</span>
+        </div>
+
+        <div class="chip chip-error">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <span>Failed</span>
+        </div>
+
+        <div class="chip chip-neutral">
+          <span>Neutral</span>
+        </div>
+
+        <div class="chip chip-outline">
+          <span>Outline</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. RADIUS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div class="section-header-text">
+        <div class="section-title">Border Radius</div>
+        <div class="section-desc">5 radius scales</div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="shape-grid">
+        <div class="shape-box" style="border-radius:10px;">10px · sm</div>
+        <div class="shape-box" style="border-radius:14px;">14px · md</div>
+        <div class="shape-box" style="border-radius:18px;">18px · lg</div>
+        <div class="shape-box" style="border-radius:24px;">24px · xl</div>
+        <div class="shape-box" style="border-radius:999px;">999px · pill</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. SHADOWS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div class="section-header-text">
+        <div class="section-title">Shadows</div>
+        <div class="section-desc">Soft elevation system</div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <div class="shadow-grid">
+        <div class="shadow-box" style="box-shadow: 0 8px 30px rgba(15, 44, 76, 0.06);">
+          soft<br><span style="opacity:0.5;font-size:9px;">0 8px 30px</span>
+        </div>
+        <div class="shadow-box" style="box-shadow: 0 12px 32px rgba(15, 44, 76, 0.10);">
+          medium<br><span style="opacity:0.5;font-size:9px;">0 12px 32px</span>
+        </div>
+        <div class="shadow-box" style="box-shadow: 0 20px 60px rgba(14, 124, 123, 0.18);">
+          glow<br><span style="opacity:0.5;font-size:9px;">brand glow</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="page-footer">
+    <b>Memento AI</b> · Design System v1.0 · Train Your Mind. Support Your Memories.
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+/* ============================================
+   COLORS DATA
+============================================ */
+const COLORS = [
+  { name: 'Primary',       hex: '#0E7C7B', css: '--c-primary' },
+  { name: 'Primary Light', hex: '#4DB6AC', css: '--c-primary-light' },
+  { name: 'Secondary',     hex: '#9B7EDE', css: '--c-secondary' },
+  { name: 'Blue',          hex: '#5B9BD5', css: '--c-blue' },
+  { name: 'Navy (Text)',   hex: '#0F2C4C', css: '--c-navy' },
+  { name: 'Slate (Text2)', hex: '#5A6C7D', css: '--c-slate' },
+  { name: 'Background',    hex: '#FAF8F3', css: '--c-bg' },
+  { name: 'Card',          hex: '#FFFFFF', css: '--c-card' },
+  { name: 'Border',        hex: '#EAE6DE', css: '--c-border' },
+  { name: 'Success',       hex: '#4CAF50', css: '--c-success' },
+  { name: 'Warning',       hex: '#FF9800', css: '--c-warning' },
+  { name: 'Error',         hex: '#E57373', css: '--c-error' }
+];
+
+/* ============================================
+   RENDER COLORS
+============================================ */
+function renderColors() {
+  const grid = document.getElementById('colorGrid');
+  grid.innerHTML = '';
+
+  // Add Brand Gradient first
+  const gradientCard = document.createElement('div');
+  gradientCard.className = 'color-swatch';
+  gradientCard.innerHTML = `
+    <div class="color-preview gradient">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+    </div>
+    <div class="color-info">
+      <div class="color-name">Brand Gradient</div>
+      <div class="color-hex">--g-brand</div>
+    </div>
+  `;
+  gradientCard.addEventListener('click', () => {
+    copyToClipboard('linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%)');
+  });
+  grid.appendChild(gradientCard);
+
+  // Add all solid colors
+  COLORS.forEach(color => {
+    const card = document.createElement('div');
+    card.className = 'color-swatch';
+    card.innerHTML = `
+      <div class="color-preview" style="background:${color.hex};">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </div>
+      <div class="color-info">
+        <div class="color-name">${color.name}</div>
+        <div class="color-hex">${color.hex}</div>
+      </div>
+    `;
+    card.addEventListener('click', () => {
+      copyToClipboard(color.hex);
+    });
+    grid.appendChild(card);
+  });
+}
+
+/* ============================================
+   COPY TO CLIPBOARD
+============================================ */
+let toastTimeout = null;
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Copied: ' + text);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Copied: ' + text);
+  });
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 1600);
+}
+
+/* ============================================
+   TOGGLE DEMO
+============================================ */
+document.querySelectorAll('.toggle').forEach(toggle => {
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('on');
+  });
+});
+
+/* ============================================
+   INIT
+============================================ */
+renderColors();
+</script>
+
+</body>
+</html>

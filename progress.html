@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#FAF8F3" />
+<title>Memento AI — Progress</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --c-primary: #0E7C7B; --c-primary-light: #4DB6AC; --c-secondary: #9B7EDE;
+  --c-blue: #5B9BD5; --c-navy: #0F2C4C; --c-slate: #5A6C7D;
+  --c-bg: #FAF8F3; --c-card: #FFFFFF; --c-border: #EAE6DE;
+  --c-error: #E57373; --c-success: #4CAF50; --c-warning: #FF9800;
+  --c-fire: #FF6B35;
+
+  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
+  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+  --g-success: linear-gradient(135deg, #4CAF50, #66BB6A);
+  --g-warning: linear-gradient(135deg, #FF9800, #FFB74D);
+  --g-error: linear-gradient(135deg, #E57373, #EF5350);
+  --g-fire: linear-gradient(135deg, #FF6B35, #FF9800, #FFB74D);
+
+  --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
+  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+
+  --phone-w: 375px;
+  --phone-h: 812px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--f-en);
+  -webkit-font-smoothing: antialiased;
+  background: #E8E4DC;
+  overflow: hidden;
+}
+
+html[lang="ar"] body { font-family: var(--f-ar); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+.stage {
+  width: 100vw; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
+    #E8E4DC;
+}
+
+.phone {
+  position: relative;
+  width: var(--phone-w); height: var(--phone-h);
+  max-height: calc(100vh - 40px);
+  background: var(--c-bg);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a,
+    0 40px 80px rgba(0, 0, 0, 0.35), 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 130px; height: 26px;
+  background: #1a1a1a;
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+}
+
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; }
+  .phone::before { display: none; }
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex; flex-direction: column;
+  background: var(--c-bg);
+  overflow: hidden;
+}
+
+.screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* TOP BAR */
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 52px 22px 0;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  width: 38px; height: 38px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.back-btn:hover { background: #fff; border-color: rgba(14, 124, 123, 0.35); transform: translateX(-2px); }
+html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
+
+.back-btn svg { width: 16px; height: 16px; stroke: var(--c-primary); stroke-width: 2.4; fill: none; }
+html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
+
+.lang-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  border-radius: var(--r-pill);
+  font-size: 12px; font-weight: 600;
+  color: var(--c-navy);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.lang-toggle:hover { background: #fff; border-color: rgba(14, 124, 123, 0.35); transform: translateY(-1px); }
+.lang-toggle svg { width: 14px; height: 14px; stroke: var(--c-primary); stroke-width: 2.2; fill: none; }
+
+/* CONTENT */
+.content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  padding: 16px 24px 24px;
+  display: flex; flex-direction: column; gap: 14px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  min-height: 0;
+}
+
+.content::-webkit-scrollbar { display: none; }
+.content > * { flex-shrink: 0; }
+
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+/* PAGE HEAD */
+.page-head {
+  display: flex; flex-direction: column; gap: 4px;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.1s forwards;
+}
+
+.page-title {
+  font-size: 24px; font-weight: 800;
+  background: var(--g-text);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px; line-height: 1.15;
+}
+
+html[lang="ar"] .page-title { font-family: var(--f-ar); font-size: 23px; letter-spacing: 0; }
+
+.page-sub { font-size: 13px; color: var(--c-slate); font-weight: 500; line-height: 1.5; }
+html[lang="ar"] .page-sub { font-family: var(--f-ar); font-size: 14px; }
+
+/* PERIOD TABS */
+.period-tabs {
+  display: flex;
+  background: rgba(14, 124, 123, 0.06);
+  border-radius: var(--r-pill);
+  padding: 4px;
+  position: relative;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.2s forwards;
+}
+
+.period-tab {
+  flex: 1;
+  padding: 8px 6px;
+  font-size: 12px; font-weight: 600;
+  color: var(--c-slate);
+  border-radius: var(--r-pill);
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s ease;
+  text-align: center;
+}
+
+.period-tab.active { color: #fff; }
+html[lang="ar"] .period-tab { font-family: var(--f-ar); font-size: 13px; }
+
+.period-indicator {
+  position: absolute;
+  top: 4px; left: 4px;
+  width: calc(33.33% - 2.67px);
+  height: calc(100% - 8px);
+  background: var(--g-brand);
+  border-radius: var(--r-pill);
+  z-index: 1;
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  box-shadow: 0 6px 16px rgba(14, 124, 123, 0.3);
+}
+
+html[dir="rtl"] .period-indicator { left: auto; right: 4px; }
+.period-tabs[data-active="1"] .period-indicator { transform: translateX(calc(100% + 2px)); }
+.period-tabs[data-active="2"] .period-indicator { transform: translateX(calc(200% + 4px)); }
+html[dir="rtl"] .period-tabs[data-active="1"] .period-indicator { transform: translateX(calc(-100% - 2px)); }
+html[dir="rtl"] .period-tabs[data-active="2"] .period-indicator { transform: translateX(calc(-200% - 4px)); }
+
+/* STATS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.3s forwards;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-lg);
+  padding: 14px;
+  display: flex; flex-direction: column; gap: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+}
+
+.stat-card.s1::before { background: var(--g-brand); }
+.stat-card.s2::before { background: var(--g-success); }
+.stat-card.s3::before { background: var(--g-warning); }
+.stat-card.s4::before { background: linear-gradient(180deg, #FF6B35, #FF9800); }
+
+.stat-head { display: flex; align-items: center; gap: 8px; }
+
+.stat-icon {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-icon.s1 { background: linear-gradient(135deg, #0E7C7B, #4DB6AC); }
+.stat-icon.s2 { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+.stat-icon.s3 { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+.stat-icon.s4 { background: linear-gradient(135deg, #FF6B35, #FF9800); }
+
+.stat-icon svg {
+  width: 13px; height: 13px;
+  stroke: #fff; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+.stat-label {
+  font-size: 10px; font-weight: 600;
+  color: var(--c-slate);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+html[lang="ar"] .stat-label {
+  font-family: var(--f-ar);
+  text-transform: none; letter-spacing: 0;
+  font-size: 11px;
+}
+
+.stat-value {
+  font-size: 22px; font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -0.8px;
+  line-height: 1;
+  font-feature-settings: "tnum";
+  display: flex; align-items: baseline; gap: 3px;
+}
+
+.stat-value small { font-size: 11px; font-weight: 700; color: var(--c-slate); letter-spacing: 0; }
+.stat-value.positive { color: var(--c-success); }
+
+/* SECTION HEAD */
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-inline-start: 4px; margin-top: 4px;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.section-head.s1 { animation-delay: 0.4s; }
+.section-head.s2 { animation-delay: 0.55s; }
+.section-head.s3 { animation-delay: 0.7s; }
+.section-head.s4 { animation-delay: 0.85s; }
+
+.section-title {
+  font-size: 13.5px; font-weight: 700;
+  color: var(--c-navy);
+  display: flex; align-items: center; gap: 8px;
+}
+
+.section-title::before {
+  content: '';
+  width: 3px; height: 14px;
+  background: var(--g-brand);
+  border-radius: var(--r-pill);
+}
+
+html[lang="ar"] .section-title { font-family: var(--f-ar); font-size: 14.5px; }
+
+/* CHART CARD */
+.chart-card {
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-xl);
+  padding: 16px 14px 12px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.5s forwards;
+}
+
+.chart-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: var(--g-brand);
+}
+
+.chart-svg {
+  width: 100%;
+  height: 140px;
+  display: block;
+  overflow: visible;
+  margin-top: 4px;
+}
+
+.chart-line {
+  fill: none;
+  stroke: url(#lineGrad);
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawLine 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.7s forwards;
+}
+
+@keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+.chart-area {
+  fill: url(#areaGrad);
+  opacity: 0;
+  animation: fadeIn 0.8s ease 1.8s forwards;
+}
+
+@keyframes fadeIn { to { opacity: 1; } }
+
+.chart-dot {
+  fill: #fff;
+  stroke: url(#lineGrad);
+  stroke-width: 2.4;
+  opacity: 0;
+  animation: dotPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.chart-dot:nth-child(1) { animation-delay: 0.8s; }
+.chart-dot:nth-child(2) { animation-delay: 1.0s; }
+.chart-dot:nth-child(3) { animation-delay: 1.2s; }
+.chart-dot:nth-child(4) { animation-delay: 1.4s; }
+
+@keyframes dotPop {
+  0%   { opacity: 0; r: 0; }
+  60%  { opacity: 1; r: 5; }
+  100% { opacity: 1; r: 3.5; }
+}
+
+.chart-value {
+  font-size: 9px;
+  font-weight: 700;
+  fill: var(--c-primary);
+  font-family: 'Poppins', sans-serif;
+  opacity: 0;
+  animation: fadeIn 0.4s ease 2s forwards;
+  text-anchor: middle;
+  font-feature-settings: "tnum";
+}
+
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 8px 0;
+}
+
+.chart-label {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--c-slate);
+  letter-spacing: 0.3px;
+  text-align: center;
+  flex: 1;
+}
+
+html[lang="ar"] .chart-label { font-family: var(--f-ar); font-size: 10.5px; letter-spacing: 0; }
+
+/* INSIGHTS GRID */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.65s forwards;
+}
+
+.insight-card {
+  padding: 12px 12px;
+  border-radius: var(--r-lg);
+  display: flex; flex-direction: column; gap: 6px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.insight-card:hover { transform: translateY(-2px); }
+
+.insight-card.streak { background: var(--g-fire); border: none; }
+.insight-card.best   { background: linear-gradient(135deg, rgba(76,175,80,0.14), rgba(76,175,80,0.06)); border: 1.5px solid rgba(76,175,80,0.28); }
+.insight-card.weak   { background: linear-gradient(135deg, rgba(255,152,0,0.14), rgba(255,152,0,0.06)); border: 1.5px solid rgba(255,152,0,0.28); }
+.insight-card.improved { background: linear-gradient(135deg, rgba(155,126,222,0.14), rgba(91,155,213,0.08)); border: 1.5px solid rgba(155,126,222,0.28); }
+
+.insight-icon {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.insight-card.streak .insight-icon { background: rgba(255,255,255,0.25); }
+.insight-card.best .insight-icon   { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+.insight-card.weak .insight-icon   { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+.insight-card.improved .insight-icon { background: var(--g-brand); }
+
+.insight-icon svg {
+  width: 14px; height: 14px;
+  stroke: #fff; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+.insight-value {
+  font-size: 18px; font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  font-feature-settings: "tnum";
+}
+
+.insight-card.streak .insight-value { color: #fff; }
+
+.insight-label {
+  font-size: 9.5px; font-weight: 700;
+  color: var(--c-slate);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.insight-card.streak .insight-label { color: rgba(255,255,255,0.9); }
+
+html[lang="ar"] .insight-label {
+  font-family: var(--f-ar);
+  text-transform: none; letter-spacing: 0;
+  font-size: 10.5px;
+}
+
+.insight-sub {
+  font-size: 10.5px;
+  color: var(--c-slate);
+  font-weight: 600;
+  margin-top: 1px;
+  line-height: 1.3;
+}
+
+html[lang="ar"] .insight-sub { font-family: var(--f-ar); font-size: 11.5px; }
+
+/* SKILLS LIST */
+.skills-list {
+  display: flex; flex-direction: column; gap: 10px;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.8s forwards;
+}
+
+.skill-row {
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-lg);
+  padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: all 0.25s ease;
+}
+
+.skill-row:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 44, 76, 0.06); }
+
+.skill-header { display: flex; align-items: center; gap: 10px; }
+
+.skill-icon {
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-icon svg {
+  width: 15px; height: 15px;
+  stroke: #fff; stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+  position: relative; z-index: 2;
+}
+
+.skill-icon::before { content: ''; position: absolute; inset: 0; z-index: 1; }
+.skill-icon.memory::before    { background: linear-gradient(135deg, #0E7C7B, #4DB6AC); }
+.skill-icon.attention::before { background: linear-gradient(135deg, #E57373, #FF9800); }
+.skill-icon.speed::before     { background: linear-gradient(135deg, #5B9BD5, #4DB6AC); }
+.skill-icon.problem::before   { background: linear-gradient(135deg, #9B7EDE, #5B9BD5); }
+.skill-icon.visual::before    { background: linear-gradient(135deg, #4DB6AC, #9B7EDE); }
+.skill-icon.language::before  { background: linear-gradient(135deg, #FF9800, #E8A0BF); }
+.skill-icon.numerical::before { background: linear-gradient(135deg, #5B9BD5, #9B7EDE); }
+
+.skill-name {
+  flex: 1;
+  font-size: 12.5px; font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: 0.1px;
+}
+
+html[lang="ar"] .skill-name { font-family: var(--f-ar); font-size: 13.5px; letter-spacing: 0; }
+
+.skill-change {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
+  font-feature-settings: "tnum";
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.skill-change.up   { background: rgba(76, 175, 80, 0.12); color: var(--c-success); }
+.skill-change.down { background: rgba(229, 115, 115, 0.12); color: var(--c-error); }
+.skill-change.same { background: rgba(90, 108, 125, 0.12); color: var(--c-slate); }
+
+.skill-change svg {
+  width: 10px; height: 10px;
+  stroke: currentColor; stroke-width: 2.8; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+html[lang="ar"] .skill-change { font-family: var(--f-ar); font-size: 11.5px; }
+
+.skill-bars { display: flex; flex-direction: column; gap: 4px; }
+.skill-bar-row { display: flex; align-items: center; gap: 8px; }
+
+.skill-bar-label {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--c-slate);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  min-width: 44px;
+}
+
+html[lang="ar"] .skill-bar-label {
+  font-family: var(--f-ar);
+  text-transform: none; letter-spacing: 0;
+  font-size: 10.5px;
+}
+
+.skill-bar-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(14, 124, 123, 0.08);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  position: relative;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  transition: width 1.2s cubic-bezier(0.65, 0, 0.35, 1) 1s;
+}
+
+.skill-bar-fill.first { background: rgba(14, 124, 123, 0.25); }
+.skill-bar-fill.current { background: var(--g-brand); box-shadow: 0 0 8px rgba(14, 124, 123, 0.3); }
+
+.skill-bar-value {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--c-navy);
+  font-feature-settings: "tnum";
+  min-width: 32px;
+  text-align: end;
+}
+
+/* HISTORY LIST */
+.history-list {
+  display: flex; flex-direction: column; gap: 8px;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.95s forwards;
+}
+
+.history-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  transition: all 0.25s ease;
+}
+
+.history-row:hover { transform: translateY(-2px); border-color: rgba(14, 124, 123, 0.3); }
+
+.history-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--g-brand);
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(14, 124, 123, 0.4);
+}
+
+.history-date {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: 0.1px;
+  flex: 1;
+}
+
+html[lang="ar"] .history-date { font-family: var(--f-ar); font-size: 13px; }
+
+.history-meta {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--c-slate);
+  font-feature-settings: "tnum";
+}
+
+html[lang="ar"] .history-meta { font-family: var(--f-ar); font-size: 11.5px; }
+
+.history-accuracy {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--c-success);
+  padding: 3px 9px;
+  background: rgba(76, 175, 80, 0.12);
+  border-radius: var(--r-pill);
+  font-feature-settings: "tnum";
+}
+
+.history-accuracy.medium { color: var(--c-warning); background: rgba(255, 152, 0, 0.12); }
+.history-accuracy.low { color: var(--c-error); background: rgba(229, 115, 115, 0.12); }
+
+/* REASSESS CARD */
+.reassess-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(155, 126, 222, 0.12), rgba(91, 155, 213, 0.08));
+  border: 1.5px solid rgba(155, 126, 222, 0.28);
+  border-radius: var(--r-lg);
+  position: relative;
+  overflow: hidden;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 1.1s forwards;
+}
+
+.reassess-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { left: -100%; }
+  100% { left: 200%; }
+}
+
+.reassess-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--g-brand);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(155, 126, 222, 0.35);
+  position: relative; z-index: 2;
+}
+
+.reassess-icon svg {
+  width: 18px; height: 18px;
+  stroke: #fff; stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+.reassess-content {
+  flex: 1;
+  display: flex; flex-direction: column; gap: 2px;
+  position: relative; z-index: 2;
+}
+
+.reassess-title { font-size: 13px; font-weight: 700; color: var(--c-navy); }
+html[lang="ar"] .reassess-title { font-family: var(--f-ar); font-size: 14px; }
+
+.reassess-sub {
+  font-size: 11px;
+  color: var(--c-slate);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+html[lang="ar"] .reassess-sub { font-family: var(--f-ar); font-size: 12px; }
+
+.reassess-btn {
+  padding: 8px 14px;
+  background: var(--g-brand);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  border-radius: var(--r-pill);
+  box-shadow: 0 6px 14px rgba(14, 124, 123, 0.3);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  position: relative; z-index: 2;
+}
+
+.reassess-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(14, 124, 123, 0.4); }
+.reassess-btn:active { transform: scale(0.96); }
+html[lang="ar"] .reassess-btn { font-family: var(--f-ar); font-size: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SVG Gradients -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0E7C7B"/>
+      <stop offset="50%" stop-color="#5B9BD5"/>
+      <stop offset="100%" stop-color="#9B7EDE"/>
+    </linearGradient>
+    <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0E7C7B" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#0E7C7B" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+
+      <!-- Top Bar -->
+      <div class="topbar">
+        <button class="back-btn" id="backBtn" aria-label="Back">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span id="langLabel">EN</span>
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+
+        <!-- Page Head -->
+        <div class="page-head">
+          <h1 class="page-title" id="pageTitle">Your Progress</h1>
+          <p class="page-sub" id="pageSub">Track how your cognitive skills evolve over time.</p>
+        </div>
+
+        <!-- Period Selector -->
+        <div class="period-tabs" id="periodTabs" data-active="0">
+          <div class="period-indicator"></div>
+          <button class="period-tab active" data-period="0" id="tab4w">4 Weeks</button>
+          <button class="period-tab" data-period="1" id="tab8w">8 Weeks</button>
+          <button class="period-tab" data-period="2" id="tabAll">All Time</button>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card s1">
+            <div class="stat-head">
+              <div class="stat-icon s1">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
+              <div class="stat-label" id="statSessionsLabel">Sessions</div>
+            </div>
+            <div class="stat-value"><span id="statSessions">0</span></div>
+          </div>
+
+          <div class="stat-card s2">
+            <div class="stat-head">
+              <div class="stat-icon s2">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div class="stat-label" id="statTimeLabel">Total Time</div>
+            </div>
+            <div class="stat-value"><span id="statTime">0</span><small id="statTimeUnit">min</small></div>
+          </div>
+
+          <div class="stat-card s3">
+            <div class="stat-head">
+              <div class="stat-icon s3">
+                <svg viewBox="0 0 24 24">
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                  <polyline points="16 7 22 7 22 13"></polyline>
+                </svg>
+              </div>
+              <div class="stat-label" id="statImproveLabel">Improvement</div>
+            </div>
+            <div class="stat-value positive"><span id="statImprove">+0</span><small>%</small></div>
+          </div>
+
+          <div class="stat-card s4">
+            <div class="stat-head">
+              <div class="stat-icon s4">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2 L15 9 L22 9 L16 14 L18 21 L12 17 L6 21 L8 14 L2 9 L9 9 Z"></path>
+                </svg>
+              </div>
+              <div class="stat-label" id="statStreakLabel">Day Streak</div>
+            </div>
+            <div class="stat-value"><span id="statStreak">0</span></div>
+          </div>
+        </div>
+
+        <!-- Weekly Chart -->
+        <div class="section-head s1">
+          <div class="section-title" id="chartSectionTitle">Weekly Progress</div>
+        </div>
+
+        <div class="chart-card">
+          <svg class="chart-svg" id="chartSvg" viewBox="0 0 300 140" preserveAspectRatio="none"></svg>
+          <div class="chart-labels" id="chartLabels"></div>
+        </div>
+
+        <!-- Insights Grid -->
+        <div class="section-head s2">
+          <div class="section-title" id="insightsSectionTitle">Insights</div>
+        </div>
+
+        <div class="insights-grid" id="insightsGrid"></div>
+
+        <!-- Skills Breakdown -->
+        <div class="section-head s3">
+          <div class="section-title" id="skillsSectionTitle">Skills Breakdown</div>
+        </div>
+
+        <div class="skills-list" id="skillsList"></div>
+
+        <!-- History -->
+        <div class="section-head s4">
+          <div class="section-title" id="historySectionTitle">Recent Sessions</div>
+        </div>
+
+        <div class="history-list" id="historyList"></div>
+
+        <!-- Reassess Card -->
+        <div class="reassess-card" id="reassessCard" style="display:none;">
+          <div class="reassess-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M23 4v6h-6"></path>
+              <path d="M1 20v-6h6"></path>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+              <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+            </svg>
+          </div>
+          <div class="reassess-content">
+            <div class="reassess-title" id="reassessTitle">Time to Reassess</div>
+            <div class="reassess-sub" id="reassessSub">Let's check how your cognitive performance has changed.</div>
+          </div>
+          <button class="reassess-btn" id="reassessBtn">
+            <span id="reassessBtnLabel">Reassess</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   TRANSLATIONS
+============================================ */
+const I18N = {
+  en: {
+    pageTitle: 'Your Progress',
+    pageSub: 'Track how your cognitive skills evolve over time.',
+    tab4w: '4 Weeks', tab8w: '8 Weeks', tabAll: 'All Time',
+    statSessionsLabel: 'Sessions',
+    statTimeLabel: 'Total Time',
+    statImproveLabel: 'Improvement',
+    statStreakLabel: 'Day Streak',
+    statTimeUnit: 'min',
+    chartSectionTitle: 'Weekly Progress',
+    insightsSectionTitle: 'Insights',
+    skillsSectionTitle: 'Skills Breakdown',
+    historySectionTitle: 'Recent Sessions',
+    reassessTitle: 'Time to Reassess',
+    reassessSub: "Let's check how your cognitive performance has changed.",
+    reassessBtn: 'Reassess',
+    weekLabel: 'Week',
+    firstLabel: 'First',
+    currentLabel: 'Now',
+    noHistory: 'No sessions yet',
+    today: 'Today',
+    yesterday: 'Yesterday',
+    daysAgo: 'days ago',
+    exercises: 'ex.',
+
+    insights: {
+      streak: 'Day Streak',
+      best: 'Best Week',
+      weak: 'Needs Focus',
+      improved: 'Most Improved'
+    },
+
+    skills: {
+      memory: 'Memory', attention: 'Attention', speed: 'Processing Speed',
+      problem: 'Problem Solving', visual: 'Visual Skills', language: 'Language',
+      numerical: 'Numerical'
+    }
+  },
+  ar: {
+    pageTitle: 'تقدمك',
+    pageSub: 'تابع كيف تتطور مهاراتك الذهنية مع الوقت.',
+    tab4w: '4 أسابيع', tab8w: '8 أسابيع', tabAll: 'كل الوقت',
+    statSessionsLabel: 'الجلسات',
+    statTimeLabel: 'الوقت الإجمالي',
+    statImproveLabel: 'التحسن',
+    statStreakLabel: 'أيام متتالية',
+    statTimeUnit: 'دقيقة',
+    chartSectionTitle: 'التقدم الأسبوعي',
+    insightsSectionTitle: 'رؤى',
+    skillsSectionTitle: 'تفصيل المهارات',
+    historySectionTitle: 'الجلسات الأخيرة',
+    reassessTitle: 'وقت إعادة التقييم',
+    reassessSub: 'هيا نرى كيف تغير أدائك الذهني.',
+    reassessBtn: 'أعد التقييم',
+    weekLabel: 'أسبوع',
+    firstLabel: 'البداية',
+    currentLabel: 'الآن',
+    noHistory: 'لا توجد جلسات بعد',
+    today: 'اليوم',
+    yesterday: 'أمس',
+    daysAgo: 'أيام مضت',
+    exercises: 'تمرين',
+
+    insights: {
+      streak: 'أيام متتالية',
+      best: 'أفضل أسبوع',
+      weak: 'تحتاج تركيز',
+      improved: 'الأكثر تحسنًا'
+    },
+
+    skills: {
+      memory: 'الذاكرة', attention: 'الانتباه', speed: 'سرعة المعالجة',
+      problem: 'حل المشكلات', visual: 'المهارات البصرية', language: 'اللغة',
+      numerical: 'الرقمي'
+    }
+  }
+};
+
+/* ============================================
+   SKILL ICONS
+============================================ */
+const SKILL_ICONS = {
+  memory: `<svg viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>`,
+  attention: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>`,
+  speed: `<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`,
+  problem: `<svg viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path></svg>`,
+  visual: `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`,
+  language: `<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>`,
+  numerical: `<svg viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>`
+};
+
+const SKILL_KEYS = ['memory', 'attention', 'speed', 'problem', 'visual', 'language', 'numerical'];
+
+/* ============================================
+   LANGUAGE
+============================================ */
+const STORAGE_KEY = 'memento_lang';
+let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+const htmlEl = document.documentElement;
+
+/* ============================================
+   DATA LOADING
+============================================ */
+function getScore(key) {
+  try {
+    const data = JSON.parse(localStorage.getItem('memento_' + key + '_result') || '{}');
+    return typeof data.accuracy === 'number' ? data.accuracy : 0;
+  } catch (e) { return 0; }
+}
+
+function loadProgressData() {
+  const totalSessions = parseInt(localStorage.getItem('memento_total_sessions') || '15');
+  const streak = parseInt(localStorage.getItem('memento_streak') || '7');
+
+  // Skills
+  const skills = SKILL_KEYS.map(key => {
+    const current = getScore(key) || (55 + Math.floor(Math.random() * 30));
+    const first = Math.max(20, current - (5 + Math.floor(Math.random() * 25)));
+    return { key, current, first };
+  });
+
+  const totalMinutes = totalSessions * 8;
+  const avgImprove = Math.round(
+    skills.reduce((sum, s) => sum + (s.current - s.first), 0) / skills.length
+  );
+
+  const weeklyData = [45, 58, 70, 82];
+
+  const history = [
+    { daysAgo: 0, exercises: 3, minutes: 24, accuracy: 82 },
+    { daysAgo: 1, exercises: 2, minutes: 16, accuracy: 75 },
+    { daysAgo: 3, exercises: 3, minutes: 22, accuracy: 68 },
+    { daysAgo: 5, exercises: 2, minutes: 14, accuracy: 71 },
+    { daysAgo: 7, exercises: 3, minutes: 20, accuracy: 65 }
+  ];
+
+  return {
+    totalSessions, streak, totalMinutes, avgImprove,
+    skills, weeklyData, history
+  };
+}
+
+/* ============================================
+   RENDER STATS
+============================================ */
+function renderStats(data) {
+  document.getElementById('statSessions').textContent = data.totalSessions;
+  document.getElementById('statTime').textContent = data.totalMinutes;
+  document.getElementById('statImprove').textContent = (data.avgImprove >= 0 ? '+' : '') + data.avgImprove;
+  document.getElementById('statStreak').textContent = data.streak;
+}
+
+/* ============================================
+   RENDER CHART
+============================================ */
+function renderChart(data) {
+  const t = I18N[currentLang];
+  const svg = document.getElementById('chartSvg');
+  const labelsEl = document.getElementById('chartLabels');
+
+  const values = data.weeklyData;
+  const maxVal = 100;
+  const width = 300;
+  const height = 140;
+  const paddingX = 20;
+  const paddingY = 20;
+
+  const stepX = (width - paddingX * 2) / (values.length - 1);
+
+  const points = values.map((v, i) => {
+    const x = paddingX + i * stepX;
+    const y = height - paddingY - (v / maxVal) * (height - paddingY * 2);
+    return { x, y, value: v };
+  });
+
+  let svgContent = '';
+
+  for (let i = 0; i <= 4; i++) {
+    const y = paddingY + (i / 4) * (height - paddingY * 2);
+    svgContent += `<line x1="${paddingX}" y1="${y}" x2="${width - paddingX}" y2="${y}" stroke="rgba(14,124,123,0.08)" stroke-width="1" stroke-dasharray="3 4"/>`;
+  }
+
+  const areaPath = `M ${points[0].x} ${height - paddingY} ${points.map(p => `L ${p.x} ${p.y}`).join(' ')} L ${points[points.length - 1].x} ${height - paddingY} Z`;
+  svgContent += `<path class="chart-area" d="${areaPath}"/>`;
+
+  const linePath = points.map((p, i) => (i === 0 ? 'M' : 'L') + ` ${p.x} ${p.y}`).join(' ');
+  svgContent += `<path class="chart-line" d="${linePath}"/>`;
+
+  points.forEach(p => {
+    svgContent += `<circle class="chart-dot" cx="${p.x}" cy="${p.y}" r="3.5"/>`;
+    svgContent += `<text class="chart-value" x="${p.x}" y="${p.y - 8}">${p.value}%</text>`;
+  });
+
+  svg.innerHTML = svgContent;
+
+  labelsEl.innerHTML = '';
+  values.forEach((_, i) => {
+    const label = document.createElement('div');
+    label.className = 'chart-label';
+    label.textContent = `${t.weekLabel} ${i + 1}`;
+    labelsEl.appendChild(label);
+  });
+}
+
+/* ============================================
+   RENDER INSIGHTS
+============================================ */
+function renderInsights(data) {
+  const t = I18N[currentLang];
+  const container = document.getElementById('insightsGrid');
+  container.innerHTML = '';
+
+  // Sort skills
+  const sorted = [...data.skills].sort((a, b) => b.current - a.current);
+  const best = sorted[0];
+  const worst = sorted[sorted.length - 1];
+
+  // Most improved
+  const sortedByImprove = [...data.skills].sort((a, b) => (b.current - b.first) - (a.current - a.first));
+  const mostImproved = sortedByImprove[0];
+  const improveAmount = mostImproved.current - mostImproved.first;
+
+  const insights = [
+    {
+      cls: 'streak',
+      icon: `<path d="M12 2 L15 9 L22 9 L16 14 L18 21 L12 17 L6 21 L8 14 L2 9 L9 9 Z"></path>`,
+      value: data.streak,
+      label: t.insights.streak,
+      sub: ''
+    },
+    {
+      cls: 'best',
+      icon: `<polyline points="20 6 9 17 4 12"></polyline>`,
+      value: best.current + '%',
+      label: t.insights.best,
+      sub: t.skills[best.key]
+    },
+    {
+      cls: 'weak',
+      icon: `<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>`,
+      value: worst.current + '%',
+      label: t.insights.weak,
+      sub: t.skills[worst.key]
+    },
+    {
+      cls: 'improved',
+      icon: `<polyline points="18 15 12 9 6 15"></polyline>`,
+      value: '+' + improveAmount + '%',
+      label: t.insights.improved,
+      sub: t.skills[mostImproved.key]
+    }
+  ];
+
+  insights.forEach(ins => {
+    const card = document.createElement('div');
+    card.className = `insight-card ${ins.cls}`;
+    card.innerHTML = `
+      <div class="insight-icon"><svg viewBox="0 0 24 24">${ins.icon}</svg></div>
+      <div class="insight-value">${ins.value}</div>
+      <div class="insight-label">${ins.label}</div>
+      ${ins.sub ? `<div class="insight-sub">${ins.sub}</div>` : ''}
+    `;
+    container.appendChild(card);
+  });
+}
+
+/* ============================================
+   RENDER SKILLS
+============================================ */
+function renderSkills(data) {
+  const t = I18N[currentLang];
+  const container = document.getElementById('skillsList');
+  container.innerHTML = '';
+
+  data.skills.forEach(skill => {
+    const diff = skill.current - skill.first;
+    const diffClass = diff > 3 ? 'up' : (diff < -3 ? 'down' : 'same');
+    const diffIcon = diff > 3
+      ? '<polyline points="18 15 12 9 6 15"></polyline>'
+      : (diff < -3
+        ? '<polyline points="6 9 12 15 18 9"></polyline>'
+        : '<line x1="5" y1="12" x2="19" y2="12"></line>');
+
+    const row = document.createElement('div');
+    row.className = 'skill-row';
+    row.innerHTML = `
+      <div class="skill-header">
+        <div class="skill-icon ${skill.key}">${SKILL_ICONS[skill.key]}</div>
+        <div class="skill-name">${t.skills[skill.key]}</div>
+        <div class="skill-change ${diffClass}">
+          <svg viewBox="0 0 24 24">${diffIcon}</svg>
+          <span>${diff > 0 ? '+' : ''}${diff}%</span>
+        </div>
+      </div>
+      <div class="skill-bars">
+        <div class="skill-bar-row">
+          <div class="skill-bar-label">${t.firstLabel}</div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill first" data-width="${skill.first}"></div>
+          </div>
+          <div class="skill-bar-value">${skill.first}%</div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-label">${t.currentLabel}</div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill current" data-width="${skill.current}"></div>
+          </div>
+          <div class="skill-bar-value">${skill.current}%</div>
+        </div>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+
+  setTimeout(() => {
+    container.querySelectorAll('.skill-bar-fill').forEach(el => {
+      el.style.width = el.dataset.width + '%';
+    });
+  }, 200);
+}
+
+/* ============================================
+   RENDER HISTORY
+============================================ */
+function renderHistory(data) {
+  const t = I18N[currentLang];
+  const container = document.getElementById('historyList');
+  container.innerHTML = '';
+
+  if (data.history.length === 0) {
+    container.innerHTML = `<div style="text-align:center;padding:20px;color:var(--c-slate);font-size:12.5px;">${t.noHistory}</div>`;
+    return;
+  }
+
+  data.history.forEach(item => {
+    const cls = item.accuracy >= 70 ? '' : (item.accuracy >= 40 ? 'medium' : 'low');
+    let dateLabel;
+    if (item.daysAgo === 0) dateLabel = t.today;
+    else if (item.daysAgo === 1) dateLabel = t.yesterday;
+    else dateLabel = item.daysAgo + ' ' + t.daysAgo;
+
+    const row = document.createElement('div');
+    row.className = 'history-row';
+    row.innerHTML = `
+      <div class="history-dot"></div>
+      <div class="history-date">${dateLabel}</div>
+      <div class="history-meta">${item.exercises} ${t.exercises} · ${item.minutes} ${t.statTimeUnit}</div>
+      <div class="history-accuracy ${cls}">${item.accuracy}%</div>
+    `;
+    container.appendChild(row);
+  });
+}
+
+/* ============================================
+   RENDER ALL
+============================================ */
+let currentData = null;
+
+function renderAll() {
+  currentData = loadProgressData();
+  const t = I18N[currentLang];
+
+  document.getElementById('pageTitle').textContent = t.pageTitle;
+  document.getElementById('pageSub').textContent = t.pageSub;
+  document.getElementById('tab4w').textContent = t.tab4w;
+  document.getElementById('tab8w').textContent = t.tab8w;
+  document.getElementById('tabAll').textContent = t.tabAll;
+
+  document.getElementById('statSessionsLabel').textContent = t.statSessionsLabel;
+  document.getElementById('statTimeLabel').textContent = t.statTimeLabel;
+  document.getElementById('statImproveLabel').textContent = t.statImproveLabel;
+  document.getElementById('statStreakLabel').textContent = t.statStreakLabel;
+  document.getElementById('statTimeUnit').textContent = t.statTimeUnit;
+
+  document.getElementById('chartSectionTitle').textContent = t.chartSectionTitle;
+  document.getElementById('insightsSectionTitle').textContent = t.insightsSectionTitle;
+  document.getElementById('skillsSectionTitle').textContent = t.skillsSectionTitle;
+  document.getElementById('historySectionTitle').textContent = t.historySectionTitle;
+
+  document.getElementById('reassessTitle').textContent = t.reassessTitle;
+  document.getElementById('reassessSub').textContent = t.reassessSub;
+  document.getElementById('reassessBtnLabel').textContent = t.reassessBtn;
+
+  renderStats(currentData);
+  renderChart(currentData);
+  renderInsights(currentData);
+  renderSkills(currentData);
+  renderHistory(currentData);
+}
+
+/* ============================================
+   LANGUAGE APPLY
+============================================ */
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+  htmlEl.lang = lang;
+  htmlEl.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.getElementById('langLabel').textContent = lang === 'en' ? 'EN' : 'ع';
+  renderAll();
+}
+
+document.getElementById('langToggle').addEventListener('click', () => {
+  applyLanguage(currentLang === 'en' ? 'ar' : 'en');
+});
+
+/* ============================================
+   PERIOD TABS
+============================================ */
+const periodTabs = document.getElementById('periodTabs');
+document.querySelectorAll('.period-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const period = tab.dataset.period;
+    periodTabs.dataset.active = period;
+    document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    if (currentData) {
+      const mult = period === '0' ? 1 : (period === '1' ? 1.5 : 2);
+      const newData = { ...currentData };
+      newData.weeklyData = [45, 58, 70, 82].map(v =>
+        Math.min(100, Math.round(v * (1 + (mult - 1) * 0.15)))
+      );
+      renderChart(newData);
+    }
+  });
+});
+
+/* ============================================
+   NAVIGATION
+============================================ */
+document.getElementById('backBtn').addEventListener('click', () => {
+  window.location.href = 'home.html';
+});
+
+document.getElementById('reassessBtn').addEventListener('click', () => {
+  localStorage.setItem('memento_reassess_mode', 'true');
+  window.location.href = 'assessment-intro.html';
+});
+
+/* ============================================
+   SHOW REASSESS AFTER 28 DAYS
+============================================ */
+function checkReassess() {
+  const lastAssessment = localStorage.getItem('memento_last_assessment_date');
+  const daysSince = lastAssessment
+    ? Math.floor((Date.now() - new Date(lastAssessment).getTime()) / 86400000)
+    : 30;
+
+  if (daysSince >= 28) {
+    document.getElementById('reassessCard').style.display = 'flex';
+  }
+}
+
+/* ============================================
+   INIT
+============================================ */
+applyLanguage(currentLang);
+checkReassess();
+</script>
+
+</body>
+</html>

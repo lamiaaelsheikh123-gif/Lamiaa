@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#FAF8F3" />
+<title>Memento AI — Splash</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   DESIGN TOKENS (نفس اللي هيستخدم في كل الصفحات)
+============================================ */
+:root {
+  /* Brand Colors */
+  --c-primary: #0E7C7B;      /* Deep Teal */
+  --c-primary-light: #4DB6AC;
+  --c-secondary: #9B7EDE;    /* Soft Purple */
+  --c-blue: #5B9BD5;
+  --c-navy: #0F2C4C;         /* Dark text */
+  --c-slate: #5A6C7D;        /* Secondary text */
+  --c-bg: #FAF8F3;           /* Warm cream */
+  --c-card: #FFFFFF;
+  --c-border: #EAE6DE;
+
+  /* Gradients */
+  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
+  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+
+  /* Radii */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  /* Shadows */
+  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+  --sh-glow: 0 20px 60px rgba(14, 124, 123, 0.18);
+
+  /* Fonts */
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+
+  /* Layout */
+  --phone-w: 375px;
+  --phone-h: 812px;
+}
+
+/* ============================================
+   RESET
+============================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--f-en);
+  -webkit-font-smoothing: antialiased;
+  background: #E8E4DC;
+  overflow: hidden;
+}
+
+/* Arabic mode */
+html[lang="ar"] body { font-family: var(--f-ar); }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ============================================
+   PHONE FRAME (للـDesktop)
+============================================ */
+.stage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
+    #E8E4DC;
+}
+
+.phone {
+  position: relative;
+  width: var(--phone-w);
+  height: var(--phone-h);
+  max-height: calc(100vh - 40px);
+  background: var(--c-bg);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 10px #1a1a1a,
+    0 0 0 12px #2a2a2a,
+    0 40px 80px rgba(0, 0, 0, 0.35),
+    0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Notch */
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 26px;
+  background: #1a1a1a;
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+}
+
+/* على الموبايل: Fullscreen */
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .phone::before { display: none; }
+}
+
+/* ============================================
+   SPLASH CONTENT
+============================================ */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  overflow: hidden;
+}
+
+/* خلفية ناعمة */
+.screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 25% 15%, rgba(155, 126, 222, 0.14), transparent 45%),
+    radial-gradient(circle at 80% 85%, rgba(14, 124, 123, 0.12), transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(91, 155, 213, 0.05), transparent 70%);
+  pointer-events: none;
+}
+
+/* ============================================
+   TOP BAR — Language Toggle
+============================================ */
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  padding: 52px 22px 0;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.lang-toggle:hover {
+  background: #fff;
+  border-color: rgba(14, 124, 123, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(15, 44, 76, 0.1);
+}
+
+.lang-toggle:active { transform: scale(0.96); }
+
+.lang-toggle .lang-globe {
+  width: 14px;
+  height: 14px;
+  stroke: var(--c-primary);
+  stroke-width: 2.2;
+  fill: none;
+}
+
+.lang-toggle .lang-label { color: var(--c-primary); }
+.lang-toggle .divider { color: var(--c-border); font-weight: 300; }
+.lang-toggle .lang-inactive { color: var(--c-slate); font-weight: 500; }
+
+/* ============================================
+   MAIN — Logo + Name + Tagline
+============================================ */
+.main {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30px;
+  gap: 32px;
+  margin-top: -30px;
+}
+
+/* Logo wrapper */
+.logo-wrap {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.6);
+  animation: logoIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+}
+
+.logo-wrap::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(14, 124, 123, 0.18) 0%, transparent 65%);
+  filter: blur(20px);
+  z-index: -1;
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes logoIn {
+  0%   { opacity: 0; transform: scale(0.6) rotate(-8deg); }
+  60%  { opacity: 1; transform: scale(1.06) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.08); }
+}
+
+.logo-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 10px 30px rgba(14, 124, 123, 0.25));
+}
+
+/* Sparkle animation */
+.sparkle {
+  transform-origin: center;
+  animation: sparkle 2.4s ease-in-out infinite;
+}
+@keyframes sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50%      { transform: scale(1.25) rotate(20deg); opacity: 0.85; }
+}
+
+/* App Name */
+.app-name {
+  font-family: var(--f-en);
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1;
+  background: var(--g-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUp 0.7s ease 0.9s forwards;
+}
+
+html[lang="ar"] .app-name {
+  font-family: var(--f-ar);
+  letter-spacing: 0;
+  font-size: 40px;
+}
+
+.app-name .ai {
+  font-weight: 300;
+  opacity: 0.85;
+}
+
+/* Tagline */
+.tagline {
+  margin-top: 10px;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--c-slate);
+  text-align: center;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+  max-width: 260px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.7s ease 1.15s forwards;
+}
+
+html[lang="ar"] .tagline {
+  font-family: var(--f-ar);
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   BOTTOM — Loading
+============================================ */
+.bottom {
+  position: relative;
+  z-index: 5;
+  padding: 0 40px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 1.5s forwards;
+}
+
+.loading-bar {
+  width: 100%;
+  max-width: 180px;
+  height: 4px;
+  background: rgba(14, 124, 123, 0.10);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  position: relative;
+}
+
+.loading-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 0%;
+  background: var(--g-brand);
+  border-radius: var(--r-pill);
+  animation: loadBar 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  box-shadow: 0 0 12px rgba(14, 124, 123, 0.4);
+}
+
+@keyframes loadBar {
+  0%   { width: 0%; }
+  30%  { width: 45%; }
+  70%  { width: 78%; }
+  100% { width: 100%; }
+}
+
+.loading-text {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--c-slate);
+  opacity: 0.7;
+}
+
+html[lang="ar"] .loading-text {
+  font-family: var(--f-ar);
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 12px;
+}
+
+/* ============================================
+   REDUCED MOTION
+============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   PAGE TRANSITION (Fade out)
+============================================ */
+.screen.fade-out {
+  animation: fadeOutScreen 0.5s ease forwards;
+}
+@keyframes fadeOutScreen {
+  to { opacity: 0; transform: scale(1.02); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen" id="screen">
+
+      <!-- Language Toggle -->
+      <div class="topbar">
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+          <svg class="lang-globe" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="lang-label" id="langCurrent">EN</span>
+          <span class="divider">|</span>
+          <span class="lang-inactive" id="langOther">ع</span>
+        </button>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main">
+
+        <!-- Logo -->
+        <div class="logo-wrap">
+          <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Gradient: Teal → Blue → Purple -->
+              <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0E7C7B"/>
+                <stop offset="50%" stop-color="#5B9BD5"/>
+                <stop offset="100%" stop-color="#9B7EDE"/>
+              </linearGradient>
+              <!-- Gradient: Brain -->
+              <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0E7C7B"/>
+                <stop offset="60%" stop-color="#4DB6AC"/>
+                <stop offset="100%" stop-color="#5B9BD5"/>
+              </linearGradient>
+              <!-- Gradient: Face -->
+              <linearGradient id="faceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#5B9BD5"/>
+                <stop offset="60%" stop-color="#9B7EDE"/>
+                <stop offset="100%" stop-color="#C9B6F0"/>
+              </linearGradient>
+              <!-- Photo card gradients -->
+              <linearGradient id="photo1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFE0B2"/>
+                <stop offset="100%" stop-color="#FFB74D"/>
+              </linearGradient>
+              <linearGradient id="photo2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#B2DFDB"/>
+                <stop offset="100%" stop-color="#4DB6AC"/>
+              </linearGradient>
+              <linearGradient id="photo3" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#E1BEE7"/>
+                <stop offset="100%" stop-color="#9B7EDE"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Background circle (soft) -->
+            <circle cx="100" cy="100" r="95" fill="none" stroke="url(#brandGrad)" stroke-width="0.5" opacity="0.15"/>
+
+            <!-- ===== FACE PROFILE (facing right) ===== -->
+            <path d="M 105 175
+                     C 100 160, 96 148, 94 138
+                     C 91 124, 90 112, 92 102
+                     C 94 88, 100 76, 110 70
+                     C 118 65, 128 64, 136 68
+                     C 143 72, 146 79, 145 86
+                     C 144 92, 141 96, 141 100
+                     C 141 104, 143 107, 146 108
+                     C 149 110, 150 112, 148 114
+                     C 146 116, 143 117, 142 120
+                     C 141 123, 143 125, 146 126
+                     C 148 127, 148 129, 146 130
+                     C 143 131, 140 133, 138 137
+                     C 135 142, 134 150, 135 162
+                     C 136 170, 138 175, 138 175
+                     Z"
+                  fill="url(#faceGrad)" opacity="0.95"/>
+
+            <!-- Closed eye (calm) -->
+            <path d="M 118 98 Q 124 104 130 98"
+                  fill="none" stroke="#0F2C4C" stroke-width="1.8"
+                  stroke-linecap="round" opacity="0.7"/>
+
+            <!-- ===== BRAIN (cloud shape) ===== -->
+            <path d="M 68 78
+                     C 58 78, 52 70, 54 62
+                     C 48 58, 48 48, 56 44
+                     C 56 34, 66 28, 76 32
+                     C 80 24, 92 22, 100 28
+                     C 108 22, 120 26, 124 34
+                     C 134 32, 142 40, 140 50
+                     C 146 54, 146 64, 138 68
+                     C 138 74, 132 80, 124 78
+                     C 120 84, 110 86, 104 82
+                     C 100 88, 90 90, 84 86
+                     C 78 90, 70 86, 68 78 Z"
+                  fill="url(#brainGrad)" opacity="0.92"/>
+
+            <!-- Brain folds (subtle lines) -->
+            <path d="M 70 60 Q 80 55 88 62" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+            <path d="M 90 45 Q 100 42 108 48" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+            <path d="M 112 58 Q 120 55 126 62" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+
+            <!-- ===== PHOTO CARDS ===== -->
+            <!-- Photo 1 (back-left) -->
+            <g transform="rotate(-15 68 62)">
+              <rect x="56" y="46" width="24" height="20" rx="3" fill="#fff"/>
+              <rect x="58" y="48" width="20" height="14" rx="1.5" fill="url(#photo1)"/>
+              <circle cx="63" cy="53" r="1.5" fill="#fff" opacity="0.9"/>
+              <path d="M 58 60 L 63 55 L 68 58 L 74 52 L 78 60 Z" fill="#fff" opacity="0.7"/>
+            </g>
+
+            <!-- Photo 2 (front-center) -->
+            <g transform="rotate(-5 92 62)">
+              <rect x="80" y="44" width="26" height="22" rx="3" fill="#fff"/>
+              <rect x="82" y="46" width="22" height="16" rx="1.5" fill="url(#photo2)"/>
+              <path d="M 88 62 L 88 55 Q 90 52 92 55 L 92 62 Z" fill="#0F2C4C" opacity="0.55"/>
+              <circle cx="90" cy="53" r="2" fill="#0F2C4C" opacity="0.55"/>
+            </g>
+
+            <!-- Photo 3 (right) -->
+            <g transform="rotate(8 116 66)">
+              <rect x="104" y="48" width="26" height="22" rx="3" fill="#fff"/>
+              <rect x="106" y="50" width="22" height="16" rx="1.5" fill="url(#photo3)"/>
+              <circle cx="112" cy="56" r="2.2" fill="#0F2C4C" opacity="0.55"/>
+              <circle cx="120" cy="58" r="2.2" fill="#0F2C4C" opacity="0.45"/>
+              <path d="M 110 64 Q 115 60 120 64 Q 122 62 124 64" fill="none" stroke="#0F2C4C" stroke-width="1" opacity="0.5" stroke-linecap="round"/>
+            </g>
+
+            <!-- ===== SWIRL (crescent arc around the head) ===== -->
+            <path d="M 40 100
+                     C 45 130, 60 155, 90 165
+                     C 70 150, 58 125, 56 100
+                     C 54 78, 60 60, 76 46"
+                  fill="none"
+                  stroke="url(#brandGrad)"
+                  stroke-width="3.2"
+                  stroke-linecap="round"
+                  opacity="0.85"/>
+
+            <!-- ===== SPARKLE STAR ===== -->
+            <g class="sparkle" style="transform-origin: 148px 38px;">
+              <path d="M 148 26 L 151 35 L 160 38 L 151 41 L 148 50 L 145 41 L 136 38 L 145 35 Z"
+                    fill="url(#brandGrad)"/>
+            </g>
+          </svg>
+        </div>
+
+        <!-- App Name -->
+        <div style="text-align:center;">
+          <h1 class="app-name">Memento <span class="ai">AI</span></h1>
+          <p class="tagline" id="taglineText">Train Your Mind. Support Your Memories.</p>
+        </div>
+
+      </div>
+
+      <!-- Bottom -->
+      <div class="bottom">
+        <div class="loading-bar"></div>
+        <div class="loading-text" id="loadingText">Loading your experience...</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   TRANSLATIONS
+============================================ */
+const I18N = {
+  en: {
+    tagline: 'Train Your Mind. Support Your Memories.',
+    loading: 'Loading your experience...'
+  },
+  ar: {
+    tagline: 'درّب عقلك. ادعم ذاكرتك.',
+    loading: 'جاري تجهيز التجربة...'
+  }
+};
+
+/* ============================================
+   LANGUAGE STATE
+============================================ */
+const STORAGE_KEY = 'memento_lang';
+let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+
+const htmlEl      = document.documentElement;
+const taglineEl   = document.getElementById('taglineText');
+const loadingEl   = document.getElementById('loadingText');
+const langCurrEl  = document.getElementById('langCurrent');
+const langOtherEl = document.getElementById('langOther');
+const langToggle  = document.getElementById('langToggle');
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+
+  htmlEl.lang = lang;
+  htmlEl.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+
+  taglineEl.textContent = I18N[lang].tagline;
+  loadingEl.textContent = I18N[lang].loading;
+
+  // Toggle labels: يظهر اللغة الحالية + اللغة الأخرى
+  langCurrEl.textContent  = lang === 'en' ? 'EN' : 'ع';
+  langOtherEl.textContent = lang === 'en' ? 'ع'  : 'EN';
+}
+
+langToggle.addEventListener('click', () => {
+  applyLanguage(currentLang === 'en' ? 'ar' : 'en');
+});
+
+/* تفعيل أولي */
+applyLanguage(currentLang);
+
+/* ============================================
+   AUTO NAVIGATE → onboarding.html
+============================================ */
+const screenEl = document.getElementById('screen');
+const NEXT_PAGE = 'onboarding.html'; // غيّريها لو حبيتي
+const REDIRECT_DELAY = 3800;         // 3.8 ثانية
+
+setTimeout(() => {
+  screenEl.classList.add('fade-out');
+  setTimeout(() => {
+    window.location.href = NEXT_PAGE;
+  }, 480);
+}, REDIRECT_DELAY);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#FAF8F3" />
+<title>Memento AI — Assessment</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   DESIGN TOKENS
+============================================ */
+:root {
+  --c-primary: #0E7C7B;
+  --c-primary-light: #4DB6AC;
+  --c-secondary: #9B7EDE;
+  --c-blue: #5B9BD5;
+  --c-navy: #0F2C4C;
+  --c-slate: #5A6C7D;
+  --c-bg: #FAF8F3;
+  --c-card: #FFFFFF;
+  --c-border: #EAE6DE;
+  --c-error: #E57373;
+
+  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
+  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+  --g-memory: linear-gradient(135deg, #0E7C7B, #4DB6AC);
+  --g-attention: linear-gradient(135deg, #E57373, #FF9800);
+  --g-speed: linear-gradient(135deg, #5B9BD5, #4DB6AC);
+  --g-problem: linear-gradient(135deg, #9B7EDE, #5B9BD5);
+  --g-visual: linear-gradient(135deg, #4DB6AC, #9B7EDE);
+  --g-language: linear-gradient(135deg, #FF9800, #E8A0BF);
+  --g-numerical: linear-gradient(135deg, #5B9BD5, #9B7EDE);
+
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+  --sh-glow: 0 20px 60px rgba(14, 124, 123, 0.18);
+  --sh-focus: 0 0 0 4px rgba(14, 124, 123, 0.12);
+
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+
+  --phone-w: 375px;
+  --phone-h: 812px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--f-en);
+  -webkit-font-smoothing: antialiased;
+  background: #E8E4DC;
+  overflow: hidden;
+}
+
+html[lang="ar"] body { font-family: var(--f-ar); }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ============================================
+   PHONE FRAME
+============================================ */
+.stage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
+    #E8E4DC;
+}
+
+.phone {
+  position: relative;
+  width: var(--phone-w);
+  height: var(--phone-h);
+  max-height: calc(100vh - 40px);
+  background: var(--c-bg);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 10px #1a1a1a,
+    0 0 0 12px #2a2a2a,
+    0 40px 80px rgba(0, 0, 0, 0.35),
+    0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 130px; height: 26px;
+  background: #1a1a1a;
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+}
+
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone {
+    width: 100vw; height: 100vh;
+    max-height: 100vh;
+    border-radius: 0; box-shadow: none;
+  }
+  .phone::before { display: none; }
+}
+
+/* ============================================
+   SCREEN
+============================================ */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.screen::-webkit-scrollbar { display: none; }
+
+.screen::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================
+   TOP BAR
+============================================ */
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 52px 22px 0;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  width: 38px; height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.back-btn:hover {
+  background: #fff;
+  border-color: rgba(14, 124, 123, 0.35);
+  transform: translateX(-2px);
+}
+
+html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
+
+.back-btn svg {
+  width: 16px; height: 16px;
+  stroke: var(--c-primary);
+  stroke-width: 2.4;
+  fill: none;
+}
+
+html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.lang-toggle:hover {
+  background: #fff;
+  border-color: rgba(14, 124, 123, 0.35);
+  transform: translateY(-1px);
+}
+
+.lang-toggle .lang-globe {
+  width: 14px; height: 14px;
+  stroke: var(--c-primary);
+  stroke-width: 2.2;
+  fill: none;
+}
+
+.lang-toggle .lang-label { color: var(--c-primary); }
+.lang-toggle .divider { color: var(--c-border); font-weight: 300; }
+.lang-toggle .lang-inactive { color: var(--c-slate); font-weight: 500; }
+
+/* ============================================
+   CONTENT
+============================================ */
+.content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ============================================
+   HERO
+============================================ */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 4px 0;
+}
+
+.hero-illus {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.85);
+  animation: heroIn 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+}
+
+@keyframes heroIn {
+  to { opacity: 1; transform: scale(1); }
+}
+
+.hero-illus::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(14, 124, 123, 0.15) 0%, transparent 65%);
+  filter: blur(26px);
+  z-index: -1;
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.08); }
+}
+
+.hero-illus svg {
+  width: 100%; height: 100%;
+  overflow: visible;
+}
+
+/* Floating small elements */
+.float-slow { animation: floatY 4s ease-in-out infinite; transform-origin: center; }
+.float-mid  { animation: floatY 3s ease-in-out infinite 0.4s; transform-origin: center; }
+.float-fast { animation: floatY 2.4s ease-in-out infinite 0.8s; transform-origin: center; }
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+.pulse-soft {
+  animation: pulseSoft 3s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes pulseSoft {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+
+/* Heading */
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 0.7s ease 0.4s forwards;
+}
+
+.heading {
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+}
+
+html[lang="ar"] .heading { font-family: var(--f-ar); font-size: 24px; letter-spacing: 0; }
+
+.subheading {
+  font-size: 13.5px;
+  color: var(--c-slate);
+  line-height: 1.6;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+html[lang="ar"] .subheading { font-family: var(--f-ar); font-size: 14.5px; }
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   DURATION BADGE
+============================================ */
+.duration-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: #fff;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-pill);
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  align-self: center;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.7s ease 0.55s forwards;
+}
+
+.duration-badge svg {
+  width: 14px; height: 14px;
+  stroke: var(--c-primary);
+  stroke-width: 2.2;
+  fill: none;
+}
+
+.duration-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.3px;
+}
+
+.duration-text b {
+  color: var(--c-primary);
+  font-weight: 700;
+}
+
+html[lang="ar"] .duration-text { font-family: var(--f-ar); font-size: 13px; letter-spacing: 0; }
+
+/* ============================================
+   SKILLS GRID
+============================================ */
+.skills-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.2px;
+  padding-inline-start: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s ease 0.65s forwards;
+}
+
+.skills-title::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  background: var(--g-brand);
+  border-radius: var(--r-pill);
+}
+
+html[lang="ar"] .skills-title { font-family: var(--f-ar); font-size: 14px; letter-spacing: 0; }
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.skill-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 12px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  transition: all 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  cursor: default;
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.skill-card:nth-child(1) { animation: fadeUp 0.5s ease 0.72s forwards; }
+.skill-card:nth-child(2) { animation: fadeUp 0.5s ease 0.77s forwards; }
+.skill-card:nth-child(3) { animation: fadeUp 0.5s ease 0.82s forwards; }
+.skill-card:nth-child(4) { animation: fadeUp 0.5s ease 0.87s forwards; }
+.skill-card:nth-child(5) { animation: fadeUp 0.5s ease 0.92s forwards; }
+.skill-card:nth-child(6) { animation: fadeUp 0.5s ease 0.97s forwards; }
+.skill-card:nth-child(7) { animation: fadeUp 0.5s ease 1.02s forwards; }
+
+.skill-card:hover {
+  border-color: rgba(14, 124, 123, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 44, 76, 0.06);
+}
+
+.skill-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-icon svg {
+  width: 18px; height: 18px;
+  stroke: #fff;
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  position: relative;
+  z-index: 2;
+}
+
+.skill-icon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.skill-icon.memory::before     { background: var(--g-memory); }
+.skill-icon.attention::before  { background: var(--g-attention); }
+.skill-icon.speed::before      { background: var(--g-speed); }
+.skill-icon.problem::before    { background: var(--g-problem); }
+.skill-icon.visual::before     { background: var(--g-visual); }
+.skill-icon.language::before   { background: var(--g-language); }
+.skill-icon.numerical::before  { background: var(--g-numerical); }
+
+.skill-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.1px;
+  line-height: 1.3;
+}
+
+html[lang="ar"] .skill-label { font-family: var(--f-ar); font-size: 13px; letter-spacing: 0; }
+
+/* ============================================
+   INFO NOTE
+============================================ */
+.info-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(91, 155, 213, 0.08);
+  border-radius: var(--r-md);
+  border: 1px solid rgba(91, 155, 213, 0.15);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s ease 1.1s forwards;
+}
+
+.info-note svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--c-blue);
+  stroke-width: 2.2;
+  fill: none;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.info-text {
+  font-size: 11.5px;
+  color: var(--c-slate);
+  line-height: 1.55;
+}
+
+html[lang="ar"] .info-text { font-family: var(--f-ar); font-size: 12.5px; }
+
+/* ============================================
+   BOTTOM
+============================================ */
+.bottom {
+  position: relative;
+  z-index: 10;
+  padding: 16px 24px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.btn-primary {
+  position: relative;
+  width: 100%;
+  padding: 18px 24px;
+  background: var(--g-brand);
+  color: #fff;
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.32);
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.7s ease 1.15s forwards;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.7s ease;
+}
+
+.btn-primary:hover::before { left: 100%; }
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(14, 124, 123, 0.4);
+}
+
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-primary .arrow {
+  width: 16px; height: 16px;
+  stroke: #fff;
+  stroke-width: 2.4;
+  fill: none;
+  transition: transform 0.3s ease;
+}
+
+html[dir="rtl"] .btn-primary .arrow { transform: scaleX(-1); }
+.btn-primary:hover .arrow { transform: translateX(4px); }
+html[dir="rtl"] .btn-primary:hover .arrow { transform: scaleX(-1) translateX(4px); }
+
+html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16.5px; }
+
+.hint-text {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--c-slate);
+  opacity: 0;
+  animation: fadeUp 0.7s ease 1.25s forwards;
+}
+
+html[lang="ar"] .hint-text { font-family: var(--f-ar); font-size: 12.5px; }
+
+/* ============================================
+   REDUCED MOTION
+============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+
+      <!-- Top Bar -->
+      <div class="topbar">
+        <button class="back-btn" id="backBtn" aria-label="Back">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+          <svg class="lang-globe" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="lang-label" id="langCurrent">EN</span>
+          <span class="divider">|</span>
+          <span class="lang-inactive" id="langOther">ع</span>
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+
+        <!-- Hero -->
+        <div class="hero">
+
+          <div class="hero-illus">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="heroBrain" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#0E7C7B"/>
+                  <stop offset="50%" stop-color="#5B9BD5"/>
+                  <stop offset="100%" stop-color="#9B7EDE"/>
+                </linearGradient>
+                <linearGradient id="heroCard" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FFFFFF"/>
+                  <stop offset="100%" stop-color="#F5F2EC"/>
+                </linearGradient>
+                <linearGradient id="heroCheck1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#4DB6AC"/>
+                  <stop offset="100%" stop-color="#0E7C7B"/>
+                </linearGradient>
+                <linearGradient id="heroCheck2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#9B7EDE"/>
+                  <stop offset="100%" stop-color="#5B9BD5"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Background ring -->
+              <circle cx="100" cy="100" r="78" fill="none" stroke="url(#heroBrain)" stroke-width="0.8" opacity="0.2"/>
+              <circle cx="100" cy="100" r="60" fill="none" stroke="url(#heroBrain)" stroke-width="0.8" opacity="0.3"/>
+
+              <!-- Brain (main) -->
+              <g class="pulse-soft" style="transform-origin: 100px 100px;">
+                <path d="M 68 88 C 58 88, 52 80, 54 72
+                         C 48 68, 48 58, 56 54
+                         C 56 44, 66 38, 76 42
+                         C 80 34, 92 32, 100 38
+                         C 108 32, 120 36, 124 44
+                         C 134 42, 142 50, 140 60
+                         C 146 64, 146 74, 138 78
+                         C 138 84, 132 90, 124 88
+                         C 120 94, 110 96, 104 92
+                         C 100 98, 90 100, 84 96
+                         C 78 100, 70 96, 68 88 Z"
+                      fill="url(#heroBrain)" opacity="0.9"/>
+                <!-- Folds -->
+                <path d="M 72 72 Q 82 68 90 74" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity="0.5"/>
+                <path d="M 92 58 Q 102 55 110 61" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity="0.5"/>
+                <path d="M 114 70 Q 122 67 128 74" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity="0.5"/>
+              </g>
+
+              <!-- Checklist card -->
+              <g class="float-slow" style="transform-origin: 130px 130px;">
+                <rect x="100" y="118" width="58" height="46" rx="8" fill="url(#heroCard)"
+                      stroke="rgba(14, 124, 123, 0.2)" stroke-width="1"/>
+                <!-- Line 1 -->
+                <circle cx="112" cy="130" r="6" fill="url(#heroCheck1)"/>
+                <path d="M 109 130 L 111.5 132.5 L 115 128.5" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="122" y="128" width="28" height="2.5" rx="1.2" fill="#0F2C4C" opacity="0.2"/>
+                <!-- Line 2 -->
+                <circle cx="112" cy="144" r="6" fill="url(#heroCheck2)"/>
+                <path d="M 109 144 L 111.5 146.5 L 115 142.5" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="122" y="142" width="24" height="2.5" rx="1.2" fill="#0F2C4C" opacity="0.2"/>
+                <!-- Line 3 -->
+                <circle cx="112" cy="158" r="6" fill="#EAE6DE"/>
+                <rect x="122" y="156" width="20" height="2.5" rx="1.2" fill="#0F2C4C" opacity="0.15"/>
+              </g>
+
+              <!-- Floating sparkles -->
+              <g class="float-fast">
+                <path d="M 155 55 L 157.5 63 L 165.5 65.5 L 157.5 68 L 155 76 L 152.5 68 L 144.5 65.5 L 152.5 63 Z" fill="#0E7C7B"/>
+              </g>
+              <g class="float-mid">
+                <path d="M 50 130 L 51.5 135 L 56.5 136.5 L 51.5 138 L 50 143 L 48.5 138 L 43.5 136.5 L 48.5 135 Z" fill="#9B7EDE"/>
+              </g>
+              <g class="float-slow">
+                <circle cx="45" cy="60" r="3.5" fill="#5B9BD5" opacity="0.8"/>
+              </g>
+              <g class="float-fast">
+                <circle cx="160" cy="105" r="3" fill="#4DB6AC" opacity="0.9"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="hero-text">
+            <h1 class="heading" id="heading">Let's assess your cognitive skills</h1>
+            <p class="subheading" id="subheading">This helps us understand your current performance and build a personalized training plan just for you.</p>
+          </div>
+
+          <!-- Duration badge -->
+          <div class="duration-badge">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span class="duration-text" id="durationText">Takes about <b>8–10 minutes</b></span>
+          </div>
+
+        </div>
+
+        <!-- Skills -->
+        <div class="skills-title" id="skillsTitle">What we'll assess</div>
+
+        <div class="skills-grid">
+
+          <div class="skill-card">
+            <div class="skill-icon memory">
+              <svg viewBox="0 0 24 24">
+                <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path>
+                <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path>
+              </svg>
+            </div>
+            <div class="skill-label" id="skillMemory">Memory</div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon attention">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="6"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+              </svg>
+            </div>
+            <div class="skill-label" id="skillAttention">Attention</div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon speed">
+              <svg viewBox="0 0 24 24">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </div>
+            <div class="skill-label" id="skillSpeed">Processing Speed</div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon problem">
+              <svg viewBox="0 0 24 24">
+                <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path>
+                <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
+              </svg>
+            </div>
+            <div class="skill-label" id="skillProblem">Problem Solving</div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon visual">
+              <svg viewBox="0 0 24 24">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </div>
+            <div class="skill-label" id="skillVisual">Visual Skills</div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-icon language">
+              <svg viewBox="0 0 24 24">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+            <div class="skill-label" id="skillLanguage">Language</div>
+          </div>
+
+          <div class="skill-card" style="grid-column: span 2;">
+            <div class="skill-icon numerical">
+              <svg viewBox="0 0 24 24">
+                <line x1="4" y1="9" x2="20" y2="9"></line>
+                <line x1="4" y1="15" x2="20" y2="15"></line>
+                <line x1="10" y1="3" x2="8" y2="21"></line>
+                <line x1="16" y1="3" x2="14" y2="21"></line>
+              </svg>
+            </div>
+            <div class="skill-label" id="skillNumerical">Numerical Reasoning</div>
+          </div>
+
+        </div>
+
+        <!-- Info Note -->
+        <div class="info-note">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <div class="info-text" id="infoText">
+            This isn't a test — answer naturally. There are no right or wrong results, only a snapshot of where you are now.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom -->
+      <div class="bottom">
+        <button class="btn-primary" id="startBtn">
+          <span id="startLabel">Start Assessment</span>
+          <svg class="arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+        <div class="hint-text" id="hintText">You can pause anytime. Progress is saved automatically.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   TRANSLATIONS
+============================================ */
+const I18N = {
+  en: {
+    heading: "Let's assess your cognitive skills",
+    subheading: 'This helps us understand your current performance and build a personalized training plan just for you.',
+    durationText: 'Takes about <b>8–10 minutes</b>',
+    skillsTitle: "What we'll assess",
+
+    skillMemory: 'Memory',
+    skillAttention: 'Attention',
+    skillSpeed: 'Processing Speed',
+    skillProblem: 'Problem Solving',
+    skillVisual: 'Visual Skills',
+    skillLanguage: 'Language',
+    skillNumerical: 'Numerical Reasoning',
+
+    infoText: "This isn't a test — answer naturally. There are no right or wrong results, only a snapshot of where you are now.",
+
+    start: 'Start Assessment',
+    hint: 'You can pause anytime. Progress is saved automatically.'
+  },
+  ar: {
+    heading: 'هيا نقيّم مهاراتك الذهنية',
+    subheading: 'هذا يساعدنا على فهم أدائك الحالي وبناء خطة تدريب مخصصة لك.',
+    durationText: 'يستغرق حوالي <b>8–10 دقائق</b>',
+    skillsTitle: 'ما سنقوم بتقييمه',
+
+    skillMemory: 'الذاكرة',
+    skillAttention: 'الانتباه',
+    skillSpeed: 'سرعة المعالجة',
+    skillProblem: 'حل المشكلات',
+    skillVisual: 'المهارات البصرية',
+    skillLanguage: 'اللغة',
+    skillNumerical: 'الاستدلال الرقمي',
+
+    infoText: 'هذا ليس اختبارًا — أجب بشكل طبيعي. لا توجد نتائج صحيحة أو خاطئة، فقط صورة لوضعك الحالي.',
+
+    start: 'ابدأ التقييم',
+    hint: 'يمكنك الإيقاف في أي وقت. يتم حفظ تقدمك تلقائيًا.'
+  }
+};
+
+/* ============================================
+   LANGUAGE
+============================================ */
+const STORAGE_KEY = 'memento_lang';
+let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+
+const htmlEl      = document.documentElement;
+const langCurrEl  = document.getElementById('langCurrent');
+const langOtherEl = document.getElementById('langOther');
+const langToggle  = document.getElementById('langToggle');
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+  htmlEl.lang = lang;
+  htmlEl.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+
+  langCurrEl.textContent  = lang === 'en' ? 'EN' : 'ع';
+  langOtherEl.textContent = lang === 'en' ? 'ع'  : 'EN';
+
+  const t = I18N[lang];
+
+  document.getElementById('heading').textContent    = t.heading;
+  document.getElementById('subheading').textContent = t.subheading;
+  document.getElementById('durationText').innerHTML = t.durationText;
+  document.getElementById('skillsTitle').textContent = t.skillsTitle;
+
+  document.getElementById('skillMemory').textContent     = t.skillMemory;
+  document.getElementById('skillAttention').textContent  = t.skillAttention;
+  document.getElementById('skillSpeed').textContent      = t.skillSpeed;
+  document.getElementById('skillProblem').textContent    = t.skillProblem;
+  document.getElementById('skillVisual').textContent     = t.skillVisual;
+  document.getElementById('skillLanguage').textContent   = t.skillLanguage;
+  document.getElementById('skillNumerical').textContent  = t.skillNumerical;
+
+  document.getElementById('infoText').textContent  = t.infoText;
+  document.getElementById('startLabel').textContent = t.start;
+  document.getElementById('hintText').textContent  = t.hint;
+}
+
+langToggle.addEventListener('click', () => {
+  applyLanguage(currentLang === 'en' ? 'ar' : 'en');
+});
+
+/* ============================================
+   START ASSESSMENT
+============================================ */
+document.getElementById('startBtn').addEventListener('click', () => {
+  // Save flag: التقييم بدأ
+  localStorage.setItem('memento_assessment_started', new Date().toISOString());
+
+  const btn = document.getElementById('startBtn');
+  btn.style.transform = 'scale(0.96)';
+  setTimeout(() => { btn.style.transform = ''; }, 150);
+
+  setTimeout(() => {
+    window.location.href = 'assessment-memory.html';
+  }, 250);
+});
+
+/* ============================================
+   BACK
+============================================ */
+document.getElementById('backBtn').addEventListener('click', () => {
+  // لو المستخدم طفل، يروح لصفحة إعداد الطفل
+  const accountType = localStorage.getItem('memento_account_type');
+  if (accountType === 'child') {
+    window.location.href = 'child-profile-setup.html';
+  } else {
+    window.location.href = 'daily-context.html';
+  }
+});
+
+/* ============================================
+   INIT
+============================================ */
+applyLanguage(currentLang);
+</script>
+
+</body>
+</html>

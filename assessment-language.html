@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#FAF8F3" />
+<title>Memento AI — Language Assessment</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --c-primary: #0E7C7B;
+  --c-primary-light: #4DB6AC;
+  --c-secondary: #9B7EDE;
+  --c-blue: #5B9BD5;
+  --c-navy: #0F2C4C;
+  --c-slate: #5A6C7D;
+  --c-bg: #FAF8F3;
+  --c-card: #FFFFFF;
+  --c-border: #EAE6DE;
+  --c-error: #E57373;
+  --c-success: #4CAF50;
+  --c-warning: #FF9800;
+
+  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
+  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+
+  --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
+  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+
+  --phone-w: 375px;
+  --phone-h: 812px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--f-en);
+  -webkit-font-smoothing: antialiased;
+  background: #E8E4DC;
+  overflow: hidden;
+}
+
+html[lang="ar"] body { font-family: var(--f-ar); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+.stage {
+  width: 100vw; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
+    #E8E4DC;
+}
+
+.phone {
+  position: relative;
+  width: var(--phone-w); height: var(--phone-h);
+  max-height: calc(100vh - 40px);
+  background: var(--c-bg);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a,
+    0 40px 80px rgba(0, 0, 0, 0.35), 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 130px; height: 26px;
+  background: #1a1a1a;
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+}
+
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; }
+  .phone::before { display: none; }
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  overflow: hidden;
+}
+
+.screen::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.08), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* TOP BAR */
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 52px 22px 0;
+  flex-shrink: 0;
+}
+
+.exit-btn {
+  width: 38px; height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.exit-btn:hover {
+  background: #fff;
+  border-color: rgba(229, 115, 115, 0.4);
+  transform: scale(1.05);
+}
+
+.exit-btn svg {
+  width: 15px; height: 15px;
+  stroke: var(--c-slate);
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.exit-btn:hover svg { stroke: var(--c-error); }
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.lang-toggle:hover {
+  background: #fff;
+  border-color: rgba(14, 124, 123, 0.35);
+  transform: translateY(-1px);
+}
+
+.lang-toggle svg {
+  width: 14px; height: 14px;
+  stroke: var(--c-primary);
+  stroke-width: 2.2;
+  fill: none;
+}
+
+.lang-toggle .lang-label { color: var(--c-primary); }
+.lang-toggle .divider { color: var(--c-border); font-weight: 300; }
+.lang-toggle .lang-inactive { color: var(--c-slate); font-weight: 500; }
+
+/* CONTENT */
+.content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Progress */
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(14, 124, 123, 0.10);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 85.71%;
+  background: var(--g-brand);
+  border-radius: var(--r-pill);
+  box-shadow: 0 0 10px rgba(14, 124, 123, 0.3);
+  transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+html[dir="rtl"] .progress-fill { left: auto; right: 0; }
+
+.progress-text {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--c-primary);
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+html[lang="ar"] .progress-text { font-family: var(--f-ar); letter-spacing: 0; font-size: 12.5px; }
+
+/* PHASES */
+.phase {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  gap: 14px;
+  animation: phaseIn 0.5s ease forwards;
+  min-height: 0;
+  position: relative;
+}
+
+.phase.active { display: flex; }
+
+@keyframes phaseIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* READY */
+.ready-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.ready-icon {
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: readyFloat 3s ease-in-out infinite;
+}
+
+@keyframes readyFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+.ready-icon::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 152, 0, 0.18) 0%, transparent 65%);
+  filter: blur(24px);
+  z-index: -1;
+  animation: pulseGlow 2.8s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.08); }
+}
+
+.ready-icon svg { width: 100%; height: 100%; }
+
+.ready-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.4px;
+  line-height: 1.25;
+  max-width: 300px;
+}
+
+html[lang="ar"] .ready-title { font-family: var(--f-ar); font-size: 23px; letter-spacing: 0; }
+
+.ready-desc {
+  font-size: 14px;
+  color: var(--c-slate);
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+html[lang="ar"] .ready-desc { font-family: var(--f-ar); font-size: 15px; }
+
+.ready-desc b {
+  color: var(--c-warning);
+  font-weight: 700;
+}
+
+.ready-meta {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: #fff;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--c-navy);
+  box-shadow: 0 4px 12px rgba(15, 44, 76, 0.04);
+}
+
+.meta-pill svg {
+  width: 12px; height: 12px;
+  stroke: var(--c-primary);
+  stroke-width: 2.4;
+  fill: none;
+}
+
+html[lang="ar"] .meta-pill { font-family: var(--f-ar); font-size: 12.5px; }
+
+/* READING PHASE */
+.reading-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.timer-wrap {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-wrap svg {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-track {
+  fill: none;
+  stroke: rgba(14, 124, 123, 0.10);
+  stroke-width: 5;
+}
+
+.timer-ring {
+  fill: none;
+  stroke: url(#langTimerGrad);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 163.36;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.timer-num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--c-primary);
+  letter-spacing: -0.5px;
+}
+
+.timer-wrap.warning .timer-num {
+  color: var(--c-error);
+  animation: blinkNum 0.6s ease-in-out infinite;
+}
+
+.timer-wrap.warning .timer-ring {
+  stroke: #E57373;
+}
+
+@keyframes blinkNum {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+.reading-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.2px;
+  text-align: center;
+}
+
+html[lang="ar"] .reading-label { font-family: var(--f-ar); font-size: 14px; }
+
+.reading-label b {
+  color: var(--c-warning);
+  font-weight: 700;
+}
+
+/* Story card */
+.story-card {
+  flex: 1;
+  position: relative;
+  background: #fff;
+  border-radius: var(--r-xl);
+  border: 1.5px solid var(--c-border);
+  padding: 24px 20px;
+  box-shadow: 0 8px 24px rgba(15, 44, 76, 0.04);
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+.story-card::-webkit-scrollbar { display: none; }
+
+.story-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #FF9800, #FFB74D);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+}
+
+.story-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-secondary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+html[lang="ar"] .story-title {
+  font-family: var(--f-ar);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 15px;
+}
+
+.story-text {
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--c-navy);
+  line-height: 1.75;
+  text-align: start;
+  letter-spacing: 0.1px;
+}
+
+html[lang="ar"] .story-text {
+  font-family: var(--f-ar);
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.story-text b {
+  color: var(--c-primary);
+  font-weight: 700;
+  background: rgba(14, 124, 123, 0.08);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+/* QUESTIONS PHASE */
+.hud {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.hud-box {
+  flex: 1;
+  padding: 8px 6px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.hud-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.3px;
+  line-height: 1.1;
+}
+
+.hud-label {
+  font-size: 9.5px;
+  color: var(--c-slate);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+html[lang="ar"] .hud-label {
+  font-family: var(--f-ar);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 10.5px;
+}
+
+.hud-box.q .hud-value { color: var(--c-primary); }
+.hud-box.score .hud-value { color: var(--c-success); }
+
+.q-scroll {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+  padding-bottom: 4px;
+}
+
+.q-scroll::-webkit-scrollbar { display: none; }
+.q-scroll > * { flex-shrink: 0; }
+
+/* Question card */
+.question-card {
+  position: relative;
+  background: #fff;
+  border-radius: var(--r-xl);
+  border: 1.5px solid var(--c-border);
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 8px 24px rgba(15, 44, 76, 0.04);
+  overflow: hidden;
+  animation: phaseIn 0.4s ease;
+}
+
+.question-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--g-brand);
+}
+
+.q-num-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--g-brand);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(14, 124, 123, 0.3);
+  align-self: flex-start;
+}
+
+.q-text {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.2px;
+  line-height: 1.4;
+}
+
+html[lang="ar"] .q-text { font-family: var(--f-ar); font-size: 16px; letter-spacing: 0; }
+
+/* Options */
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.opt {
+  padding: 14px 16px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-navy);
+  text-align: start;
+  transition: all 0.25s cubic-bezier(0.65, 0, 0.35, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.1px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+html[lang="ar"] .opt { font-family: var(--f-ar); font-size: 15px; }
+
+.opt::before {
+  content: '';
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--c-border);
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.opt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.opt:hover:not(:disabled) {
+  border-color: rgba(14, 124, 123, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 44, 76, 0.06);
+}
+
+.opt:hover:not(:disabled)::before {
+  border-color: var(--c-primary);
+}
+
+.opt:active:not(:disabled) { transform: scale(0.98); }
+
+.opt:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.opt.correct {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.10), rgba(102, 187, 106, 0.06));
+  border-color: var(--c-success);
+  border-width: 2px;
+  color: var(--c-success);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(76, 175, 80, 0.2);
+  opacity: 1;
+}
+
+.opt.correct::before {
+  background: var(--c-success);
+  border-color: var(--c-success);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+.opt.correct::after { opacity: 1; animation: optPop 0.5s ease; }
+
+.opt.wrong {
+  background: linear-gradient(135deg, rgba(229, 115, 115, 0.10), rgba(239, 83, 80, 0.06));
+  border-color: var(--c-error);
+  border-width: 2px;
+  color: var(--c-error);
+  animation: wrongShake 0.4s ease;
+  opacity: 1;
+}
+
+.opt.wrong::before {
+  background: var(--c-error);
+  border-color: var(--c-error);
+  box-shadow: 0 0 0 3px rgba(229, 115, 115, 0.2);
+}
+
+.opt.wrong::after { opacity: 1; animation: optPop 0.5s ease; }
+
+.opt.revealed {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.10), rgba(102, 187, 106, 0.06));
+  border-color: var(--c-success);
+  border-width: 2px;
+  color: var(--c-success);
+  opacity: 1;
+  animation: revealPulse 0.8s ease;
+}
+
+.opt.revealed::before {
+  background: var(--c-success);
+  border-color: var(--c-success);
+}
+
+@keyframes revealPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.6); }
+  70%  { box-shadow: 0 0 0 14px rgba(76, 175, 80, 0); }
+  100% { box-shadow: 0 12px 28px rgba(76, 175, 80, 0.2); }
+}
+
+@keyframes optPop {
+  0%   { transform: scale(0.4); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-8px); }
+  75%      { transform: translateX(8px); }
+}
+
+/* FEEDBACK PHASE */
+.feedback-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.result-circle {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.5);
+  animation: circleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+}
+
+@keyframes circleIn {
+  to { opacity: 1; transform: scale(1); }
+}
+
+.result-circle svg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+
+.result-track {
+  fill: none;
+  stroke: rgba(14, 124, 123, 0.08);
+  stroke-width: 10;
+}
+
+.result-ring {
+  fill: none;
+  stroke: url(#resultGrad);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 408.4;
+  stroke-dashoffset: 408.4;
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.65, 0, 0.35, 1) 0.5s;
+}
+
+.result-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.result-score {
+  font-size: 40px;
+  font-weight: 800;
+  background: var(--g-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1.5px;
+  line-height: 1;
+}
+
+.result-label {
+  font-size: 11.5px;
+  color: var(--c-slate);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+html[lang="ar"] .result-label {
+  font-family: var(--f-ar);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12.5px;
+}
+
+.result-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s ease 1s forwards;
+}
+
+html[lang="ar"] .result-title { font-family: var(--f-ar); font-size: 21px; letter-spacing: 0; }
+
+.result-desc {
+  font-size: 13px;
+  color: var(--c-slate);
+  line-height: 1.6;
+  max-width: 290px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s ease 1.15s forwards;
+}
+
+html[lang="ar"] .result-desc { font-family: var(--f-ar); font-size: 14px; }
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stats-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+  margin-top: 4px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s ease 1.3s forwards;
+}
+
+.stat-box {
+  flex: 1;
+  padding: 12px 8px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-value {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.3px;
+  font-feature-settings: "tnum";
+}
+
+.stat-label {
+  font-size: 10.5px;
+  color: var(--c-slate);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+html[lang="ar"] .stat-label {
+  font-family: var(--f-ar);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 11.5px;
+}
+
+.stat-box.good .stat-value { color: var(--c-success); }
+.stat-box.bad  .stat-value { color: var(--c-error); }
+.stat-box.blue .stat-value { color: var(--c-primary); }
+
+/* BOTTOM */
+.bottom {
+  position: relative;
+  z-index: 10;
+  padding: 16px 24px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.btn-primary {
+  position: relative;
+  width: 100%;
+  padding: 17px 24px;
+  background: var(--g-brand);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.7s ease;
+}
+
+.btn-primary:hover::before { left: 100%; }
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(14, 124, 123, 0.35);
+}
+
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-primary .arrow {
+  width: 16px; height: 16px;
+  stroke: #fff;
+  stroke-width: 2.4;
+  fill: none;
+  transition: transform 0.3s ease;
+}
+
+html[dir="rtl"] .btn-primary .arrow { transform: scaleX(-1); }
+.btn-primary:hover .arrow { transform: translateX(4px); }
+html[dir="rtl"] .btn-primary:hover .arrow { transform: scaleX(-1) translateX(4px); }
+
+html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
+
+/* Reading done overlay */
+.reading-done-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(250, 248, 243, 0.95);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 50;
+  border-radius: var(--r-xl);
+  gap: 14px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.reading-done-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--g-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 30px rgba(14, 124, 123, 0.35);
+  animation: iconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes iconPop {
+  0%   { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+.reading-done-icon svg {
+  width: 30px;
+  height: 30px;
+  stroke: #fff;
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.reading-done-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.2px;
+  text-align: center;
+  padding: 0 20px;
+}
+
+html[lang="ar"] .reading-done-text { font-family: var(--f-ar); font-size: 17px; }
+
+/* Countdown */
+.countdown-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(250, 248, 243, 0.92);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 50;
+  border-radius: var(--r-xl);
+  animation: fadeIn 0.3s ease;
+}
+
+.countdown-num {
+  font-size: 100px;
+  font-weight: 800;
+  background: var(--g-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -4px;
+  animation: countIn 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes countIn {
+  0%   { opacity: 0; transform: scale(0.5); }
+  60%  { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="langTimerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF9800"/>
+      <stop offset="100%" stop-color="#FFB74D"/>
+    </linearGradient>
+    <linearGradient id="resultGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E7C7B"/>
+      <stop offset="50%" stop-color="#5B9BD5"/>
+      <stop offset="100%" stop-color="#9B7EDE"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+
+      <div class="topbar">
+        <button class="exit-btn" id="exitBtn" aria-label="Exit">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+          <svg class="lang-globe" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="lang-label" id="langCurrent">EN</span>
+          <span class="divider">|</span>
+          <span class="lang-inactive" id="langOther">ع</span>
+        </button>
+      </div>
+
+      <div class="content">
+
+        <div class="progress-wrap">
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+          </div>
+          <div class="progress-text" id="progressText">Step 6 of 7</div>
+        </div>
+
+        <!-- READY -->
+        <div class="phase active" id="phaseReady">
+          <div class="ready-wrap">
+            <div class="ready-icon">
+              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="bookGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#FF9800"/>
+                    <stop offset="100%" stop-color="#FFB74D"/>
+                  </linearGradient>
+                  <linearGradient id="bookGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#0E7C7B"/>
+                    <stop offset="100%" stop-color="#4DB6AC"/>
+                  </linearGradient>
+                  <linearGradient id="bookGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#9B7EDE"/>
+                    <stop offset="100%" stop-color="#5B9BD5"/>
+                  </linearGradient>
+                </defs>
+
+                <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+                <circle cx="100" cy="100" r="60" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.25"/>
+
+                <g style="animation: bookFloat 3s ease-in-out infinite; transform-origin: 100px 110px;">
+                  <path d="M 60 70 L 100 80 L 100 140 L 60 130 Z" fill="url(#bookGrad)" opacity="0.95"/>
+                  <path d="M 100 80 L 140 70 L 140 130 L 100 140 Z" fill="url(#bookGrad2)" opacity="0.95"/>
+                  <line x1="100" y1="80" x2="100" y2="140" stroke="#0F2C4C" stroke-width="1.5" opacity="0.3"/>
+                  <line x1="68" y1="92" x2="94" y2="96" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+                  <line x1="68" y1="102" x2="94" y2="106" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+                  <line x1="68" y1="112" x2="94" y2="116" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+                  <line x1="106" y1="96" x2="132" y2="92" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+                  <line x1="106" y1="106" x2="132" y2="102" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+                  <line x1="106" y1="116" x2="132" y2="112" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+                </g>
+
+                <g style="animation: bubbleA 3.5s ease-in-out infinite; transform-origin: 45px 55px;">
+                  <circle cx="45" cy="55" r="8" fill="url(#bookGrad3)" opacity="0.85"/>
+                </g>
+                <g style="animation: bubbleB 4s ease-in-out infinite 0.4s; transform-origin: 155px 60px;">
+                  <circle cx="155" cy="60" r="6" fill="url(#bookGrad2)" opacity="0.85"/>
+                </g>
+
+                <path d="M 155 40 L 157 46 L 163 48 L 157 50 L 155 56 L 153 50 L 147 48 L 153 46 Z" fill="#FFB74D"/>
+
+                <style>
+                  @keyframes bookFloat {
+                    0%, 100% { transform: translateY(0) rotate(0deg); }
+                    50%      { transform: translateY(-5px) rotate(-1deg); }
+                  }
+                  @keyframes bubbleA {
+                    0%, 100% { transform: translate(0, 0); }
+                    50%      { transform: translate(-4px, -8px); }
+                  }
+                  @keyframes bubbleB {
+                    0%, 100% { transform: translate(0, 0); }
+                    50%      { transform: translate(5px, -6px); }
+                  }
+                </style>
+              </svg>
+            </div>
+
+            <h2 class="ready-title" id="readyTitle">Language & Memory</h2>
+            <p class="ready-desc" id="readyDesc">Read a short story carefully — it will be <b>hidden after 15 seconds</b>, then we'll ask you questions.</p>
+
+            <div class="ready-meta">
+              <span class="meta-pill">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span id="metaTime">15 sec reading</span>
+              </span>
+              <span class="meta-pill">
+                <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 11l3 3L22 4"></path>
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                </svg>
+                <span id="metaQ">4 questions</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="bottom" style="padding: 0;">
+            <button class="btn-primary" id="readyBtn">
+              <span id="readyLabel">I'm Ready</span>
+              <svg class="arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- READING -->
+        <div class="phase" id="phaseReading">
+          <div class="reading-head">
+            <div class="timer-wrap" id="timerWrap">
+              <svg viewBox="0 0 56 56">
+                <circle class="timer-track" cx="28" cy="28" r="26"/>
+                <circle class="timer-ring" id="timerRing" cx="28" cy="28" r="26"/>
+              </svg>
+              <div class="timer-num" id="timerNum">15</div>
+            </div>
+            <div class="reading-label" id="readingLabel">Read carefully — <b>15 seconds</b></div>
+          </div>
+
+          <div class="story-card">
+            <div class="story-title" id="storyTitle">A Short Story</div>
+            <div class="story-text" id="storyText"></div>
+          </div>
+        </div>
+
+        <!-- QUESTIONS -->
+        <div class="phase" id="phaseQuestions">
+          <div class="hud">
+            <div class="hud-box q">
+              <div class="hud-value"><span id="hudQ">1</span>/<span id="hudTotal">4</span></div>
+              <div class="hud-label" id="hudQLabel">Question</div>
+            </div>
+            <div class="hud-box score">
+              <div class="hud-value" id="hudScore">0</div>
+              <div class="hud-label" id="hudScoreLabel">Correct</div>
+            </div>
+          </div>
+
+          <div class="q-scroll" id="qScroll">
+            <div class="question-card" id="questionCard">
+              <div class="q-num-badge" id="qNumBadge">1</div>
+              <div class="q-text" id="qText"></div>
+              <div class="options-grid" id="optionsGrid"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FEEDBACK -->
+        <div class="phase" id="phaseFeedback">
+          <div class="feedback-wrap">
+            <div class="result-circle">
+              <svg viewBox="0 0 150 150">
+                <circle class="result-track" cx="75" cy="75" r="65"/>
+                <circle class="result-ring" id="resultRing" cx="75" cy="75" r="65"/>
+              </svg>
+              <div class="result-inner">
+                <div class="result-score" id="resultScore">0%</div>
+                <div class="result-label" id="resultLabel">Accuracy</div>
+              </div>
+            </div>
+
+            <h2 class="result-title" id="resultTitle">Great reading!</h2>
+            <p class="result-desc" id="resultDesc">Your comprehension and memory are strong.</p>
+
+            <div class="stats-row">
+              <div class="stat-box good">
+                <div class="stat-value" id="statCorrect">0</div>
+                <div class="stat-label" id="statCorrectLabel">Correct</div>
+              </div>
+              <div class="stat-box bad">
+                <div class="stat-value" id="statWrong">0</div>
+                <div class="stat-label" id="statWrongLabel">Wrong</div>
+              </div>
+              <div class="stat-box blue">
+                <div class="stat-value" id="statTime">0s</div>
+                <div class="stat-label" id="statTimeLabel">Avg Time</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bottom" style="padding: 0;">
+            <button class="btn-primary" id="nextBtn">
+              <span id="nextLabel">Next Challenge</span>
+              <svg class="arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   TRANSLATIONS
+============================================ */
+const I18N = {
+  en: {
+    progress: 'Step 6 of 7',
+    readyTitle: 'Language & Memory',
+    readyDesc: 'Read a short story carefully — it will be <b>hidden after 15 seconds</b>, then we\'ll ask you questions.',
+    metaTime: '15 sec reading',
+    metaQ: '4 questions',
+    readyLabel: "I'm Ready",
+
+    readingLabel: 'Read carefully — <b>15 seconds</b>',
+    storyTitle: 'A Short Story',
+    timeUpText: 'Time\'s up! Story hidden.',
+
+    hudQLabel: 'Question',
+    hudScoreLabel: 'Correct',
+
+    resultLabel: 'Accuracy',
+    resultTitleGreat: 'Excellent comprehension!',
+    resultTitleGood: 'Great reading!',
+    resultTitleOk: 'Nice effort!',
+    resultDescGreat: 'You remembered every detail. Outstanding verbal memory!',
+    resultDescGood: 'Strong comprehension and recall. Well done!',
+    resultDescOk: 'Reading memory takes practice — you did well to try!',
+    statCorrectLabel: 'Correct',
+    statWrongLabel: 'Wrong',
+    statTimeLabel: 'Avg Time',
+    nextLabel: 'Next Challenge'
+  },
+  ar: {
+    progress: 'الخطوة 6 من 7',
+    readyTitle: 'اللغة والذاكرة',
+    readyDesc: 'اقرأ قصة قصيرة بعناية — ستختفي <b>بعد 15 ثانية</b>، ثم سنطرح عليك أسئلة.',
+    metaTime: '15 ثانية للقراءة',
+    metaQ: '4 أسئلة',
+    readyLabel: 'أنا جاهز',
+
+    readingLabel: 'اقرأ بعناية — <b>15 ثانية</b>',
+    storyTitle: 'قصة قصيرة',
+    timeUpText: 'انتهى الوقت! اختفت القصة.',
+
+    hudQLabel: 'سؤال',
+    hudScoreLabel: 'صحيح',
+
+    resultLabel: 'الدقة',
+    resultTitleGreat: 'استيعاب ممتاز!',
+    resultTitleGood: 'قراءة رائعة!',
+    resultTitleOk: 'مجهود جيد!',
+    resultDescGreat: 'تذكرت كل التفاصيل. ذاكرة لفظية استثنائية!',
+    resultDescGood: 'استيعاب وتذكر قويان. أحسنت!',
+    resultDescOk: 'ذاكرة القراءة تتحسن بالتدريب!',
+    statCorrectLabel: 'صحيح',
+    statWrongLabel: 'خطأ',
+    statTimeLabel: 'متوسط الوقت',
+    nextLabel: 'التحدي التالي'
+  }
+};
+
+/* ============================================
+   STORIES POOL (4 قصص)
+============================================ */
+const STORIES = [
+  {
+    id: 'library',
+    titleEN: 'A Short Story', titleAR: 'قصة قصيرة',
+    textEN: '<b>Ahmed</b> went to the <b>library</b> on <b>Monday</b>. He borrowed a book about <b>space</b> and stars. On his way home, he met his friend <b>Sara</b> at the <b>park</b>. They talked for a while and decided to meet again on <b>Friday</b>.',
+    textAR: 'ذهب <b>أحمد</b> إلى <b>المكتبة</b> يوم <b>الاثنين</b>. استعار كتابًا عن <b>الفضاء</b> والنجوم. في طريق عودته، قابل صديقه <b>سارة</b> في <b>الحديقة</b>. تحدثا لفترة وقررا اللقاء مرة أخرى يوم <b>الجمعة</b>.',
+    questions: [
+      { qEN: 'Where did Ahmed go first?', qAR: 'إلى أين ذهب أحمد أولًا؟',
+        optionsEN: ['The park', 'The library', 'His friend\'s house', 'The school'],
+        optionsAR: ['الحديقة', 'المكتبة', 'بيت صديقه', 'المدرسة'],
+        answerEN: 'The library', answerAR: 'المكتبة' },
+      { qEN: 'What day did Ahmed go to the library?', qAR: 'في أي يوم ذهب أحمد إلى المكتبة؟',
+        optionsEN: ['Friday', 'Sunday', 'Monday', 'Tuesday'],
+        optionsAR: ['الجمعة', 'الأحد', 'الاثنين', 'الثلاثاء'],
+        answerEN: 'Monday', answerAR: 'الاثنين' },
+      { qEN: 'What was the book about?', qAR: 'عن ماذا كان الكتاب؟',
+        optionsEN: ['Animals', 'History', 'Space and stars', 'Cooking'],
+        optionsAR: ['الحيوانات', 'التاريخ', 'الفضاء والنجوم', 'الطبخ'],
+        answerEN: 'Space and stars', answerAR: 'الفضاء والنجوم' },
+      { qEN: 'Who did Ahmed meet at the park?', qAR: 'من قابل أحمد في الحديقة؟',
+        optionsEN: ['His brother', 'Sara', 'His teacher', 'His cousin'],
+        optionsAR: ['أخوه', 'سارة', 'معلمه', 'ابن عمه'],
+        answerEN: 'Sara', answerAR: 'سارة' }
+    ]
+  },
+  {
+    id: 'restaurant',
+    titleEN: 'A Short Story', titleAR: 'قصة قصيرة',
+    textEN: 'On <b>Saturday</b>, <b>Layla</b> and her family went to a new <b>Italian restaurant</b>. She ordered <b>pizza</b> with cheese, and her brother ordered <b>pasta</b>. They drank <b>orange juice</b>. After lunch, they walked along the <b>river</b> and took many photos.',
+    textAR: 'في يوم <b>السبت</b>، ذهبت <b>ليلى</b> وعائلتها إلى <b>مطعم إيطالي</b> جديد. طلبت <b>بيتزا</b> بالجبن، وأخوها طلب <b>معكرونة</b>. شربوا <b>عصير برتقال</b>. بعد الغداء، ساروا بمحاذاة <b>النهر</b> والتقطوا صورًا كثيرة.',
+    questions: [
+      { qEN: 'Where did Layla go?', qAR: 'إلى أين ذهبت ليلى؟',
+        optionsEN: ['A French restaurant', 'An Italian restaurant', 'A library', 'A mall'],
+        optionsAR: ['مطعم فرنسي', 'مطعم إيطالي', 'مكتبة', 'مول'],
+        answerEN: 'An Italian restaurant', answerAR: 'مطعم إيطالي' },
+      { qEN: 'What day did they go?', qAR: 'في أي يوم ذهبوا؟',
+        optionsEN: ['Friday', 'Saturday', 'Sunday', 'Monday'],
+        optionsAR: ['الجمعة', 'السبت', 'الأحد', 'الاثنين'],
+        answerEN: 'Saturday', answerAR: 'السبت' },
+      { qEN: 'What did Layla order?', qAR: 'ماذا طلبت ليلى؟',
+        optionsEN: ['Pasta', 'Salad', 'Pizza', 'Soup'],
+        optionsAR: ['معكرونة', 'سلطة', 'بيتزا', 'شوربة'],
+        answerEN: 'Pizza', answerAR: 'بيتزا' },
+      { qEN: 'Where did they walk after lunch?', qAR: 'أين ساروا بعد الغداء؟',
+        optionsEN: ['Along the beach', 'Along the river', 'In a park', 'Down the street'],
+        optionsAR: ['على الشاطئ', 'بمحاذاة النهر', 'في حديقة', 'في الشارع'],
+        answerEN: 'Along the river', answerAR: 'بمحاذاة النهر' }
+    ]
+  },
+  {
+    id: 'travel',
+    titleEN: 'A Short Story', titleAR: 'قصة قصيرة',
+    textEN: 'Last <b>summer</b>, <b>Omar</b> traveled to <b>Turkey</b> with his family. They stayed in <b>Istanbul</b> for <b>a week</b>. They visited old <b>mosques</b>, tried local <b>food</b>, and took a <b>boat</b> ride. Omar bought a small <b>carpet</b> as a gift for his grandmother.',
+    textAR: 'في <b>الصيف</b> الماضي، سافر <b>عمر</b> إلى <b>تركيا</b> مع عائلته. أقاموا في <b>إسطنبول</b> لمدة <b>أسبوع</b>. زاروا <b>مساجد</b> قديمة، وجربوا <b>طعامًا</b> محليًا، وأخذوا جولة بـ<b>قارب</b>. اشترى عمر <b>سجادة</b> صغيرة كهدية لجدته.',
+    questions: [
+      { qEN: 'Where did Omar travel?', qAR: 'إلى أين سافر عمر؟',
+        optionsEN: ['Egypt', 'Turkey', 'Italy', 'Spain'],
+        optionsAR: ['مصر', 'تركيا', 'إيطاليا', 'إسبانيا'],
+        answerEN: 'Turkey', answerAR: 'تركيا' },
+      { qEN: 'When did he travel?', qAR: 'متى سافر؟',
+        optionsEN: ['Winter', 'Spring', 'Summer', 'Autumn'],
+        optionsAR: ['الشتاء', 'الربيع', 'الصيف', 'الخريف'],
+        answerEN: 'Summer', answerAR: 'الصيف' },
+      { qEN: 'How long did they stay?', qAR: 'كم مدة إقامتهم؟',
+        optionsEN: ['2 days', 'A week', 'A month', '3 days'],
+        optionsAR: ['يومين', 'أسبوع', 'شهر', '3 أيام'],
+        answerEN: 'A week', answerAR: 'أسبوع' },
+      { qEN: 'What gift did Omar buy?', qAR: 'ماذا اشترى عمر كهدية؟',
+        optionsEN: ['A carpet', 'A book', 'A hat', 'A watch'],
+        optionsAR: ['سجادة', 'كتاب', 'قبعة', 'ساعة'],
+        answerEN: 'A carpet', answerAR: 'سجادة' }
+    ]
+  },
+  {
+    id: 'doctor',
+    titleEN: 'A Short Story', titleAR: 'قصة قصيرة',
+    textEN: '<b>Mona</b> is a young <b>doctor</b> who works at a big <b>hospital</b>. She starts her day at <b>7 AM</b> and finishes at <b>5 PM</b>. Her favorite part is helping <b>children</b>. In her free time, she loves reading <b>novels</b> and playing the <b>piano</b>.',
+    textAR: '<b>منى</b> طبيبة <b>شابة</b> تعمل في <b>مستشفى</b> كبير. تبدأ يومها في الساعة <b>7 صباحًا</b> وتنتهي في <b>5 مساءً</b>. جزئها المفضل هو مساعدة <b>الأطفال</b>. في وقت فراغها، تحب قراءة <b>الروايات</b> والعزف على <b>البيانو</b>.',
+    questions: [
+      { qEN: 'What does Mona do?', qAR: 'ماذا تعمل منى؟',
+        optionsEN: ['A teacher', 'A doctor', 'An engineer', 'A nurse'],
+        optionsAR: ['معلمة', 'طبيبة', 'مهندسة', 'ممرضة'],
+        answerEN: 'A doctor', answerAR: 'طبيبة' },
+      { qEN: 'Where does she work?', qAR: 'أين تعمل؟',
+        optionsEN: ['A school', 'A hospital', 'A library', 'A bank'],
+        optionsAR: ['مدرسة', 'مستشفى', 'مكتبة', 'بنك'],
+        answerEN: 'A hospital', answerAR: 'مستشفى' },
+      { qEN: 'When does she start her day?', qAR: 'متى تبدأ يومها؟',
+        optionsEN: ['6 AM', '7 AM', '8 AM', '9 AM'],
+        optionsAR: ['6 صباحًا', '7 صباحًا', '8 صباحًا', '9 صباحًا'],
+        answerEN: '7 AM', answerAR: '7 صباحًا' },
+      { qEN: 'What does she love in her free time?', qAR: 'ماذا تحب في وقت فراغها؟',
+        optionsEN: ['Reading and playing piano', 'Watching TV', 'Cooking', 'Running'],
+        optionsAR: ['القراءة والعزف على البيانو', 'مشاهدة التلفاز', 'الطبخ', 'الجري'],
+        answerEN: 'Reading and playing piano', answerAR: 'القراءة والعزف على البيانو' }
+    ]
+  }
+];
+
+/* ============================================
+   LANGUAGE
+============================================ */
+const STORAGE_KEY = 'memento_lang';
+let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+const htmlEl = document.documentElement;
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+  htmlEl.lang = lang;
+  htmlEl.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+
+  document.getElementById('langCurrent').textContent = lang === 'en' ? 'EN' : 'ع';
+  document.getElementById('langOther').textContent = lang === 'en' ? 'ع' : 'EN';
+
+  const t = I18N[lang];
+
+  document.getElementById('progressText').textContent = t.progress;
+  document.getElementById('readyTitle').textContent = t.readyTitle;
+  document.getElementById('readyDesc').innerHTML = t.readyDesc;
+  document.getElementById('metaTime').textContent = t.metaTime;
+  document.getElementById('metaQ').textContent = t.metaQ;
+  document.getElementById('readyLabel').textContent = t.readyLabel;
+
+  document.getElementById('readingLabel').innerHTML = t.readingLabel;
+  document.getElementById('storyTitle').textContent = t.storyTitle;
+
+  document.getElementById('hudQLabel').textContent = t.hudQLabel;
+  document.getElementById('hudScoreLabel').textContent = t.hudScoreLabel;
+
+  document.getElementById('resultLabel').textContent = t.resultLabel;
+  document.getElementById('statCorrectLabel').textContent = t.statCorrectLabel;
+  document.getElementById('statWrongLabel').textContent = t.statWrongLabel;
+  document.getElementById('statTimeLabel').textContent = t.statTimeLabel;
+  document.getElementById('nextLabel').textContent = t.nextLabel;
+
+  // Re-render dynamic content
+  if (state.story) {
+    const storyTextEl = document.getElementById('storyText');
+    storyTextEl.innerHTML = lang === 'ar' ? state.story.textAR : state.story.textEN;
+    document.getElementById('storyTitle').textContent = lang === 'ar' ? state.story.titleAR : state.story.titleEN;
+
+    if (state.isPlaying && state.currentQ < state.story.questions.length) {
+      renderQuestion(state.currentQ);
+    }
+  }
+
+  if (document.getElementById('phaseFeedback').classList.contains('active')) {
+    updateFeedbackTexts();
+  }
+}
+
+document.getElementById('langToggle').addEventListener('click', () => {
+  applyLanguage(currentLang === 'en' ? 'ar' : 'en');
+});
+
+/* ============================================
+   HELPERS
+============================================ */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ============================================
+   STATE
+============================================ */
+const READING_TIME = 15;
+
+const state = {
+  story: null,
+  currentQ: 0,
+  correctCount: 0,
+  wrongCount: 0,
+  responseTimes: [],
+  questionStartTime: 0,
+  isPlaying: false,
+  locked: false
+};
+
+let readingTimerInterval = null;
+let readingCountdownInterval = null;
+
+/* ============================================
+   READY → READING
+============================================ */
+document.getElementById('readyBtn').addEventListener('click', () => {
+  // Pick a random story
+  state.story = STORIES[Math.floor(Math.random() * STORIES.length)];
+  console.log('📖 Story:', state.story.id);
+
+  // Set story text
+  const storyTextEl = document.getElementById('storyText');
+  storyTextEl.innerHTML = currentLang === 'ar' ? state.story.textAR : state.story.textEN;
+  document.getElementById('storyTitle').textContent =
+    currentLang === 'ar' ? state.story.titleAR : state.story.titleEN;
+
+  startReading();
+});
+
+function startReading() {
+  goToPhase('phaseReading');
+  startReadingTimer();
+}
+
+function startReadingTimer() {
+  const ring = document.getElementById('timerRing');
+  const num  = document.getElementById('timerNum');
+  const wrap = document.getElementById('timerWrap');
+  const circumference = 163.36;
+  let remaining = READING_TIME;
+
+  ring.style.transition = 'none';
+  ring.style.strokeDashoffset = '0';
+  num.textContent = remaining;
+  wrap.classList.remove('warning');
+
+  setTimeout(() => {
+    ring.style.transition = `stroke-dashoffset ${READING_TIME}s linear`;
+    ring.style.strokeDashoffset = circumference;
+  }, 50);
+
+  readingCountdownInterval = setInterval(() => {
+    remaining--;
+    num.textContent = Math.max(remaining, 0);
+
+    if (remaining <= 5) {
+      wrap.classList.add('warning');
+    }
+
+    if (remaining <= 0) {
+      clearInterval(readingCountdownInterval);
+    }
+  }, 1000);
+
+  readingTimerInterval = setTimeout(() => {
+    clearInterval(readingCountdownInterval);
+    endReading();
+  }, READING_TIME * 1000);
+}
+
+function endReading() {
+  const overlay = document.createElement('div');
+  overlay.className = 'reading-done-overlay';
+  overlay.id = 'readingDoneOverlay';
+  overlay.innerHTML = `
+    <div class="reading-done-icon">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <div class="reading-done-text">${I18N[currentLang].timeUpText}</div>
+  `;
+  document.getElementById('phaseReading').appendChild(overlay);
+
+  setTimeout(() => {
+    const el = document.getElementById('readingDoneOverlay');
+    if (el) el.remove();
+    startQuestions();
+  }, 1600);
+}
+
+/* ============================================
+   QUESTIONS
+============================================ */
+function startQuestions() {
+  state.isPlaying = true;
+  state.currentQ = 0;
+  state.correctCount = 0;
+  state.wrongCount = 0;
+  state.responseTimes = [];
+
+  goToPhase('phaseQuestions');
+  renderQuestion(0);
+}
+
+function renderQuestion(index) {
+  state.locked = false;
+  state.questionStartTime = Date.now();
+
+  const q = state.story.questions[index];
+
+  document.getElementById('hudQ').textContent = index + 1;
+  document.getElementById('hudTotal').textContent = state.story.questions.length;
+  document.getElementById('hudScore').textContent = state.correctCount;
+
+  document.getElementById('qNumBadge').textContent = index + 1;
+  document.getElementById('qText').textContent = currentLang === 'ar' ? q.qAR : q.qEN;
+
+  const options = currentLang === 'ar' ? q.optionsAR : q.optionsEN;
+  const correctAnswer = currentLang === 'ar' ? q.answerAR : q.answerEN;
+
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+
+  options.forEach((opt) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = opt;
+    btn.dataset.isCorrect = String(opt === correctAnswer);
+    btn.addEventListener('click', () => handleAnswer(btn, correctAnswer));
+    grid.appendChild(btn);
+  });
+
+  document.getElementById('qScroll').scrollTo({ top: 0, behavior: 'smooth' });
+
+  const card = document.getElementById('questionCard');
+  card.style.animation = 'none';
+  void card.offsetWidth;
+  card.style.animation = 'phaseIn 0.4s ease';
+}
+
+function handleAnswer(btn, correctAnswer) {
+  if (state.locked) return;
+  state.locked = true;
+
+  const elapsed = (Date.now() - state.questionStartTime) / 1000;
+  state.responseTimes.push(elapsed);
+
+  const isCorrect = btn.dataset.isCorrect === 'true';
+
+  if (isCorrect) {
+    state.correctCount++;
+    btn.classList.add('correct');
+    document.getElementById('hudScore').textContent = state.correctCount;
+  } else {
+    state.wrongCount++;
+    btn.classList.add('wrong');
+    document.querySelectorAll('.opt').forEach(o => {
+      if (o.dataset.isCorrect === 'true') o.classList.add('revealed');
+    });
+  }
+
+  document.querySelectorAll('.opt').forEach(o => o.disabled = true);
+
+  setTimeout(() => {
+    state.currentQ++;
+    if (state.currentQ >= state.story.questions.length) {
+      endGame();
+    } else {
+      renderQuestion(state.currentQ);
+    }
+  }, isCorrect ? 700 : 1300);
+}
+
+/* ============================================
+   END GAME
+============================================ */
+function endGame() {
+  state.isPlaying = false;
+
+  const accuracy = Math.round((state.correctCount / state.story.questions.length) * 100);
+  const avgTime = state.responseTimes.length > 0
+    ? state.responseTimes.reduce((a, b) => a + b, 0) / state.responseTimes.length
+    : 0;
+
+  const result = {
+    correct: state.correctCount,
+    wrong: state.wrongCount,
+    total: state.story.questions.length,
+    accuracy,
+    avgResponseTime: parseFloat(avgTime.toFixed(2)),
+    storyId: state.story.id
+  };
+  localStorage.setItem('memento_language_result', JSON.stringify(result));
+
+  setTimeout(() => showFeedback(result), 400);
+}
+
+/* ============================================
+   FEEDBACK
+============================================ */
+function showFeedback(result) {
+  document.getElementById('resultScore').textContent = result.accuracy + '%';
+  document.getElementById('statCorrect').textContent = result.correct + '/' + result.total;
+  document.getElementById('statWrong').textContent   = result.wrong;
+  document.getElementById('statTime').textContent    = result.avgResponseTime.toFixed(2) + 's';
+
+  const ring = document.getElementById('resultRing');
+  const circumference = 408.4;
+  setTimeout(() => {
+    ring.style.strokeDashoffset = circumference * (1 - result.accuracy / 100);
+  }, 400);
+
+  window._feedback = { accuracy: result.accuracy };
+  updateFeedbackTexts();
+  goToPhase('phaseFeedback');
+}
+
+function updateFeedbackTexts() {
+  const t = I18N[currentLang];
+  const { accuracy } = window._feedback || { accuracy: 0 };
+  const titleEl = document.getElementById('resultTitle');
+  const descEl  = document.getElementById('resultDesc');
+
+  if (accuracy >= 80) {
+    titleEl.textContent = t.resultTitleGreat;
+    descEl.textContent  = t.resultDescGreat;
+  } else if (accuracy >= 50) {
+    titleEl.textContent = t.resultTitleGood;
+    descEl.textContent  = t.resultDescGood;
+  } else {
+    titleEl.textContent = t.resultTitleOk;
+    descEl.textContent  = t.resultDescOk;
+  }
+}
+
+/* ============================================
+   PHASE SWITCH
+============================================ */
+function goToPhase(id) {
+  document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ============================================
+   NEXT → NUMERICAL
+============================================ */
+document.getElementById('nextBtn').addEventListener('click', () => {
+  const btn = document.getElementById('nextBtn');
+  btn.style.transform = 'scale(0.96)';
+  setTimeout(() => { btn.style.transform = ''; }, 150);
+  setTimeout(() => {
+    window.location.href = 'assessment-numerical.html';
+  }, 250);
+});
+
+/* ============================================
+   EXIT
+============================================ */
+document.getElementById('exitBtn').addEventListener('click', () => {
+  if (state.isPlaying) state.isPlaying = false;
+  if (readingTimerInterval) clearTimeout(readingTimerInterval);
+  if (readingCountdownInterval) clearInterval(readingCountdownInterval);
+  const msg = currentLang === 'en'
+    ? 'Exit assessment? Your progress will be lost.'
+    : 'هل تريد الخروج من التقييم؟ ستفقد تقدمك.';
+  if (confirm(msg)) {
+    window.location.href = 'assessment-intro.html';
+  }
+});
+
+/* ============================================
+   INIT
+============================================ */
+applyLanguage(currentLang);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3315 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#FAF8F3" />
+<title>Memento AI — Exercise Play</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   DESIGN TOKENS
+============================================ */
+:root {
+  --c-primary: #0E7C7B;
+  --c-primary-light: #4DB6AC;
+  --c-secondary: #9B7EDE;
+  --c-blue: #5B9BD5;
+  --c-navy: #0F2C4C;
+  --c-slate: #5A6C7D;
+  --c-bg: #FAF8F3;
+  --c-card: #FFFFFF;
+  --c-border: #EAE6DE;
+  --c-error: #E57373;
+  --c-success: #4CAF50;
+  --c-warning: #FF9800;
+  --c-red: #E53935;
+
+  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
+  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+
+  --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
+  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+
+  --phone-w: 375px;
+  --phone-h: 812px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--f-en);
+  -webkit-font-smoothing: antialiased;
+  background: #E8E4DC;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html[lang="ar"] body { font-family: var(--f-ar); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* PHONE FRAME */
+.stage {
+  width: 100vw; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
+    #E8E4DC;
+}
+
+.phone {
+  position: relative;
+  width: var(--phone-w);
+  height: var(--phone-h);
+  max-height: calc(100vh - 40px);
+  background: var(--c-bg);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 10px #1a1a1a,
+    0 0 0 12px #2a2a2a,
+    0 40px 80px rgba(0, 0, 0, 0.35),
+    0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 130px; height: 26px;
+  background: #1a1a1a;
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+}
+
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone {
+    width: 100vw; height: 100vh;
+    max-height: 100vh;
+    border-radius: 0; box-shadow: none;
+  }
+  .phone::before { display: none; }
+}
+
+/* SCREEN */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  overflow: hidden;
+}
+
+.screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* TOP BAR */
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 52px 22px 0;
+  flex-shrink: 0;
+}
+
+.exit-btn {
+  width: 38px; height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.exit-btn:hover {
+  background: #fff;
+  border-color: rgba(229, 115, 115, 0.4);
+  transform: scale(1.05);
+}
+
+.exit-btn svg {
+  width: 15px; height: 15px;
+  stroke: var(--c-slate);
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.exit-btn:hover svg { stroke: var(--c-error); }
+
+/* HUD */
+.hud {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.hud-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--c-navy);
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  font-feature-settings: "tnum";
+  transition: all 0.3s ease;
+}
+
+.hud-box svg {
+  width: 12px; height: 12px;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hud-box.q { color: var(--c-primary); }
+.hud-box.score { color: var(--c-success); }
+.hud-box.lives { padding: 5px 8px; gap: 3px; }
+
+.heart {
+  width: 12px; height: 12px;
+  fill: var(--c-error);
+  transition: all 0.4s ease;
+}
+
+.heart.lost {
+  fill: rgba(229, 115, 115, 0.2);
+  transform: scale(0.85);
+}
+
+/* CONTENT */
+.content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  padding: 16px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* STATUS */
+.status-wrap {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 46px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.status-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.status-text .pulse-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--c-primary);
+  animation: pulseDot 1s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.4); opacity: 0.5; }
+}
+
+html[lang="ar"] .status-text { font-family: var(--f-ar); font-size: 15.5px; }
+
+.status-sub {
+  font-size: 12px;
+  color: var(--c-slate);
+  font-weight: 500;
+}
+
+html[lang="ar"] .status-sub { font-family: var(--f-ar); font-size: 13px; }
+
+/* PROGRESS PIPS */
+.pips-row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding: 2px 0 4px;
+  min-height: 20px;
+  flex-shrink: 0;
+}
+
+.pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(14, 124, 123, 0.12);
+  transition: all 0.3s ease;
+}
+
+.pip.filled {
+  background: var(--g-brand);
+  transform: scale(1.1);
+  box-shadow: 0 0 6px rgba(14, 124, 123, 0.4);
+}
+
+.pip.correct {
+  background: var(--c-success);
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.5);
+}
+
+.pip.wrong {
+  background: var(--c-error);
+  box-shadow: 0 0 6px rgba(229, 115, 115, 0.5);
+}
+
+/* ══════════════════════════════════════════
+   GAME AREA — Container
+══════════════════════════════════════════ */
+.game-area {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+  display: none;
+}
+
+.game-area.active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══════════════════════════════════════════
+   1. MEMORY — Sequence tiles
+══════════════════════════════════════════ */
+.memory-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 12px;
+  min-height: 0;
+  padding: 4px 0;
+}
+
+.tile {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46px;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(15, 44, 76, 0.05);
+  opacity: 0;
+  transform: scale(0.85);
+  animation: tileIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.tile:nth-child(1) { animation-delay: 0.05s; }
+.tile:nth-child(2) { animation-delay: 0.10s; }
+.tile:nth-child(3) { animation-delay: 0.15s; }
+.tile:nth-child(4) { animation-delay: 0.20s; }
+.tile:nth-child(5) { animation-delay: 0.25s; }
+.tile:nth-child(6) { animation-delay: 0.30s; }
+
+@keyframes tileIn { to { opacity: 1; transform: scale(1); } }
+
+.tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--g-brand);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  z-index: 0;
+}
+
+.tile-emoji {
+  position: relative;
+  z-index: 2;
+  transition: transform 0.22s ease;
+}
+
+.tile.idle:hover {
+  border-color: rgba(14, 124, 123, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(15, 44, 76, 0.08);
+}
+
+.tile.idle:active { transform: scale(0.95); }
+
+.tile.showing {
+  border-color: transparent;
+  box-shadow: 0 12px 32px rgba(14, 124, 123, 0.4), 0 0 0 4px rgba(14, 124, 123, 0.15);
+  transform: scale(1.05);
+}
+
+.tile.showing::before { opacity: 1; }
+.tile.showing .tile-emoji { transform: scale(1.2); filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25)); }
+
+.tile.tapped { transform: scale(0.92); border-color: var(--c-primary); box-shadow: 0 0 0 4px rgba(14,124,123,0.15); }
+.tile.correct { border-color: var(--c-success); background: linear-gradient(135deg, rgba(76,175,80,0.08), rgba(102,187,106,0.04)); box-shadow: 0 0 0 4px rgba(76,175,80,0.2); }
+.tile.wrong { border-color: var(--c-error); background: linear-gradient(135deg, rgba(229,115,115,0.08), rgba(239,83,80,0.04)); box-shadow: 0 0 0 4px rgba(229,115,115,0.2); animation: wrongShake 0.4s ease; }
+
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-8px); }
+  75%      { transform: translateX(8px); }
+}
+
+.tile.locked { pointer-events: none; }
+
+/* ══════════════════════════════════════════
+   2. ATTENTION — Play area with shapes
+══════════════════════════════════════════ */
+.attn-play-area {
+  position: relative;
+  flex: 1;
+  background: #fff;
+  border-radius: var(--r-xl);
+  border: 1.5px solid var(--c-border);
+  overflow: hidden;
+  min-height: 0;
+  box-shadow: 0 8px 24px rgba(15, 44, 76, 0.04);
+  cursor: pointer;
+}
+
+.attn-play-area::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(14, 124, 123, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 124, 123, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+}
+
+.attn-target-reminder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(14, 124, 123, 0.06);
+  border-radius: var(--r-md);
+  border: 1px solid rgba(14, 124, 123, 0.12);
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+
+.attn-target-reminder .shape-mini {
+  width: 16px; height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.attn-target-reminder .reminder-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-navy);
+}
+
+html[lang="ar"] .attn-target-reminder .reminder-text { font-family: var(--f-ar); font-size: 13px; }
+
+.attn-shape {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform-origin: center;
+  animation: shapeIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes shapeIn {
+  0%   { transform: scale(0) rotate(-30deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.attn-shape.hit {
+  animation: hitPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes hitPop {
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(1.5); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.attn-shape.missed-tap { animation: wrongShake 0.4s ease; }
+.attn-shape.disappear { animation: shapeOut 0.3s ease forwards; pointer-events: none; }
+
+@keyframes shapeOut {
+  0%   { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.attn-shape.circle { border-radius: 50%; }
+.attn-shape.square { border-radius: 20%; }
+
+.attn-shape.triangle {
+  width: 0; height: 0;
+  border-left: solid transparent;
+  border-right: solid transparent;
+  border-bottom: solid;
+  position: relative;
+}
+
+/* ══════════════════════════════════════════
+   3. SPEED — Question + Options
+══════════════════════════════════════════ */
+.speed-scroll {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  padding-bottom: 4px;
+}
+
+.speed-scroll::-webkit-scrollbar { display: none; }
+.speed-scroll > * { flex-shrink: 0; }
+
+.speed-timer-row {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.timer-wrap {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-wrap svg {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-track {
+  fill: none;
+  stroke: rgba(14, 124, 123, 0.10);
+  stroke-width: 5;
+}
+
+.timer-ring {
+  fill: none;
+  stroke: url(#speedTimerGrad);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 144.51;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.9s linear;
+}
+
+.timer-num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--c-primary);
+  letter-spacing: -0.5px;
+}
+
+.timer-wrap.warning .timer-num {
+  color: var(--c-error);
+  animation: blinkNum 0.6s ease-in-out infinite;
+}
+
+.timer-wrap.warning .timer-ring { stroke: #E57373; }
+
+@keyframes blinkNum {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+.speed-question-card {
+  position: relative;
+  background: #fff;
+  border-radius: var(--r-xl);
+  border: 1.5px solid var(--c-border);
+  padding: 26px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 8px 24px rgba(15, 44, 76, 0.04);
+  overflow: hidden;
+  align-items: center;
+}
+
+.speed-question-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: var(--g-brand);
+}
+
+.q-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(91, 155, 213, 0.12);
+  color: var(--c-blue);
+  font-size: 10.5px;
+  font-weight: 700;
+  border-radius: var(--r-pill);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+html[lang="ar"] .q-badge { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 11.5px; }
+
+.q-text-large {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -1px;
+  text-align: center;
+  line-height: 1.2;
+  font-feature-settings: "tnum";
+  margin: 4px 0;
+}
+
+html[lang="ar"] .q-text-large { font-family: var(--f-ar); font-size: 32px; letter-spacing: 0; }
+
+.q-text-large.small {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.4;
+}
+
+html[lang="ar"] .q-text-large.small { font-size: 19px; }
+
+/* Options Grid */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.opt-btn {
+  padding: 18px 12px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-lg);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c-navy);
+  text-align: center;
+  transition: all 0.25s cubic-bezier(0.65, 0, 0.35, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: -0.3px;
+  font-feature-settings: "tnum";
+}
+
+html[lang="ar"] .opt-btn { font-family: var(--f-ar); letter-spacing: 0; }
+
+.opt-btn:hover:not(:disabled) {
+  border-color: rgba(14, 124, 123, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 44, 76, 0.06);
+}
+
+.opt-btn:active:not(:disabled) { transform: scale(0.96); }
+.opt-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+
+.opt-btn.correct {
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(76, 175, 80, 0.32);
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+.opt-btn.wrong {
+  background: linear-gradient(135deg, #E57373, #EF5350);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(229, 115, 115, 0.32);
+  animation: wrongShake 0.4s ease;
+  opacity: 1;
+}
+
+.opt-btn.revealed {
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  border-color: transparent;
+  color: #fff;
+  opacity: 1;
+  animation: revealPulse 0.8s ease;
+}
+
+@keyframes revealPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+  70%  { box-shadow: 0 0 0 16px rgba(76, 175, 80, 0); }
+  100% { box-shadow: 0 12px 28px rgba(76, 175, 80, 0.32); }
+}
+
+/* ══════════════════════════════════════════
+   4. PROBLEM — Puzzle with hints
+══════════════════════════════════════════ */
+.problem-scroll {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  padding-bottom: 4px;
+}
+
+.problem-scroll::-webkit-scrollbar { display: none; }
+.problem-scroll > * { flex-shrink: 0; }
+
+.problem-card {
+  position: relative;
+  background: #fff;
+  border-radius: var(--r-xl);
+  border: 1.5px solid var(--c-border);
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(15, 44, 76, 0.04);
+  overflow: hidden;
+}
+
+.problem-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: var(--g-brand);
+}
+
+.p-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(155, 126, 222, 0.12);
+  color: var(--c-secondary);
+  font-size: 10.5px;
+  font-weight: 700;
+  border-radius: var(--r-pill);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+html[lang="ar"] .p-badge { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 11.5px; }
+
+.p-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.2px;
+  line-height: 1.4;
+}
+
+html[lang="ar"] .p-title { font-family: var(--f-ar); font-size: 15.5px; letter-spacing: 0; }
+
+.p-sequence {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: 1.5px;
+  text-align: center;
+  padding: 8px 0;
+  font-feature-settings: "tnum";
+  line-height: 1.4;
+}
+
+html[lang="ar"] .p-sequence { font-family: var(--f-ar); letter-spacing: 0; }
+
+.p-sequence .blank {
+  display: inline-block;
+  min-width: 46px;
+  color: var(--c-secondary);
+  border-bottom: 3px dashed var(--c-secondary);
+  padding: 0 6px;
+  animation: blinkBlank 1.4s ease-in-out infinite;
+}
+
+@keyframes blinkBlank {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+.attempts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 0;
+}
+
+.attempts-label {
+  font-size: 11px;
+  color: var(--c-slate);
+  font-weight: 600;
+  margin-inline-end: 4px;
+}
+
+html[lang="ar"] .attempts-label { font-family: var(--f-ar); font-size: 12px; }
+
+.attempt-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: rgba(14, 124, 123, 0.15);
+  border: 1.5px solid rgba(14, 124, 123, 0.25);
+  transition: all 0.3s ease;
+}
+
+.attempt-dot.used {
+  background: var(--c-error);
+  border-color: var(--c-error);
+  box-shadow: 0 0 8px rgba(229, 115, 115, 0.4);
+  animation: dotPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dotPop {
+  0%   { transform: scale(0.5); }
+  60%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* Hint Box */
+.hint-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  max-height: 0;
+  transform: translateY(-8px);
+  transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.hint-box.show {
+  opacity: 1;
+  max-height: 200px;
+  transform: translateY(0);
+}
+
+.hint-box.hint-1 {
+  background: linear-gradient(135deg, rgba(255, 183, 77, 0.12), rgba(255, 152, 0, 0.08));
+  border: 1.5px solid rgba(255, 152, 0, 0.3);
+}
+
+.hint-box.hint-2 {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.16), rgba(255, 183, 77, 0.10));
+  border: 1.5px solid rgba(255, 152, 0, 0.4);
+}
+
+.hint-box.explain {
+  background: linear-gradient(135deg, rgba(14, 124, 123, 0.10), rgba(91, 155, 213, 0.10));
+  border: 1.5px solid rgba(14, 124, 123, 0.25);
+}
+
+.hint-icon {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #FFB74D, #FF9800);
+  box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
+}
+
+.hint-box.explain .hint-icon {
+  background: var(--g-brand);
+  box-shadow: 0 4px 10px rgba(14, 124, 123, 0.3);
+}
+
+.hint-icon svg {
+  width: 14px; height: 14px;
+  stroke: #fff; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+.hint-content { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+
+.hint-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--c-warning);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.hint-box.explain .hint-label { color: var(--c-primary); }
+
+html[lang="ar"] .hint-label { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 11px; }
+
+.hint-text {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--c-navy);
+  line-height: 1.5;
+}
+
+html[lang="ar"] .hint-text { font-family: var(--f-ar); font-size: 13.5px; }
+
+.try-again-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(229, 115, 115, 0.10);
+  border-radius: var(--r-md);
+  border: 1px dashed rgba(229, 115, 115, 0.4);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-error);
+  animation: bannerSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes bannerSlide {
+  0%   { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.try-again-banner svg {
+  width: 14px; height: 14px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+html[lang="ar"] .try-again-banner { font-family: var(--f-ar); font-size: 13.5px; }
+
+/* ══════════════════════════════════════════
+   5. VISUAL — Target + Options
+══════════════════════════════════════════ */
+.visual-scroll {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  padding-bottom: 4px;
+}
+
+.visual-scroll::-webkit-scrollbar { display: none; }
+.visual-scroll > * { flex-shrink: 0; }
+
+.visual-instr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(91, 155, 213, 0.08);
+  border-radius: var(--r-md);
+  border: 1px solid rgba(91, 155, 213, 0.2);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-blue);
+  text-align: center;
+}
+
+.visual-instr svg {
+  width: 14px; height: 14px;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  fill: none;
+  flex-shrink: 0;
+}
+
+html[lang="ar"] .visual-instr { font-family: var(--f-ar); font-size: 13px; }
+
+.visual-target-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--c-secondary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+html[lang="ar"] .visual-target-label { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 11.5px; }
+
+.visual-target-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(155, 126, 222, 0.08), rgba(91, 155, 213, 0.08));
+  border: 1.5px solid rgba(155, 126, 222, 0.25);
+  border-radius: var(--r-xl);
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 2 / 1;
+  box-shadow: 0 8px 24px rgba(155, 126, 222, 0.08);
+}
+
+.visual-target-svg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visual-target-svg svg {
+  width: 100%;
+  height: 100%;
+  max-width: 160px;
+  max-height: 90px;
+}
+
+.visual-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.visual-opt {
+  position: relative;
+  padding: 14px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-lg);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.65, 0, 0.35, 1);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.visual-opt svg {
+  width: 70%;
+  height: 70%;
+  transition: transform 0.25s ease;
+}
+
+.visual-opt:hover:not(.locked) {
+  border-color: rgba(14, 124, 123, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(15, 44, 76, 0.08);
+}
+
+.visual-opt:active:not(.locked) { transform: scale(0.96); }
+
+.visual-opt.correct {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(102, 187, 106, 0.05));
+  border-color: var(--c-success);
+  border-width: 2.5px;
+  box-shadow: 0 12px 30px rgba(76, 175, 80, 0.25);
+  transform: translateY(-3px);
+}
+
+.visual-opt.wrong {
+  background: linear-gradient(135deg, rgba(229, 115, 115, 0.1), rgba(239, 83, 80, 0.05));
+  border-color: var(--c-error);
+  border-width: 2.5px;
+  animation: wrongShake 0.4s ease;
+  opacity: 0.7;
+}
+
+.visual-opt .check-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--c-success);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
+}
+
+html[dir="rtl"] .visual-opt .check-badge { right: auto; left: 8px; }
+
+.visual-opt.correct .check-badge { display: flex; }
+
+.visual-opt .check-badge svg {
+  width: 14px; height: 14px;
+  stroke: #fff;
+  stroke-width: 3.5;
+  fill: none;
+}
+
+/* ══════════════════════════════════════════
+   6. LANGUAGE — Story + Questions
+══════════════════════════════════════════ */
+.lang-scroll {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  padding-bottom: 4px;
+}
+
+.lang-scroll::-webkit-scrollbar { display: none; }
+.lang-scroll > * { flex-shrink: 0; }
+
+.lang-reading-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.lang-timer-wrap {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-timer-wrap svg {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+
+.lang-timer-ring {
+  fill: none;
+  stroke: url(#langTimerGrad);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 163.36;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.lang-timer-num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--c-primary);
+  letter-spacing: -0.5px;
+}
+
+.lang-timer-wrap.warning .lang-timer-num {
+  color: var(--c-error);
+  animation: blinkNum 0.6s ease-in-out infinite;
+}
+
+.lang-timer-wrap.warning .lang-timer-ring { stroke: #E57373; }
+
+.lang-reading-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-navy);
+  text-align: center;
+}
+
+html[lang="ar"] .lang-reading-label { font-family: var(--f-ar); font-size: 14px; }
+
+.lang-reading-label b { color: var(--c-warning); font-weight: 700; }
+
+.lang-story-card {
+  flex: 1;
+  position: relative;
+  background: #fff;
+  border-radius: var(--r-xl);
+  border: 1.5px solid var(--c-border);
+  padding: 24px 20px;
+  box-shadow: 0 8px 24px rgba(15, 44, 76, 0.04);
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  min-height: 200px;
+}
+
+.lang-story-card::-webkit-scrollbar { display: none; }
+
+.lang-story-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #FF9800, #FFB74D);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+}
+
+.lang-story-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-secondary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+html[lang="ar"] .lang-story-title {
+  font-family: var(--f-ar);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 15px;
+}
+
+.lang-story-text {
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--c-navy);
+  line-height: 1.75;
+  text-align: start;
+}
+
+html[lang="ar"] .lang-story-text { font-family: var(--f-ar); font-size: 16px; line-height: 1.9; }
+
+.lang-story-text b {
+  color: var(--c-primary);
+  font-weight: 700;
+  background: rgba(14, 124, 123, 0.08);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+/* ══════════════════════════════════════════
+   7. NUMERICAL — Math questions
+══════════════════════════════════════════ */
+.num-scroll {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  padding-bottom: 4px;
+}
+
+.num-scroll::-webkit-scrollbar { display: none; }
+.num-scroll > * { flex-shrink: 0; }
+
+.num-question-card {
+  position: relative;
+  background: #fff;
+  border-radius: var(--r-xl);
+  border: 1.5px solid var(--c-border);
+  padding: 26px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 8px 24px rgba(15, 44, 76, 0.04);
+  overflow: hidden;
+  align-items: center;
+}
+
+.num-question-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: var(--g-brand);
+}
+
+/* ══════════════════════════════════════════
+   OVERLAYS (Countdown, Level Up, Game Over)
+══════════════════════════════════════════ */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(250, 248, 243, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 200;
+  gap: 18px;
+  padding: 30px;
+  text-align: center;
+  animation: fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.overlay.hidden { display: none; }
+
+.countdown-num {
+  font-size: 110px;
+  font-weight: 800;
+  background: var(--g-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -4px;
+  line-height: 1;
+  animation: countIn 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes countIn {
+  0%   { opacity: 0; transform: scale(0.5); }
+  60%  { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.countdown-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-slate);
+  letter-spacing: 0.3px;
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+html[lang="ar"] .countdown-label { font-family: var(--f-ar); font-size: 15px; }
+
+/* Level Up */
+.levelup-icon {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: var(--g-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 40px rgba(14, 124, 123, 0.4);
+  animation: levelUpPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.levelup-icon::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 3px solid rgba(14, 124, 123, 0.3);
+  animation: ringExpand 0.9s ease-out;
+}
+
+@keyframes ringExpand {
+  0%   { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes levelUpPop {
+  0%   { transform: scale(0.3) rotate(-180deg); }
+  60%  { transform: scale(1.15) rotate(10deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.levelup-icon svg {
+  width: 50px; height: 50px;
+  stroke: #fff;
+  stroke-width: 2.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.levelup-title {
+  font-size: 26px;
+  font-weight: 800;
+  background: var(--g-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+
+html[lang="ar"] .levelup-title { font-family: var(--f-ar); font-size: 25px; letter-spacing: 0; }
+
+.levelup-sub {
+  font-size: 13.5px;
+  color: var(--c-slate);
+  font-weight: 500;
+  max-width: 280px;
+  line-height: 1.55;
+}
+
+html[lang="ar"] .levelup-sub { font-family: var(--f-ar); font-size: 14.5px; }
+
+/* Game Over */
+.gameover-icon {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E57373, #EF5350);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 40px rgba(229, 115, 115, 0.4);
+  animation: gameOverPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes gameOverPop {
+  0%   { transform: scale(0.3); }
+  60%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.gameover-icon svg {
+  width: 50px; height: 50px;
+  stroke: #fff;
+  stroke-width: 2.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gameover-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -0.5px;
+}
+
+html[lang="ar"] .gameover-title { font-family: var(--f-ar); font-size: 25px; letter-spacing: 0; }
+
+.gameover-sub {
+  font-size: 13.5px;
+  color: var(--c-slate);
+  font-weight: 500;
+  max-width: 280px;
+  line-height: 1.55;
+}
+
+html[lang="ar"] .gameover-sub { font-family: var(--f-ar); font-size: 14.5px; }
+
+.gameover-stats {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.gameover-stat {
+  padding: 12px 18px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 80px;
+}
+
+.gameover-stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -0.8px;
+  line-height: 1;
+  font-feature-settings: "tnum";
+}
+
+.gameover-stat-value.good { color: var(--c-success); }
+.gameover-stat-value.blue { color: var(--c-primary); }
+
+.gameover-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--c-slate);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+html[lang="ar"] .gameover-stat-label {
+  font-family: var(--f-ar);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 11px;
+}
+
+/* Buttons */
+.btn-primary {
+  position: relative;
+  width: 100%;
+  padding: 17px 24px;
+  background: var(--g-brand);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.32);
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.7s ease;
+}
+
+.btn-primary:hover::before { left: 100%; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(14, 124, 123, 0.4); }
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-primary .arrow {
+  width: 16px; height: 16px;
+  stroke: #fff;
+  stroke-width: 2.4;
+  fill: none;
+  transition: transform 0.3s ease;
+}
+
+html[dir="rtl"] .btn-primary .arrow { transform: scaleX(-1); }
+.btn-primary:hover .arrow { transform: translateX(4px); }
+html[dir="rtl"] .btn-primary:hover .arrow { transform: scaleX(-1) translateX(4px); }
+
+html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SVG Gradients -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="speedTimerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E7C7B"/>
+      <stop offset="100%" stop-color="#9B7EDE"/>
+    </linearGradient>
+    <linearGradient id="langTimerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF9800"/>
+      <stop offset="100%" stop-color="#FFB74D"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+
+      <!-- Top Bar -->
+      <div class="topbar">
+        <button class="exit-btn" id="exitBtn" aria-label="Exit">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <div class="hud">
+          <div class="hud-box q">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span id="hudQ">1</span>/<span id="hudTotal">8</span>
+          </div>
+
+          <div class="hud-box score">
+            <svg viewBox="0 0 24 24">
+              <polygon points="12 2 15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9"></polygon>
+            </svg>
+            <span id="hudScore">0</span>
+          </div>
+
+          <div class="hud-box lives" id="hudLives">
+            <svg class="heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <svg class="heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <svg class="heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+
+        <!-- Status -->
+        <div class="status-wrap">
+          <div class="status-text" id="statusText">
+            <span class="pulse-dot"></span>
+            <span id="statusMain">Get ready...</span>
+          </div>
+          <div class="status-sub" id="statusSub"></div>
+        </div>
+
+        <!-- Progress Pips -->
+        <div class="pips-row" id="pipsRow"></div>
+
+        <!-- GAME AREA 1: MEMORY -->
+        <div class="game-area" id="gameMemory">
+          <div class="memory-grid" id="memoryGrid"></div>
+        </div>
+
+        <!-- GAME AREA 2: ATTENTION -->
+        <div class="game-area" id="gameAttention">
+          <div class="attn-target-reminder">
+            <div class="shape-mini" id="attnTargetMini"></div>
+            <span class="reminder-text" id="attnTargetLabel">Red Circles</span>
+          </div>
+          <div class="attn-play-area" id="attnPlayArea"></div>
+        </div>
+
+        <!-- GAME AREA 3: SPEED -->
+        <div class="game-area" id="gameSpeed">
+          <div class="speed-scroll">
+            <div class="speed-timer-row">
+              <div class="timer-wrap" id="speedTimerWrap">
+                <svg viewBox="0 0 50 50">
+                  <circle class="timer-track" cx="25" cy="25" r="23"/>
+                  <circle class="timer-ring" id="speedTimerRing" cx="25" cy="25" r="23"/>
+                </svg>
+                <div class="timer-num" id="speedTimerNum">15</div>
+              </div>
+            </div>
+            <div class="speed-question-card" id="speedQuestionCard">
+              <div class="q-badge" id="speedQBadge">Mental Math</div>
+              <div class="q-text-large" id="speedQText">17 + 8 = ?</div>
+            </div>
+            <div class="options-grid" id="speedOptionsGrid"></div>
+          </div>
+        </div>
+
+        <!-- GAME AREA 4: PROBLEM -->
+        <div class="game-area" id="gameProblem">
+          <div class="problem-scroll">
+            <div class="problem-card" id="problemCard">
+              <div class="p-badge" id="problemBadge">Pattern</div>
+              <div class="p-title" id="problemTitle">What comes next?</div>
+              <div class="p-sequence" id="problemSequence"></div>
+            </div>
+            <div class="attempts" id="problemAttempts">
+              <span class="attempts-label" id="attemptsLabel">Attempts</span>
+              <span class="attempt-dot" id="attemptDot0"></span>
+              <span class="attempt-dot" id="attemptDot1"></span>
+              <span class="attempt-dot" id="attemptDot2"></span>
+            </div>
+            <div class="try-again-banner" id="tryBanner" style="display:none;">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span id="tryText">Not quite — try again!</span>
+            </div>
+            <div class="hint-box hint-1" id="hint1">
+              <div class="hint-icon"><svg viewBox="0 0 24 24"><line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path></svg></div>
+              <div class="hint-content"><div class="hint-label" id="hint1Label">Hint 1</div><div class="hint-text" id="hint1Text">Look at the difference.</div></div>
+            </div>
+            <div class="hint-box hint-2" id="hint2">
+              <div class="hint-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+              <div class="hint-content"><div class="hint-label" id="hint2Label">Hint 2</div><div class="hint-text" id="hint2Text">The pattern increases.</div></div>
+            </div>
+            <div class="hint-box explain" id="explainBox">
+              <div class="hint-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></div>
+              <div class="hint-content"><div class="hint-label" id="explainLabel">Explanation</div><div class="hint-text" id="explainText"></div></div>
+            </div>
+            <div class="options-grid" id="problemOptionsGrid"></div>
+          </div>
+        </div>
+
+        <!-- GAME AREA 5: VISUAL -->
+        <div class="game-area" id="gameVisual">
+          <div class="visual-scroll">
+            <div class="visual-instr">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              <span id="visualInstrText">Which option matches the target?</span>
+            </div>
+            <div class="visual-target-label" id="visualTargetLabel">Target</div>
+            <div class="visual-target-card">
+              <div class="visual-target-svg" id="visualTargetSvg"></div>
+            </div>
+            <div class="visual-options-grid" id="visualOptionsGrid"></div>
+          </div>
+        </div>
+
+        <!-- GAME AREA 6: LANGUAGE -->
+        <div class="game-area" id="gameLanguage">
+          <div class="lang-scroll">
+            <!-- Reading phase -->
+            <div id="langReadingPhase">
+              <div class="lang-reading-head">
+                <div class="lang-timer-wrap" id="langTimerWrap">
+                  <svg viewBox="0 0 56 56">
+                    <circle class="timer-track" cx="28" cy="28" r="26"/>
+                    <circle class="lang-timer-ring" id="langTimerRing" cx="28" cy="28" r="26"/>
+                  </svg>
+                  <div class="lang-timer-num" id="langTimerNum">15</div>
+                </div>
+                <div class="lang-reading-label" id="langReadingLabel">Read carefully — <b>15 seconds</b></div>
+              </div>
+              <div class="lang-story-card">
+                <div class="lang-story-title" id="langStoryTitle">A Short Story</div>
+                <div class="lang-story-text" id="langStoryText"></div>
+              </div>
+            </div>
+            <!-- Question phase -->
+            <div id="langQuestionPhase" style="display:none;">
+              <div class="problem-card">
+                <div class="q-badge" id="langQBadge">Question</div>
+                <div class="p-title" id="langQText"></div>
+              </div>
+              <div class="options-grid" id="langOptionsGrid" style="margin-top:12px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GAME AREA 7: NUMERICAL -->
+        <div class="game-area" id="gameNumerical">
+          <div class="num-scroll">
+            <div class="speed-timer-row">
+              <div class="timer-wrap" id="numTimerWrap">
+                <svg viewBox="0 0 50 50">
+                  <circle class="timer-track" cx="25" cy="25" r="23"/>
+                  <circle class="timer-ring" id="numTimerRing" cx="25" cy="25" r="23"/>
+                </svg>
+                <div class="timer-num" id="numTimerNum">15</div>
+              </div>
+            </div>
+            <div class="num-question-card">
+              <div class="q-badge" id="numQBadge">Numbers</div>
+              <div class="q-text-large" id="numQText">2, 4, 6, ?</div>
+            </div>
+            <div class="options-grid" id="numOptionsGrid" style="margin-top:12px;"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Countdown Overlay -->
+      <div class="overlay" id="countdownOverlay">
+        <div class="countdown-num" id="countdownNum">3</div>
+        <div class="countdown-label" id="countdownLabel">Get ready to start</div>
+      </div>
+
+      <!-- Level Up Overlay -->
+      <div class="overlay hidden" id="levelUpOverlay">
+        <div class="levelup-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <div class="levelup-title" id="levelUpTitle">Correct!</div>
+        <div class="levelup-sub" id="levelUpSub">Next question coming up...</div>
+      </div>
+
+      <!-- Game Over Overlay -->
+      <div class="overlay hidden" id="gameOverOverlay">
+        <div class="gameover-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+        </div>
+        <div class="gameover-title" id="gameOverTitle">Great effort!</div>
+        <div class="gameover-sub" id="gameOverSub">You completed the exercise.</div>
+
+        <div class="gameover-stats">
+          <div class="gameover-stat">
+            <div class="gameover-stat-value good" id="finalScore">0</div>
+            <div class="gameover-stat-label" id="finalScoreLabel">Score</div>
+          </div>
+          <div class="gameover-stat">
+            <div class="gameover-stat-value blue" id="finalCorrect">0</div>
+            <div class="gameover-stat-label" id="finalCorrectLabel">Correct</div>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="gameOverBtn" style="margin-top: 8px;">
+          <span id="gameOverBtnLabel">Finish Exercise</span>
+          <svg class="arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   TRANSLATIONS
+============================================ */
+const I18N = {
+  en: {
+    getReady: 'Get ready...',
+    watchSequence: 'Watch the sequence',
+    yourTurn: 'Your turn!',
+    tapItems: 'Tap the items in the same order',
+    correct: 'Correct!',
+    wrong: 'Oops! Wrong',
+    tryAgain: 'Try again',
+    countdownLabel: 'Get ready to start',
+    levelUpTitle: 'Correct!',
+    levelUpSub: 'Next question coming up...',
+    gameOverTitle: 'Great effort!',
+    gameOverSub: 'You completed the exercise.',
+    score: 'Score',
+    correctCount: 'Correct',
+    finishExercise: 'Finish Exercise',
+    seq: 'Sequence',
+    qNumber: 'Question',
+    mins: 'min',
+    redCircles: 'Red Circles',
+    blueSquares: 'Blue Squares',
+    greenTriangles: 'Green Triangles',
+    yellowCircles: 'Yellow Circles',
+    purpleSquares: 'Purple Squares',
+    storyTitle: 'A Short Story',
+    readingLabel: 'Read carefully — <b>15 seconds</b>',
+    timeUp: "Time's up!"
+  },
+  ar: {
+    getReady: 'استعد...',
+    watchSequence: 'شاهد التسلسل',
+    yourTurn: 'دورك!',
+    tapItems: 'اضغط على العناصر بنفس الترتيب',
+    correct: 'صحيح!',
+    wrong: 'خطأ',
+    tryAgain: 'جرّب مرة أخرى',
+    countdownLabel: 'استعد للبدء',
+    levelUpTitle: 'صحيح!',
+    levelUpSub: 'السؤال التالي قادم...',
+    gameOverTitle: 'مجهود رائع!',
+    gameOverSub: 'أتممت التمرين.',
+    score: 'النقاط',
+    correctCount: 'صحيح',
+    finishExercise: 'إنهاء التمرين',
+    seq: 'تسلسل',
+    qNumber: 'سؤال',
+    mins: 'دقيقة',
+    redCircles: 'الدوائر الحمراء',
+    blueSquares: 'المربعات الزرقاء',
+    greenTriangles: 'المثلثات الخضراء',
+    yellowCircles: 'الدوائر الصفراء',
+    purpleSquares: 'المربعات البنفسجية',
+    storyTitle: 'قصة قصيرة',
+    readingLabel: 'اقرأ بعناية — <b>15 ثانية</b>',
+    timeUp: 'انتهى الوقت!'
+  }
+};
+
+/* ============================================
+   LANGUAGE
+============================================ */
+const STORAGE_KEY = 'memento_lang';
+let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+const htmlEl = document.documentElement;
+
+/* ============================================
+   EMOJI POOLS
+============================================ */
+const EMOJI_POOL = ['🍎', '🐱', '🚗', '🌳', '⭐', '🎵', '📚', '⚽', '🎈', '🌸', '🔑', '💡', '🎨', '🐟', '🍕', '🌈'];
+const TARGET_TYPES = [
+  { id: 'red-circles',      shape: 'circle',   color: '#E53935', labelKey: 'redCircles' },
+  { id: 'blue-squares',     shape: 'square',   color: '#4285F4', labelKey: 'blueSquares' },
+  { id: 'green-triangles',  shape: 'triangle', color: '#4CAF50', labelKey: 'greenTriangles' },
+  { id: 'yellow-circles',   shape: 'circle',   color: '#FFC107', labelKey: 'yellowCircles' },
+  { id: 'purple-squares',   shape: 'square',   color: '#9B7EDE', labelKey: 'purpleSquares' }
+];
+
+/* ============================================
+   STORIES (for language)
+============================================ */
+const STORIES = [
+  {
+    id: 'library',
+    titleEN: 'A Short Story', titleAR: 'قصة قصيرة',
+    textEN: '<b>Ahmed</b> went to the <b>library</b> on <b>Monday</b>. He borrowed a book about <b>space</b> and stars. On his way home, he met his friend <b>Sara</b> at the <b>park</b>.',
+    textAR: 'ذهب <b>أحمد</b> إلى <b>المكتبة</b> يوم <b>الاثنين</b>. استعار كتابًا عن <b>الفضاء</b>. في طريق عودته، قابل صديقته <b>سارة</b> في <b>الحديقة</b>.',
+    questions: [
+      { qEN: 'Where did Ahmed go?', qAR: 'إلى أين ذهب أحمد؟',
+        optionsEN: ['The park', 'The library', 'Home', 'School'],
+        optionsAR: ['الحديقة', 'المكتبة', 'المنزل', 'المدرسة'],
+        answerEN: 'The library', answerAR: 'المكتبة' },
+      { qEN: 'What day was it?', qAR: 'في أي يوم؟',
+        optionsEN: ['Friday', 'Sunday', 'Monday', 'Tuesday'],
+        optionsAR: ['الجمعة', 'الأحد', 'الاثنين', 'الثلاثاء'],
+        answerEN: 'Monday', answerAR: 'الاثنين' }
+    ]
+  },
+  {
+    id: 'restaurant',
+    titleEN: 'A Short Story', titleAR: 'قصة قصيرة',
+    textEN: 'On <b>Saturday</b>, <b>Layla</b> went to an <b>Italian restaurant</b>. She ordered <b>pizza</b> with cheese. After lunch, they walked along the <b>river</b>.',
+    textAR: 'في يوم <b>السبت</b>، ذهبت <b>ليلى</b> إلى <b>مطعم إيطالي</b>. طلبت <b>بيتزا</b> بالجبن. بعد الغداء، ساروا بمحاذاة <b>النهر</b>.',
+    questions: [
+      { qEN: 'Where did Layla go?', qAR: 'إلى أين ذهبت ليلى؟',
+        optionsEN: ['French restaurant', 'Italian restaurant', 'Library', 'Mall'],
+        optionsAR: ['مطعم فرنسي', 'مطعم إيطالي', 'مكتبة', 'مول'],
+        answerEN: 'Italian restaurant', answerAR: 'مطعم إيطالي' },
+      { qEN: 'What did she order?', qAR: 'ماذا طلبت؟',
+        optionsEN: ['Pasta', 'Salad', 'Pizza', 'Soup'],
+        optionsAR: ['معكرونة', 'سلطة', 'بيتزا', 'شوربة'],
+        answerEN: 'Pizza', answerAR: 'بيتزا' }
+    ]
+  }
+];
+
+/* ============================================
+   VISUAL SHAPES (for visual exercise)
+============================================ */
+const PALETTE = [
+  { main: '#0E7C7B', light: '#4DB6AC' },
+  { main: '#5B9BD5', light: '#7FB2E0' },
+  { main: '#9B7EDE', light: '#B9A3E8' },
+  { main: '#FF9800', light: '#FFB74D' },
+  { main: '#E8A0BF', light: '#F0BDD3' },
+  { main: '#4CAF50', light: '#7BC67F' }
+];
+
+/* ============================================
+   STATE
+============================================ */
+const state = {
+  exerciseKey: 'memory',
+  exerciseMinutes: 10,
+  currentIdx: 0,
+  totalRounds: 8,
+  score: 0,
+  correctCount: 0,
+  wrongCount: 0,
+  lives: 3,
+  isPlaying: false,
+  locked: false,
+  gameActive: false
+};
+
+/* Memory-specific */
+const memState = {
+  tiles: [],
+  sequence: [],
+  userInput: [],
+  level: 1
+};
+
+/* Attention-specific */
+const attnState = {
+  targetType: null,
+  hits: 0,
+  wrongTaps: 0,
+  missedTargets: 0,
+  spawnInterval: null,
+  timerInterval: null,
+  timeLeft: 30
+};
+
+/* Speed-specific */
+const speedState = {
+  currentQuestion: null,
+  timerInterval: null,
+  timerCountdown: null,
+  timeLeft: 15
+};
+
+/* Problem-specific */
+const probState = {
+  currentQuestion: null,
+  attemptInQ: 0
+};
+
+/* Visual-specific */
+const visState = {
+  currentPuzzle: null
+};
+
+/* Language-specific */
+const langState = {
+  currentStory: null,
+  currentQIdx: 0,
+  readingTimer: null,
+  readingCountdown: null,
+  responseTimes: []
+};
+
+/* Numerical-specific */
+const numState = {
+  currentQuestion: null,
+  timerInterval: null,
+  timerCountdown: null,
+  timeLeft: 15
+};
+
+/* ============================================
+   DOM REFS
+============================================ */
+const $ = id => document.getElementById(id);
+const playArea = $('memoryGrid');
+const attnPlayArea = $('attnPlayArea');
+const statusMain = $('statusMain');
+const statusSub = $('statusSub');
+const pipsRow = $('pipsRow');
+const hudQ = $('hudQ');
+const hudTotal = $('hudTotal');
+const hudScore = $('hudScore');
+const hudLives = $('hudLives');
+
+/* ============================================
+   HELPERS
+============================================ */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function rnd(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+function setStatus(main, sub = '') {
+  statusMain.textContent = main;
+  statusSub.textContent = sub;
+}
+
+function updateHUD() {
+  hudQ.textContent = state.currentIdx + 1;
+  hudTotal.textContent = state.totalRounds;
+  hudScore.textContent = state.score;
+
+  const hearts = hudLives.querySelectorAll('.heart');
+  hearts.forEach((h, i) => {
+    h.classList.toggle('lost', i >= state.lives);
+  });
+}
+
+function renderPips(filledCount = 0, mode = 'filled') {
+  pipsRow.innerHTML = '';
+  for (let i = 0; i < state.totalRounds; i++) {
+    const pip = document.createElement('div');
+    pip.className = 'pip';
+    if (i < filledCount) pip.classList.add(mode);
+    pipsRow.appendChild(pip);
+  }
+}
+
+/* ============================================
+   LOAD EXERCISE TYPE
+============================================ */
+function loadExercise() {
+  try {
+    const ex = JSON.parse(localStorage.getItem('memento_current_exercise') || '{}');
+    if (ex.key) state.exerciseKey = ex.key;
+    if (ex.minutes) state.exerciseMinutes = ex.minutes;
+  } catch (e) {}
+  console.log('🎮 Exercise:', state.exerciseKey);
+}
+
+/* ============================================
+   SHOW GAME AREA
+============================================ */
+function activateArea(id) {
+  document.querySelectorAll('.game-area').forEach(el => el.classList.remove('active'));
+  $(id).classList.add('active');
+}
+
+/* ============================================
+   COUNTDOWN OVERLAY
+============================================ */
+async function showCountdown() {
+  const overlay = $('countdownOverlay');
+  const num = $('countdownNum');
+  const label = $('countdownLabel');
+  label.textContent = I18N[currentLang].countdownLabel;
+  overlay.classList.remove('hidden');
+
+  const seq = ['3', '2', '1', 'GO!'];
+  for (const v of seq) {
+    num.textContent = v;
+    num.style.animation = 'none';
+    void num.offsetWidth;
+    num.style.animation = 'countIn 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    await sleep(v === 'GO!' ? 600 : 850);
+  }
+  overlay.classList.add('hidden');
+}
+
+/* ============================================
+   LEVEL UP OVERLAY
+============================================ */
+async function showLevelUp() {
+  const t = I18N[currentLang];
+  const overlay = $('levelUpOverlay');
+  $('levelUpTitle').textContent = t.levelUpTitle;
+  $('levelUpSub').textContent = t.levelUpSub;
+  overlay.classList.remove('hidden');
+  await sleep(1200);
+  overlay.classList.add('hidden');
+}
+
+/* ============================================
+   GAME OVER
+============================================ */
+function showGameOver(isWin = false) {
+  state.gameActive = false;
+  state.isPlaying = false;
+  const t = I18N[currentLang];
+  const overlay = $('gameOverOverlay');
+
+  $('finalScore').textContent = state.score;
+  $('finalCorrect').textContent = state.correctCount;
+  $('finalScoreLabel').textContent = t.score;
+  $('finalCorrectLabel').textContent = t.correctCount;
+  $('gameOverTitle').textContent = isWin ? '🏆 ' + t.correct : t.gameOverTitle;
+  $('gameOverSub').textContent = t.gameOverSub;
+  $('gameOverBtnLabel').textContent = t.finishExercise;
+
+  overlay.classList.remove('hidden');
+}
+
+/* ============================================
+   SAVE RESULT + GO NEXT
+============================================ */
+function saveResultAndNext() {
+  const accuracy = state.totalRounds > 0
+    ? Math.round((state.correctCount / state.totalRounds) * 100)
+    : 0;
+
+  const result = {
+    score: state.score,
+    correct: state.correctCount,
+    wrong: state.wrongCount,
+    total: state.totalRounds,
+    accuracy,
+    timestamp: Date.now()
+  };
+  localStorage.setItem('memento_last_exercise_result', JSON.stringify(result));
+
+  // Mark in queue
+  try {
+    const idx = parseInt(localStorage.getItem('memento_current_exercise_idx') || '0');
+    let queue = JSON.parse(localStorage.getItem('memento_workout_queue') || '[]');
+    if (queue[idx]) queue[idx].done = true;
+    localStorage.setItem('memento_workout_queue', JSON.stringify(queue));
+
+    // Save skill result
+    const key = 'memento_' + state.exerciseKey + '_result';
+    const existing = JSON.parse(localStorage.getItem(key) || '{}');
+    existing.accuracy = accuracy;
+    existing.lastScore = state.score;
+    localStorage.setItem(key, JSON.stringify(existing));
+  } catch (e) { console.error(e); }
+
+  window.location.href = 'exercise-instructions.html';
+}
+
+/* ══════════════════════════════════════════
+   1. MEMORY EXERCISE
+══════════════════════════════════════════ */
+function buildMemoryTiles() {
+  const pool = shuffle([...EMOJI_POOL]).slice(0, 6);
+  memState.tiles = pool;
+
+  playArea.innerHTML = '';
+  pool.forEach((emoji, idx) => {
+    const tile = document.createElement('div');
+    tile.className = 'tile idle';
+    tile.dataset.idx = idx;
+    tile.innerHTML = `<span class="tile-emoji">${emoji}</span>`;
+    tile.addEventListener('click', () => onTileTap(idx));
+    playArea.appendChild(tile);
+  });
+}
+
+async function memNextRound() {
+  if (state.currentIdx >= state.totalRounds) {
+    showGameOver(true);
+    return;
+  }
+
+  updateHUD();
+  renderPips(state.currentIdx);
+
+  const seqLen = 3 + Math.floor(state.currentIdx / 2);
+  memState.sequence = [];
+  memState.userInput = [];
+
+  for (let i = 0; i < seqLen; i++) {
+    memState.sequence.push(Math.floor(Math.random() * 6));
+  }
+
+  setStatus(I18N[currentLang].watchSequence, `${I18N[currentLang].seq} ${seqLen}`);
+  state.locked = true;
+
+  document.querySelectorAll('#memoryGrid .tile').forEach(t => t.classList.add('locked'));
+
+  await sleep(700);
+
+  for (let i = 0; i < memState.sequence.length; i++) {
+    const idx = memState.sequence[i];
+    const tileEl = playArea.querySelector(`.tile[data-idx="${idx}"]`);
+    if (!tileEl) continue;
+    tileEl.classList.add('showing');
+    await sleep(600);
+    tileEl.classList.remove('showing');
+    await sleep(220);
+  }
+
+  document.querySelectorAll('#memoryGrid .tile').forEach(t => t.classList.remove('locked'));
+  setStatus(I18N[currentLang].yourTurn, I18N[currentLang].tapItems);
+  state.locked = false;
+}
+
+async function onTileTap(idx) {
+  if (state.locked || !state.isPlaying) return;
+  if (memState.userInput.length >= memState.sequence.length) return;
+
+  const pos = memState.userInput.length;
+  const expected = memState.sequence[pos];
+  const tileEl = playArea.querySelector(`.tile[data-idx="${idx}"]`);
+  memState.userInput.push(idx);
+
+  const pip = pipsRow.children[state.currentIdx];
+  if (idx === expected) {
+    tileEl.classList.add('tapped');
+    setTimeout(() => tileEl.classList.remove('tapped'), 250);
+
+    if (memState.userInput.length === memState.sequence.length) {
+      state.locked = true;
+      state.correctCount++;
+      state.score += 10;
+      if (pip) pip.classList.add('correct');
+      updateHUD();
+      setStatus(I18N[currentLang].correct);
+      await sleep(700);
+      state.currentIdx++;
+      await memNextRound();
+    }
+  } else {
+    tileEl.classList.add('wrong');
+    setTimeout(() => tileEl.classList.remove('wrong'), 500);
+    state.locked = true;
+    state.wrongCount++;
+    state.lives--;
+    if (pip) pip.classList.add('wrong');
+    updateHUD();
+    setStatus(I18N[currentLang].wrong);
+    await sleep(1200);
+    if (state.lives <= 0) {
+      showGameOver(false);
+      return;
+    }
+    state.currentIdx++;
+    await memNextRound();
+  }
+}
+
+/* ══════════════════════════════════════════
+   2. ATTENTION EXERCISE
+══════════════════════════════════════════ */
+function renderShapeMini(container, size = 16) {
+  if (!attnState.targetType) return;
+  container.innerHTML = '';
+  const { shape, color } = attnState.targetType;
+  const el = document.createElement('div');
+  el.style.width = size + 'px';
+  el.style.height = size + 'px';
+  if (shape === 'circle') {
+    el.style.borderRadius = '50%';
+    el.style.background = color;
+    el.style.boxShadow = `0 0 8px ${color}80`;
+  } else if (shape === 'square') {
+    el.style.borderRadius = '20%';
+    el.style.background = color;
+    el.style.boxShadow = `0 0 8px ${color}80`;
+  } else if (shape === 'triangle') {
+    const b = size / 2;
+    el.style.width = '0'; el.style.height = '0';
+    el.style.borderLeft = `${b}px solid transparent`;
+    el.style.borderRight = `${b}px solid transparent`;
+    el.style.borderBottom = `${size}px solid ${color}`;
+    el.style.filter = `drop-shadow(0 0 6px ${color}80)`;
+  }
+  container.appendChild(el);
+}
+
+function attnPickTarget() {
+  attnState.targetType = TARGET_TYPES[Math.floor(Math.random() * TARGET_TYPES.length)];
+  const t = I18N[currentLang];
+  const label = t[attnState.targetType.labelKey];
+  $('attnTargetLabel').textContent = label;
+  renderShapeMini($('attnTargetMini'), 16);
+}
+
+function attnSpawnShape() {
+  if (!state.isPlaying || !state.gameActive) return;
+
+  const rect = attnPlayArea.getBoundingClientRect();
+  const areaW = rect.width;
+  const areaH = rect.height;
+  if (areaW < 50 || areaH < 50) return;
+
+  const isTarget = Math.random() < 0.4;
+  let shapeType, color, size;
+
+  if (isTarget) {
+    shapeType = attnState.targetType.shape;
+    color = attnState.targetType.color;
+    size = 52;
+  } else {
+    const distractors = TARGET_TYPES.filter(t => t.id !== attnState.targetType.id);
+    const rndType = distractors[Math.floor(Math.random() * distractors.length)];
+    shapeType = rndType.shape;
+    color = rndType.color;
+    size = 48;
+  }
+
+  const padding = 8;
+  const maxX = areaW - size - padding;
+  const maxY = areaH - size - padding;
+  const x = padding + Math.random() * Math.max(maxX - padding, 1);
+  const y = padding + Math.random() * Math.max(maxY - padding, 1);
+
+  const el = document.createElement('div');
+  el.className = `attn-shape ${shapeType}`;
+  el.style.position = 'absolute';
+
+  if (shapeType === 'triangle') {
+    const b = size / 2;
+    el.style.left = (x - b) + 'px';
+    el.style.top = y + 'px';
+    el.style.borderLeftWidth = b + 'px';
+    el.style.borderRightWidth = b + 'px';
+    el.style.borderBottomWidth = size + 'px';
+    el.style.borderBottomColor = color;
+    el.style.filter = `drop-shadow(0 4px 10px ${color}55)`;
+  } else {
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.background = color;
+    el.style.boxShadow = `0 4px 14px ${color}55`;
+  }
+
+  const handleTap = (e) => {
+    if (e) e.stopPropagation();
+    handleAttnTap(el, isTarget);
+  };
+  el.addEventListener('click', handleTap);
+  el.addEventListener('touchstart', handleTap, { passive: false });
+
+  attnPlayArea.appendChild(el);
+
+  const timeout = setTimeout(() => {
+    if (!el.parentNode) return;
+    if (isTarget && !el.classList.contains('hit')) {
+      attnState.missedTargets++;
+    }
+    el.classList.add('disappear');
+    setTimeout(() => el.remove(), 300);
+  }, 1500);
+
+  el._timeout = timeout;
+  el._isTarget = isTarget;
+}
+
+function handleAttnTap(el, isTarget) {
+  if (!state.isPlaying) return;
+  if (el.classList.contains('hit')) return;
+  if (el._timeout) clearTimeout(el._timeout);
+
+  if (isTarget) {
+    state.correctCount++;
+    attnState.hits++;
+    state.score += 5;
+    el.classList.add('hit');
+    updateHUD();
+    setTimeout(() => el.remove(), 400);
+  } else {
+    attnState.wrongTaps++;
+    state.wrongCount++;
+    el.classList.add('missed-tap');
+    setTimeout(() => {
+      if (el.parentNode) {
+        el.classList.add('disappear');
+        setTimeout(() => el.remove(), 300);
+      }
+    }, 300);
+  }
+}
+
+async function attnStart() {
+  attnPickTarget();
+  setStatus(I18N[currentLang].watchSequence, '');
+  state.locked = false;
+
+  // Simple 30-second session instead of 8 rounds
+  attnState.timeLeft = 30;
+
+  attnState.spawnInterval = setInterval(() => {
+    if (state.isPlaying) attnSpawnShape();
+  }, 750);
+
+  // Spawn initial
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => attnSpawnShape(), i * 200);
+  }
+
+  attnState.timerInterval = setInterval(() => {
+    attnState.timeLeft--;
+    updateHUD();
+    if (attnState.timeLeft <= 0) {
+      endAttnGame();
+    }
+  }, 1000);
+}
+
+function endAttnGame() {
+  clearInterval(attnState.spawnInterval);
+  clearInterval(attnState.timerInterval);
+  state.isPlaying = false;
+
+  const totalTargets = attnState.hits + attnState.missedTargets;
+  const accuracy = totalTargets > 0
+    ? Math.round((attnState.hits / totalTargets) * 100)
+    : 0;
+
+  const result = {
+    score: state.score,
+    correct: attnState.hits,
+    wrong: attnState.wrongTaps,
+    total: totalTargets || 1,
+    accuracy,
+    timestamp: Date.now()
+  };
+  localStorage.setItem('memento_' + state.exerciseKey + '_result', JSON.stringify(result));
+
+  try {
+    const idx = parseInt(localStorage.getItem('memento_current_exercise_idx') || '0');
+    let queue = JSON.parse(localStorage.getItem('memento_workout_queue') || '[]');
+    if (queue[idx]) queue[idx].done = true;
+    localStorage.setItem('memento_workout_queue', JSON.stringify(queue));
+  } catch (e) {}
+
+  state.correctCount = attnState.hits;
+  state.wrongCount = attnState.wrongTaps;
+  state.totalRounds = totalTargets || 1;
+
+  showGameOver(true);
+}
+
+/* ══════════════════════════════════════════
+   3. SPEED EXERCISE
+══════════════════════════════════════════ */
+function generateSpeedQuestion() {
+  const kind = Math.random();
+  let a, b, op, answer;
+
+  if (kind < 0.4) {
+    a = rnd(8, 45); b = rnd(5, 35); op = '+'; answer = a + b;
+  } else if (kind < 0.75) {
+    a = rnd(25, 70); b = rnd(5, a - 3); op = '−'; answer = a - b;
+  } else {
+    a = rnd(2, 9); b = rnd(2, 9); op = '×'; answer = a * b;
+  }
+
+  return {
+    text: `${a} ${op} ${b} = ?`,
+    answer,
+    options: generateOptions(answer, 6)
+  };
+}
+
+function generateOptions(correct, spread = 6) {
+  const opts = new Set([correct]);
+  let attempts = 0;
+  while (opts.size < 4 && attempts < 100) {
+    const delta = (Math.random() < 0.5 ? -1 : 1) * rnd(1, spread);
+    const wrong = correct + delta;
+    if (wrong > 0 && wrong !== correct) opts.add(wrong);
+    attempts++;
+  }
+  let filler = correct + 1;
+  while (opts.size < 4) {
+    if (!opts.has(filler)) opts.add(filler);
+    filler++;
+  }
+  return shuffle([...opts]);
+}
+
+function speedRenderQuestion() {
+  if (state.currentIdx >= state.totalRounds) {
+    showGameOver(true);
+    return;
+  }
+
+  updateHUD();
+  renderPips(state.currentIdx);
+  setStatus(`${I18N[currentLang].qNumber} ${state.currentIdx + 1}`, '');
+
+  speedState.currentQuestion = generateSpeedQuestion();
+  state.locked = false;
+
+  $('speedQText').textContent = speedState.currentQuestion.text;
+
+  const grid = $('speedOptionsGrid');
+  grid.innerHTML = '';
+  speedState.currentQuestion.options.forEach(val => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = val;
+    btn.dataset.value = val;
+    btn.addEventListener('click', () => onSpeedAnswer(val, btn));
+    grid.appendChild(btn);
+  });
+
+  startSpeedTimer();
+}
+
+function startSpeedTimer() {
+  stopSpeedTimer();
+  const ring = $('speedTimerRing');
+  const num = $('speedTimerNum');
+  const wrap = $('speedTimerWrap');
+
+  speedState.timeLeft = 15;
+  const C = 144.51;
+
+  ring.style.transition = 'none';
+  ring.style.strokeDashoffset = '0';
+  num.textContent = speedState.timeLeft;
+  wrap.classList.remove('warning');
+
+  setTimeout(() => {
+    ring.style.transition = `stroke-dashoffset 15s linear`;
+    ring.style.strokeDashoffset = C;
+  }, 50);
+
+  speedState.timerCountdown = setInterval(() => {
+    speedState.timeLeft--;
+    num.textContent = Math.max(speedState.timeLeft, 0);
+    if (speedState.timeLeft <= 5) wrap.classList.add('warning');
+    if (speedState.timeLeft <= 0) clearInterval(speedState.timerCountdown);
+  }, 1000);
+
+  speedState.timerInterval = setTimeout(() => {
+    clearInterval(speedState.timerCountdown);
+    if (!state.locked && state.isPlaying) handleSpeedTimeout();
+  }, 15000);
+}
+
+function stopSpeedTimer() {
+  clearTimeout(speedState.timerInterval);
+  clearInterval(speedState.timerCountdown);
+  const ring = $('speedTimerRing');
+  if (ring) {
+    ring.style.transition = 'none';
+    ring.style.strokeDashoffset = '0';
+  }
+}
+
+function onSpeedAnswer(val, btn) {
+  if (state.locked || !state.isPlaying) return;
+  state.locked = true;
+  stopSpeedTimer();
+
+  const isCorrect = val === speedState.currentQuestion.answer;
+  const pip = pipsRow.children[state.currentIdx];
+
+  if (isCorrect) {
+    state.correctCount++;
+    state.score += 10;
+    btn.classList.add('correct');
+    if (pip) pip.classList.add('correct');
+    updateHUD();
+  } else {
+    state.wrongCount++;
+    state.lives--;
+    btn.classList.add('wrong');
+    if (pip) pip.classList.add('wrong');
+    document.querySelectorAll('#speedOptionsGrid .opt-btn').forEach(o => {
+      if (parseInt(o.dataset.value) === speedState.currentQuestion.answer) o.classList.add('revealed');
+    });
+    updateHUD();
+  }
+
+  document.querySelectorAll('#speedOptionsGrid .opt-btn').forEach(o => o.disabled = true);
+
+  setTimeout(() => {
+    if (state.lives <= 0) {
+      showGameOver(false);
+      return;
+    }
+    state.currentIdx++;
+    speedRenderQuestion();
+  }, isCorrect ? 600 : 1000);
+}
+
+function handleSpeedTimeout() {
+  if (state.locked) return;
+  state.locked = true;
+
+  state.wrongCount++;
+  state.lives--;
+  const pip = pipsRow.children[state.currentIdx];
+  if (pip) pip.classList.add('wrong');
+
+  document.querySelectorAll('#speedOptionsGrid .opt-btn').forEach(o => {
+    if (parseInt(o.dataset.value) === speedState.currentQuestion.answer) o.classList.add('revealed');
+    o.disabled = true;
+  });
+  updateHUD();
+
+  setTimeout(() => {
+    if (state.lives <= 0) {
+      showGameOver(false);
+      return;
+    }
+    state.currentIdx++;
+    speedRenderQuestion();
+  }, 1000);
+}
+
+/* ══════════════════════════════════════════
+   4. PROBLEM EXERCISE
+============================================ */
+function generateProblemQuestion() {
+  const kinds = [
+    () => {
+      const start = rnd(2, 12);
+      const step = rnd(2, 8);
+      const seq = [start, start + step, start + 2 * step, start + 3 * step];
+      const answer = start + 4 * step;
+      return {
+        title: 'What comes next in the sequence?',
+        seq: seq.join(', ') + ', ?',
+        answer,
+        options: generateOptions(answer, Math.max(step + 2, 6)),
+        hint1: 'Look at the difference between each number.',
+        hint2: `Each number increases by ${step}.`,
+        explain: `The sequence increases by ${step}. ${seq[3]} + ${step} = ${answer}.`
+      };
+    },
+    () => {
+      const start = rnd(1, 3);
+      const mult = rnd(2, 3);
+      const seq = [start, start * mult, start * mult * mult, start * mult * mult * mult];
+      const answer = start * Math.pow(mult, 4);
+      return {
+        title: 'What comes next in the sequence?',
+        seq: seq.join(', ') + ', ?',
+        answer,
+        options: generateOptions(answer, Math.max(mult * 3, 4)),
+        hint1: 'Look at how each number relates to the previous one.',
+        hint2: `Each number is multiplied by ${mult}.`,
+        explain: `Each step multiplies by ${mult}. ${seq[3]} × ${mult} = ${answer}.`
+      };
+    }
+  ];
+  const q = kinds[rnd(0, kinds.length - 1)]();
+  return q;
+}
+
+function probRenderQuestion() {
+  if (state.currentIdx >= state.totalRounds) {
+    showGameOver(true);
+    return;
+  }
+
+  updateHUD();
+  renderPips(state.currentIdx);
+  setStatus(`${I18N[currentLang].qNumber} ${state.currentIdx + 1}`, '');
+
+  probState.currentQuestion = generateProblemQuestion();
+  probState.attemptInQ = 0;
+  state.locked = false;
+
+  $('problemTitle').textContent = probState.currentQuestion.title;
+  const seqEl = $('problemSequence');
+  seqEl.innerHTML = probState.currentQuestion.seq.replace(/\?/g, '<span class="blank">?</span>');
+
+  // Reset attempts
+  ['attemptDot0', 'attemptDot1', 'attemptDot2'].forEach(id => $(id).classList.remove('used'));
+  $('tryBanner').style.display = 'none';
+  $('hint1').classList.remove('show');
+  $('hint2').classList.remove('show');
+  $('explainBox').classList.remove('show');
+
+  const grid = $('problemOptionsGrid');
+  grid.innerHTML = '';
+  probState.currentQuestion.options.forEach(val => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = val;
+    btn.dataset.value = val;
+    btn.dataset.isCorrect = String(val === probState.currentQuestion.answer);
+    btn.addEventListener('click', () => onProblemAnswer(btn));
+    grid.appendChild(btn);
+  });
+}
+
+function onProblemAnswer(btn) {
+  if (state.locked) return;
+  if (btn.classList.contains('correct') || btn.classList.contains('wrong')) return;
+
+  probState.attemptInQ++;
+  const dot = $('attemptDot' + (probState.attemptInQ - 1));
+  if (dot) dot.classList.add('used');
+
+  const isCorrect = btn.dataset.isCorrect === 'true';
+  const pip = pipsRow.children[state.currentIdx];
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    state.correctCount++;
+    state.score += 10;
+    state.locked = true;
+    if (pip) pip.classList.add('correct');
+    updateHUD();
+    setTimeout(() => {
+      state.currentIdx++;
+      probRenderQuestion();
+    }, 800);
+  } else {
+    btn.classList.add('wrong');
+    btn.disabled = true;
+
+    if (probState.attemptInQ === 1) {
+      $('tryBanner').style.display = 'flex';
+      $('tryText').textContent = I18N[currentLang].tryAgain;
+    } else if (probState.attemptInQ === 2) {
+      $('hint1').classList.add('show');
+      $('hint1Text').textContent = probState.currentQuestion.hint1;
+      $('tryBanner').style.display = 'none';
+    } else if (probState.attemptInQ === 3) {
+      $('hint2').classList.add('show');
+      $('hint2Text').textContent = probState.currentQuestion.hint2;
+    }
+
+    if (probState.attemptInQ >= 4) {
+      revealProblemAnswer();
+    }
+  }
+}
+
+function revealProblemAnswer() {
+  state.locked = true;
+  state.wrongCount++;
+  state.lives--;
+  const pip = pipsRow.children[state.currentIdx];
+  if (pip) pip.classList.add('wrong');
+
+  $('explainBox').classList.add('show');
+  $('explainText').textContent = probState.currentQuestion.explain;
+
+  document.querySelectorAll('#problemOptionsGrid .opt-btn').forEach(o => {
+    if (o.dataset.isCorrect === 'true') o.classList.add('revealed');
+    o.disabled = true;
+  });
+  updateHUD();
+
+  setTimeout(() => {
+    if (state.lives <= 0) {
+      showGameOver(false);
+      return;
+    }
+    state.currentIdx++;
+    probRenderQuestion();
+  }, 2500);
+}
+
+/* ══════════════════════════════════════════
+   5. VISUAL EXERCISE
+============================================ */
+function svgWrap(inner) {
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+}
+
+function shapeHouse({ color, roofColor, rotated = 0, mirrored = false }) {
+  const t = `rotate(${rotated} 50 50) ${mirrored ? 'scale(-1,1) translate(-100,0)' : ''}`;
+  return svgWrap(`
+    <g transform="${t}">
+      <rect x="28" y="48" width="44" height="38" rx="3" fill="${color.main}"/>
+      <path d="M 22 48 L 50 20 L 78 48 Z" fill="${roofColor.main}"/>
+      <rect x="44" y="62" width="12" height="24" rx="2" fill="#FAF8F3"/>
+    </g>
+  `);
+}
+
+function shapeHeart({ color, rotated = 0, mirrored = false }) {
+  const t = `rotate(${rotated} 50 50) ${mirrored ? 'scale(-1,1) translate(-100,0)' : ''}`;
+  return svgWrap(`
+    <g transform="${t}">
+      <path d="M 50 82 C 20 60, 15 40, 30 28 C 40 20, 50 28, 50 38 C 50 28, 60 20, 70 28 C 85 40, 80 60, 50 82 Z" fill="${color.main}"/>
+    </g>
+  `);
+}
+
+function shapeStar({ color, points = 5 }) {
+  let path;
+  if (points === 5) {
+    path = `<path d="M 50 15 L 60 42 L 88 42 L 66 58 L 74 86 L 50 70 L 26 86 L 34 58 L 12 42 L 40 42 Z" fill="${color.main}"/>`;
+  } else {
+    path = `<path d="M 50 12 L 65 28 L 82 25 L 80 42 L 88 58 L 75 68 L 65 85 L 50 78 L 35 85 L 25 68 L 12 58 L 20 42 L 18 25 L 35 28 Z" fill="${color.main}"/>`;
+  }
+  return svgWrap(`<g>${path}</g>`);
+}
+
+function generateVisualPuzzle() {
+  const color = PALETTE[rnd(0, PALETTE.length - 1)];
+  const roofColor = PALETTE[rnd(0, PALETTE.length - 1)];
+  const variant = rnd(0, 2);
+
+  let target, correct, wrongs;
+
+  if (variant === 0) {
+    target = shapeHeart({ color });
+    correct = shapeHeart({ color });
+    wrongs = [
+      shapeHeart({ color, mirrored: true }),
+      shapeHeart({ color: PALETTE[(PALETTE.indexOf(color) + 2) % PALETTE.length] }),
+      shapeHeart({ color, rotated: 180 })
+    ];
+  } else if (variant === 1) {
+    target = shapeHouse({ color, roofColor });
+    correct = shapeHouse({ color, roofColor });
+    wrongs = [
+      shapeHouse({ color, roofColor, mirrored: true }),
+      shapeHouse({ color, roofColor, rotated: 180 }),
+      shapeHouse({ color: PALETTE[(PALETTE.indexOf(color) + 2) % PALETTE.length], roofColor })
+    ];
+  } else {
+    target = shapeStar({ color, points: 5 });
+    correct = shapeStar({ color, points: 5 });
+    wrongs = [
+      shapeStar({ color, points: 6 }),
+      shapeStar({ color: PALETTE[(PALETTE.indexOf(color) + 2) % PALETTE.length], points: 5 }),
+      shapeStar({ color, points: 6 })
+    ];
+  }
+
+  return { target, correct, wrongs };
+}
+
+function visRenderPuzzle() {
+  if (state.currentIdx >= state.totalRounds) {
+    showGameOver(true);
+    return;
+  }
+
+  updateHUD();
+  renderPips(state.currentIdx);
+  setStatus(`${I18N[currentLang].qNumber} ${state.currentIdx + 1}`, '');
+
+  visState.currentPuzzle = generateVisualPuzzle();
+  state.locked = false;
+
+  $('visualTargetSvg').innerHTML = visState.currentPuzzle.target;
+
+  const options = [
+    { svg: visState.currentPuzzle.correct, correct: true },
+    ...visState.currentPuzzle.wrongs.map(svg => ({ svg, correct: false }))
+  ];
+  shuffle(options);
+
+  const grid = $('visualOptionsGrid');
+  grid.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'visual-opt';
+    btn.innerHTML = `${opt.svg}<div class="check-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>`;
+    btn.dataset.correct = String(opt.correct);
+    btn.addEventListener('click', () => onVisualAnswer(btn));
+    grid.appendChild(btn);
+  });
+}
+
+function onVisualAnswer(btn) {
+  if (state.locked) return;
+  state.locked = true;
+
+  const isCorrect = btn.dataset.correct === 'true';
+  const pip = pipsRow.children[state.currentIdx];
+
+  if (isCorrect) {
+    state.correctCount++;
+    state.score += 10;
+    btn.classList.add('correct');
+    if (pip) pip.classList.add('correct');
+    updateHUD();
+  } else {
+    state.wrongCount++;
+    state.lives--;
+    btn.classList.add('wrong');
+    if (pip) pip.classList.add('wrong');
+    document.querySelectorAll('#visualOptionsGrid .visual-opt').forEach(o => {
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+    });
+    updateHUD();
+  }
+
+  document.querySelectorAll('#visualOptionsGrid .visual-opt').forEach(o => o.classList.add('locked'));
+
+  setTimeout(() => {
+    if (state.lives <= 0) {
+      showGameOver(false);
+      return;
+    }
+    state.currentIdx++;
+    visRenderPuzzle();
+  }, isCorrect ? 700 : 1200);
+}
+
+/* ══════════════════════════════════════════
+   6. LANGUAGE EXERCISE
+============================================ */
+function langRenderStory() {
+  const story = STORIES[rnd(0, STORIES.length - 1)];
+  langState.currentStory = story;
+  langState.currentQIdx = 0;
+  langState.responseTimes = [];
+
+  const storyText = currentLang === 'ar' ? story.textAR : story.textEN;
+  const storyTitle = currentLang === 'ar' ? story.titleAR : story.titleEN;
+
+  $('langStoryText').innerHTML = storyText;
+  $('langStoryTitle').textContent = storyTitle;
+  $('langReadingLabel').innerHTML = I18N[currentLang].readingLabel;
+
+  $('langReadingPhase').style.display = 'block';
+  $('langQuestionPhase').style.display = 'none';
+
+  startLangReadingTimer();
+}
+
+function startLangReadingTimer() {
+  const ring = $('langTimerRing');
+  const num = $('langTimerNum');
+  const wrap = $('langTimerWrap');
+  const C = 163.36;
+  let remaining = 15;
+
+  ring.style.transition = 'none';
+  ring.style.strokeDashoffset = '0';
+  num.textContent = remaining;
+  wrap.classList.remove('warning');
+
+  setTimeout(() => {
+    ring.style.transition = `stroke-dashoffset 15s linear`;
+    ring.style.strokeDashoffset = C;
+  }, 50);
+
+  langState.readingCountdown = setInterval(() => {
+    remaining--;
+    num.textContent = Math.max(remaining, 0);
+    if (remaining <= 5) wrap.classList.add('warning');
+    if (remaining <= 0) clearInterval(langState.readingCountdown);
+  }, 1000);
+
+  langState.readingTimer = setTimeout(() => {
+    clearInterval(langState.readingCountdown);
+    langShowQuestions();
+  }, 15000);
+}
+
+function langShowQuestions() {
+  $('langReadingPhase').style.display = 'none';
+  $('langQuestionPhase').style.display = 'block';
+  langRenderQuestion(0);
+}
+
+function langRenderQuestion(index) {
+  if (index >= langState.currentStory.questions.length) {
+    showGameOver(true);
+    return;
+  }
+
+  langState.currentQIdx = index;
+  state.currentIdx = index;
+  updateHUD();
+
+  const q = langState.currentStory.questions[index];
+  const qText = currentLang === 'ar' ? q.qAR : q.qEN;
+  const options = currentLang === 'ar' ? q.optionsAR : q.optionsEN;
+  const correctAnswer = currentLang === 'ar' ? q.answerAR : q.answerEN;
+
+  $('langQText').textContent = qText;
+
+  const grid = $('langOptionsGrid');
+  grid.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.style.fontSize = '16px';
+    btn.style.padding = '14px 12px';
+    btn.textContent = opt;
+    btn.dataset.isCorrect = String(opt === correctAnswer);
+    btn.addEventListener('click', () => onLangAnswer(btn, correctAnswer));
+    grid.appendChild(btn);
+  });
+
+  state.locked = false;
+}
+
+function onLangAnswer(btn, correctAnswer) {
+  if (state.locked) return;
+  state.locked = true;
+
+  const isCorrect = btn.dataset.isCorrect === 'true';
+  const pip = pipsRow.children[state.currentIdx];
+
+  if (isCorrect) {
+    state.correctCount++;
+    state.score += 10;
+    btn.classList.add('correct');
+    if (pip) pip.classList.add('correct');
+    updateHUD();
+  } else {
+    state.wrongCount++;
+    state.lives--;
+    btn.classList.add('wrong');
+    if (pip) pip.classList.add('wrong');
+    document.querySelectorAll('#langOptionsGrid .opt-btn').forEach(o => {
+      if (o.dataset.isCorrect === 'true') o.classList.add('revealed');
+    });
+    updateHUD();
+  }
+
+  document.querySelectorAll('#langOptionsGrid .opt-btn').forEach(o => o.disabled = true);
+
+  setTimeout(() => {
+    if (state.lives <= 0) {
+      showGameOver(false);
+      return;
+    }
+    langRenderQuestion(langState.currentQIdx + 1);
+  }, isCorrect ? 700 : 1200);
+}
+
+/* ══════════════════════════════════════════
+   7. NUMERICAL EXERCISE
+============================================ */
+function generateNumQuestion() {
+  const kind = rnd(0, 2);
+  let qText, answer, spread;
+
+  if (kind === 0) {
+    // Arithmetic
+    const a = rnd(8, 45);
+    const b = rnd(5, 35);
+    const op = Math.random() < 0.6 ? '+' : '−';
+    qText = op === '+' ? `${a} + ${b} = ?` : `${Math.max(a,b)} − ${Math.min(a,b)} = ?`;
+    answer = op === '+' ? a + b : Math.abs(a - b);
+    spread = 6;
+  } else if (kind === 1) {
+    // Sequence
+    const start = rnd(2, 12);
+    const step = rnd(2, 8);
+    const seq = [start, start + step, start + 2 * step, start + 3 * step];
+    qText = seq.join(', ') + ', ?';
+    answer = start + 4 * step;
+    spread = Math.max(step + 2, 6);
+  } else {
+    // Multiplication
+    const a = rnd(2, 9);
+    const b = rnd(2, 9);
+    qText = `${a} × ${b} = ?`;
+    answer = a * b;
+    spread = 6;
+  }
+
+  return {
+    text: qText,
+    answer,
+    options: generateOptions(answer, spread)
+  };
+}
+
+function numRenderQuestion() {
+  if (state.currentIdx >= state.totalRounds) {
+    showGameOver(true);
+    return;
+  }
+
+  updateHUD();
+  renderPips(state.currentIdx);
+  setStatus(`${I18N[currentLang].qNumber} ${state.currentIdx + 1}`, '');
+
+  numState.currentQuestion = generateNumQuestion();
+  state.locked = false;
+
+  $('numQText').textContent = numState.currentQuestion.text;
+
+  const grid = $('numOptionsGrid');
+  grid.innerHTML = '';
+  numState.currentQuestion.options.forEach(val => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = val;
+    btn.dataset.value = val;
+    btn.addEventListener('click', () => onNumAnswer(val, btn));
+    grid.appendChild(btn);
+  });
+
+  startNumTimer();
+}
+
+function startNumTimer() {
+  stopNumTimer();
+  const ring = $('numTimerRing');
+  const num = $('numTimerNum');
+  const wrap = $('numTimerWrap');
+
+  numState.timeLeft = 15;
+  const C = 144.51;
+
+  ring.style.transition = 'none';
+  ring.style.strokeDashoffset = '0';
+  num.textContent = numState.timeLeft;
+  wrap.classList.remove('warning');
+
+  setTimeout(() => {
+    ring.style.transition = `stroke-dashoffset 15s linear`;
+    ring.style.strokeDashoffset = C;
+  }, 50);
+
+  numState.timerCountdown = setInterval(() => {
+    numState.timeLeft--;
+    num.textContent = Math.max(numState.timeLeft, 0);
+    if (numState.timeLeft <= 5) wrap.classList.add('warning');
+    if (numState.timeLeft <= 0) clearInterval(numState.timerCountdown);
+  }, 1000);
+
+  numState.timerInterval = setTimeout(() => {
+    clearInterval(numState.timerCountdown);
+    if (!state.locked && state.isPlaying) handleNumTimeout();
+  }, 15000);
+}
+
+function stopNumTimer() {
+  clearTimeout(numState.timerInterval);
+  clearInterval(numState.timerCountdown);
+  const ring = $('numTimerRing');
+  if (ring) {
+    ring.style.transition = 'none';
+    ring.style.strokeDashoffset = '0';
+  }
+}
+
+function onNumAnswer(val, btn) {
+  if (state.locked || !state.isPlaying) return;
+  state.locked = true;
+  stopNumTimer();
+
+  const isCorrect = val === numState.currentQuestion.answer;
+  const pip = pipsRow.children[state.currentIdx];
+
+  if (isCorrect) {
+    state.correctCount++;
+    state.score += 10;
+    btn.classList.add('correct');
+    if (pip) pip.classList.add('correct');
+    updateHUD();
+  } else {
+    state.wrongCount++;
+    state.lives--;
+    btn.classList.add('wrong');
+    if (pip) pip.classList.add('wrong');
+    document.querySelectorAll('#numOptionsGrid .opt-btn').forEach(o => {
+      if (parseInt(o.dataset.value) === numState.currentQuestion.answer) o.classList.add('revealed');
+    });
+    updateHUD();
+  }
+
+  document.querySelectorAll('#numOptionsGrid .opt-btn').forEach(o => o.disabled = true);
+
+  setTimeout(() => {
+    if (state.lives <= 0) {
+      showGameOver(false);
+      return;
+    }
+    state.currentIdx++;
+    numRenderQuestion();
+  }, isCorrect ? 600 : 1000);
+}
+
+function handleNumTimeout() {
+  if (state.locked) return;
+  state.locked = true;
+
+  state.wrongCount++;
+  state.lives--;
+  const pip = pipsRow.children[state.currentIdx];
+  if (pip) pip.classList.add('wrong');
+
+  document.querySelectorAll('#numOptionsGrid .opt-btn').forEach(o => {
+    if (parseInt(o.dataset.value) === numState.currentQuestion.answer) o.classList.add('revealed');
+    o.disabled = true;
+  });
+  updateHUD();
+
+  setTimeout(() => {
+    if (state.lives <= 0) {
+      showGameOver(false);
+      return;
+    }
+    state.currentIdx++;
+    numRenderQuestion();
+  }, 1000);
+}
+
+/* ============================================
+   MASTER ROUTER
+============================================ */
+async function startExercise() {
+  state.isPlaying = true;
+  state.gameActive = true;
+  state.currentIdx = 0;
+
+  await showCountdown();
+
+  switch (state.exerciseKey) {
+    case 'memory':
+      activateArea('gameMemory');
+      buildMemoryTiles();
+      memNextRound();
+      break;
+
+    case 'attention':
+      activateArea('gameAttention');
+      attnStart();
+      break;
+
+    case 'speed':
+      activateArea('gameSpeed');
+      speedRenderQuestion();
+      break;
+
+    case 'problem':
+      activateArea('gameProblem');
+      probRenderQuestion();
+      break;
+
+    case 'visual':
+      activateArea('gameVisual');
+      visRenderPuzzle();
+      break;
+
+    case 'language':
+      activateArea('gameLanguage');
+      langRenderStory();
+      break;
+
+    case 'numerical':
+      activateArea('gameNumerical');
+      numRenderQuestion();
+      break;
+
+    default:
+      activateArea('gameMemory');
+      buildMemoryTiles();
+      memNextRound();
+  }
+}
+
+/* ============================================
+   EVENTS
+============================================ */
+$('exitBtn').addEventListener('click', () => {
+  const msg = currentLang === 'en'
+    ? 'Exit exercise? Your progress will be lost.'
+    : 'هل تريد الخروج من التمرين؟ ستفقد تقدمك.';
+  if (confirm(msg)) {
+    window.location.href = 'exercise-instructions.html';
+  }
+});
+
+$('gameOverBtn').addEventListener('click', () => {
+  saveResultAndNext();
+});
+
+/* ============================================
+   INIT
+============================================ */
+loadExercise();
+updateHUD();
+renderPips(0);
+startExercise();
+</script>
+
+</body>
+</html>

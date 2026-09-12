@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#FAF8F3" />
+<title>Memento AI — Daily Check-in</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   DESIGN TOKENS
+============================================ */
+:root {
+  --c-primary: #0E7C7B;
+  --c-primary-light: #4DB6AC;
+  --c-secondary: #9B7EDE;
+  --c-blue: #5B9BD5;
+  --c-navy: #0F2C4C;
+  --c-slate: #5A6C7D;
+  --c-bg: #FAF8F3;
+  --c-card: #FFFFFF;
+  --c-border: #EAE6DE;
+  --c-error: #E57373;
+  --c-good: #4CAF50;
+  --c-mid: #FF9800;
+  --c-low: #E57373;
+
+  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
+  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+  --sh-glow: 0 20px 60px rgba(14, 124, 123, 0.18);
+  --sh-focus: 0 0 0 4px rgba(14, 124, 123, 0.12);
+
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+
+  --phone-w: 375px;
+  --phone-h: 812px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--f-en);
+  -webkit-font-smoothing: antialiased;
+  background: #E8E4DC;
+  overflow: hidden;
+}
+
+html[lang="ar"] body { font-family: var(--f-ar); }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ============================================
+   PHONE FRAME
+============================================ */
+.stage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
+    #E8E4DC;
+}
+
+.phone {
+  position: relative;
+  width: var(--phone-w);
+  height: var(--phone-h);
+  max-height: calc(100vh - 40px);
+  background: var(--c-bg);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 10px #1a1a1a,
+    0 0 0 12px #2a2a2a,
+    0 40px 80px rgba(0, 0, 0, 0.35),
+    0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 130px; height: 26px;
+  background: #1a1a1a;
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+}
+
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone {
+    width: 100vw; height: 100vh;
+    max-height: 100vh;
+    border-radius: 0; box-shadow: none;
+  }
+  .phone::before { display: none; }
+}
+
+/* ============================================
+   SCREEN
+============================================ */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.screen::-webkit-scrollbar { display: none; }
+
+.screen::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================
+   TOP BAR
+============================================ */
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 52px 22px 0;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  width: 38px; height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.back-btn:hover {
+  background: #fff;
+  border-color: rgba(14, 124, 123, 0.35);
+  transform: translateX(-2px);
+}
+
+html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
+
+.back-btn svg {
+  width: 16px; height: 16px;
+  stroke: var(--c-primary);
+  stroke-width: 2.4;
+  fill: none;
+}
+
+html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.lang-toggle:hover {
+  background: #fff;
+  border-color: rgba(14, 124, 123, 0.35);
+  transform: translateY(-1px);
+}
+
+.lang-toggle .lang-globe {
+  width: 14px; height: 14px;
+  stroke: var(--c-primary);
+  stroke-width: 2.2;
+  fill: none;
+}
+
+.lang-toggle .lang-label { color: var(--c-primary); }
+.lang-toggle .divider { color: var(--c-border); font-weight: 300; }
+.lang-toggle .lang-inactive { color: var(--c-slate); font-weight: 500; }
+
+/* ============================================
+   CONTENT
+============================================ */
+.content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  padding: 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Progress */
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s ease 0.15s forwards;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(14, 124, 123, 0.10);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--g-brand);
+  border-radius: var(--r-pill);
+  box-shadow: 0 0 10px rgba(14, 124, 123, 0.3);
+}
+
+html[dir="rtl"] .progress-fill { left: auto; right: 0; }
+
+.progress-text {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--c-primary);
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+html[lang="ar"] .progress-text { font-family: var(--f-ar); letter-spacing: 0; font-size: 12.5px; }
+
+/* Heading */
+.heading-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s ease 0.25s forwards;
+}
+
+.heading {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.4px;
+  line-height: 1.3;
+}
+
+html[lang="ar"] .heading { font-family: var(--f-ar); font-size: 21px; letter-spacing: 0; }
+
+.subheading {
+  font-size: 13px;
+  color: var(--c-slate);
+  line-height: 1.55;
+}
+
+html[lang="ar"] .subheading { font-family: var(--f-ar); font-size: 14px; }
+
+.optional-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: rgba(155, 126, 222, 0.12);
+  color: var(--c-secondary);
+  font-size: 10.5px;
+  font-weight: 600;
+  border-radius: var(--r-pill);
+  letter-spacing: 0.3px;
+  align-self: flex-start;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+html[lang="ar"] .optional-tag {
+  font-family: var(--f-ar);
+  text-transform: none;
+  font-size: 11.5px;
+  letter-spacing: 0;
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   QUESTION CARDS
+============================================ */
+.questions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.question {
+  background: #fff;
+  border-radius: var(--r-xl);
+  padding: 18px 16px 16px;
+  border: 1.5px solid var(--c-border);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.question:nth-child(1) { animation: fadeUp 0.6s ease 0.35s forwards; }
+.question:nth-child(2) { animation: fadeUp 0.6s ease 0.45s forwards; }
+.question:nth-child(3) { animation: fadeUp 0.6s ease 0.55s forwards; }
+
+.question.answered {
+  border-color: rgba(14, 124, 123, 0.2);
+}
+
+/* Question header */
+.q-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.q-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-md);
+  background: rgba(14, 124, 123, 0.07);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.q-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--c-primary);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s ease;
+}
+
+.q-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.q-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.2px;
+}
+
+html[lang="ar"] .q-title { font-family: var(--f-ar); font-size: 15.5px; letter-spacing: 0; }
+
+.q-sub {
+  font-size: 11.5px;
+  color: var(--c-slate);
+  line-height: 1.4;
+}
+
+html[lang="ar"] .q-sub { font-family: var(--f-ar); font-size: 12.5px; }
+
+/* Options */
+.q-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.q-opt {
+  padding: 12px 6px;
+  border: 1.5px solid var(--c-border);
+  background: #fff;
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.q-opt:hover {
+  border-color: rgba(14, 124, 123, 0.35);
+  transform: translateY(-2px);
+}
+
+.q-opt:active { transform: scale(0.96); }
+
+.q-opt .opt-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-border);
+  transition: all 0.3s ease;
+}
+
+.q-opt .opt-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--c-navy);
+  transition: color 0.3s ease;
+  letter-spacing: 0.1px;
+}
+
+html[lang="ar"] .q-opt .opt-label { font-family: var(--f-ar); font-size: 12.5px; letter-spacing: 0; }
+
+/* Option colors on selection */
+.q-opt.selected {
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+/* Poor / Low */
+.q-opt[data-value="low"].selected {
+  background: rgba(229, 115, 115, 0.12);
+  border-color: rgba(229, 115, 115, 0.4);
+}
+.q-opt[data-value="low"].selected .opt-dot { background: var(--c-low); box-shadow: 0 0 10px rgba(229, 115, 115, 0.5); }
+.q-opt[data-value="low"].selected .opt-label { color: var(--c-low); }
+
+/* Okay / Medium */
+.q-opt[data-value="mid"].selected {
+  background: rgba(255, 152, 0, 0.12);
+  border-color: rgba(255, 152, 0, 0.4);
+}
+.q-opt[data-value="mid"].selected .opt-dot { background: var(--c-mid); box-shadow: 0 0 10px rgba(255, 152, 0, 0.5); }
+.q-opt[data-value="mid"].selected .opt-label { color: var(--c-mid); }
+
+/* Good / High */
+.q-opt[data-value="high"].selected {
+  background: rgba(76, 175, 80, 0.12);
+  border-color: rgba(76, 175, 80, 0.4);
+}
+.q-opt[data-value="high"].selected .opt-dot { background: var(--c-good); box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); }
+.q-opt[data-value="high"].selected .opt-label { color: var(--c-good); }
+
+/* Pop animation on select */
+.q-opt.selected::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.5) 0%, transparent 70%);
+  animation: optPop 0.5s ease;
+}
+
+@keyframes optPop {
+  0%   { transform: scale(0.4); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* ============================================
+   INFO NOTE
+============================================ */
+.info-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(91, 155, 213, 0.08);
+  border-radius: var(--r-md);
+  border: 1px solid rgba(91, 155, 213, 0.15);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s ease 0.7s forwards;
+}
+
+.info-note svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--c-blue);
+  stroke-width: 2.2;
+  fill: none;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.info-text {
+  font-size: 11.5px;
+  color: var(--c-slate);
+  line-height: 1.55;
+}
+
+html[lang="ar"] .info-text { font-family: var(--f-ar); font-size: 12.5px; }
+
+/* ============================================
+   BOTTOM
+============================================ */
+.bottom {
+  position: relative;
+  z-index: 10;
+  padding: 16px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.btn-primary {
+  position: relative;
+  width: 100%;
+  padding: 17px 24px;
+  background: var(--g-brand);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.7s ease;
+}
+
+.btn-primary:hover::before { left: 100%; }
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(14, 124, 123, 0.35);
+}
+
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-primary .arrow {
+  width: 16px; height: 16px;
+  stroke: #fff;
+  stroke-width: 2.4;
+  fill: none;
+  transition: transform 0.3s ease;
+}
+
+html[dir="rtl"] .btn-primary .arrow { transform: scaleX(-1); }
+.btn-primary:hover .arrow { transform: translateX(4px); }
+html[dir="rtl"] .btn-primary:hover .arrow { transform: scaleX(-1) translateX(4px); }
+
+html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
+
+.btn-skip {
+  width: 100%;
+  padding: 12px;
+  color: var(--c-slate);
+  font-size: 13.5px;
+  font-weight: 500;
+  border-radius: var(--r-md);
+  transition: all 0.25s ease;
+  text-align: center;
+}
+
+.btn-skip:hover {
+  color: var(--c-primary);
+  background: rgba(14, 124, 123, 0.06);
+}
+
+html[lang="ar"] .btn-skip { font-family: var(--f-ar); font-size: 14.5px; }
+
+/* ============================================
+   REDUCED MOTION
+============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+
+      <!-- Top Bar -->
+      <div class="topbar">
+        <button class="back-btn" id="backBtn" aria-label="Back">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+          <svg class="lang-globe" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="lang-label" id="langCurrent">EN</span>
+          <span class="divider">|</span>
+          <span class="lang-inactive" id="langOther">ع</span>
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+
+        <!-- Progress -->
+        <div class="progress-wrap">
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+          </div>
+          <div class="progress-text" id="progressText">Step 3 of 3</div>
+        </div>
+
+        <!-- Heading -->
+        <div class="heading-wrap">
+          <h1 class="heading" id="heading">How are you feeling today?</h1>
+          <p class="subheading" id="subheading">A quick check-in helps us understand your performance context.</p>
+          <span class="optional-tag" id="optionalTag">Optional</span>
+        </div>
+
+        <!-- Questions -->
+        <div class="questions">
+
+          <!-- Sleep -->
+          <div class="question" data-q="sleep">
+            <div class="q-head">
+              <div class="q-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+              </div>
+              <div class="q-text">
+                <div class="q-title" id="qSleep">Sleep Quality</div>
+                <div class="q-sub"  id="qsSleep">How did you sleep last night?</div>
+              </div>
+            </div>
+            <div class="q-options" data-question="sleep">
+              <button class="q-opt" data-value="low">
+                <span class="opt-dot"></span>
+                <span class="opt-label" id="sleepLow">Poor</span>
+              </button>
+              <button class="q-opt" data-value="mid">
+                <span class="opt-dot"></span>
+                <span class="opt-label" id="sleepMid">Okay</span>
+              </button>
+              <button class="q-opt" data-value="high">
+                <span class="opt-dot"></span>
+                <span class="opt-label" id="sleepHigh">Good</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Stress -->
+          <div class="question" data-q="stress">
+            <div class="q-head">
+              <div class="q-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+              </div>
+              <div class="q-text">
+                <div class="q-title" id="qStress">Stress Level</div>
+                <div class="q-sub"  id="qsStress">How stressed do you feel right now?</div>
+              </div>
+            </div>
+            <div class="q-options" data-question="stress">
+              <button class="q-opt" data-value="low">
+                <span class="opt-dot"></span>
+                <span class="opt-label" id="stressLow">Low</span>
+              </button>
+              <button class="q-opt" data-value="mid">
+                <span class="opt-dot"></span>
+                <span class="opt-label" id="stressMid">Medium</span>
+              </button>
+              <button class="q-opt" data-value="high">
+                <span class="opt-dot"></span>
+                <span class="opt-label" id="stressHigh">High</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Energy -->
+          <div class="question" data-q="energy">
+            <div class="q-head">
+              <div class="q-icon">
+                <svg viewBox="0 0 24 24">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+              </div>
+              <div class="q-text">
+                <div class="q-title" id="qEnergy">Energy Level</div>
+                <div class="q-sub"  id="qsEnergy">How energetic do you feel?</div>
+              </div>
+            </div>
+            <div class="q-options" data-question="energy">
+              <button class="q-opt" data-value="low">
+                <span class="opt-dot"></span>
+                <span class="opt-label" id="energyLow">Low</span>
+              </button>
+              <button class="q-opt" data-value="mid">
+                <span class="opt-dot"></span>
+                <span class="opt-label" id="energyMid">Medium</span>
+              </button>
+              <button class="q-opt" data-value="high">
+                <span class="opt-dot"></span>
+                <span class="opt-label" id="energyHigh">High</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Info -->
+        <div class="info-note">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <div class="info-text" id="infoText">
+            This isn't a medical assessment. We'll just use it as context to help you understand your performance.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom -->
+      <div class="bottom">
+        <button class="btn-primary" id="continueBtn">
+          <span id="continueLabel">Continue</span>
+          <svg class="arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+        <button class="btn-skip" id="skipBtn">Skip for now</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   TRANSLATIONS
+============================================ */
+const I18N = {
+  en: {
+    progress: 'Step 3 of 3',
+    heading: 'How are you feeling today?',
+    subheading: 'A quick check-in helps us understand your performance context.',
+    optionalTag: 'Optional',
+
+    qSleep: 'Sleep Quality',
+    qsSleep: 'How did you sleep last night?',
+    qStress: 'Stress Level',
+    qsStress: 'How stressed do you feel right now?',
+    qEnergy: 'Energy Level',
+    qsEnergy: 'How energetic do you feel?',
+
+    sleepLow: 'Poor',   sleepMid: 'Okay',   sleepHigh: 'Good',
+    stressLow: 'Low',   stressMid: 'Medium', stressHigh: 'High',
+    energyLow: 'Low',   energyMid: 'Medium', energyHigh: 'High',
+
+    infoText: "This isn't a medical assessment. We'll just use it as context to help you understand your performance.",
+
+    continue: 'Continue',
+    skip: 'Skip for now'
+  },
+  ar: {
+    progress: 'الخطوة 3 من 3',
+    heading: 'كيف تشعر اليوم؟',
+    subheading: 'فحص سريع يساعدنا على فهم سياق أدائك.',
+    optionalTag: 'اختياري',
+
+    qSleep: 'جودة النوم',
+    qsSleep: 'كيف نمت الليلة الماضية؟',
+    qStress: 'مستوى التوتر',
+    qsStress: 'ما مستوى التوتر لديك الآن؟',
+    qEnergy: 'مستوى الطاقة',
+    qsEnergy: 'ما مستوى طاقتك الآن؟',
+
+    sleepLow: 'ضعيف',   sleepMid: 'متوسط',   sleepHigh: 'جيد',
+    stressLow: 'منخفض', stressMid: 'متوسط',  stressHigh: 'مرتفع',
+    energyLow: 'منخفض', energyMid: 'متوسط',  energyHigh: 'مرتفع',
+
+    infoText: 'هذا ليس تقييمًا طبيًا. سنستخدمه فقط كسياق يساعدك على فهم أدائك.',
+
+    continue: 'متابعة',
+    skip: 'تخطي الآن'
+  }
+};
+
+/* ============================================
+   LANGUAGE
+============================================ */
+const STORAGE_KEY = 'memento_lang';
+let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+
+const htmlEl      = document.documentElement;
+const langCurrEl  = document.getElementById('langCurrent');
+const langOtherEl = document.getElementById('langOther');
+const langToggle  = document.getElementById('langToggle');
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+  htmlEl.lang = lang;
+  htmlEl.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+
+  langCurrEl.textContent  = lang === 'en' ? 'EN' : 'ع';
+  langOtherEl.textContent = lang === 'en' ? 'ع'  : 'EN';
+
+  const t = I18N[lang];
+
+  document.getElementById('progressText').textContent = t.progress;
+  document.getElementById('heading').textContent      = t.heading;
+  document.getElementById('subheading').textContent   = t.subheading;
+  document.getElementById('optionalTag').textContent  = t.optionalTag;
+
+  document.getElementById('qSleep').textContent   = t.qSleep;
+  document.getElementById('qsSleep').textContent  = t.qsSleep;
+  document.getElementById('qStress').textContent  = t.qStress;
+  document.getElementById('qsStress').textContent = t.qsStress;
+  document.getElementById('qEnergy').textContent  = t.qEnergy;
+  document.getElementById('qsEnergy').textContent = t.qsEnergy;
+
+  document.getElementById('sleepLow').textContent   = t.sleepLow;
+  document.getElementById('sleepMid').textContent   = t.sleepMid;
+  document.getElementById('sleepHigh').textContent  = t.sleepHigh;
+
+  document.getElementById('stressLow').textContent  = t.stressLow;
+  document.getElementById('stressMid').textContent  = t.stressMid;
+  document.getElementById('stressHigh').textContent = t.stressHigh;
+
+  document.getElementById('energyLow').textContent  = t.energyLow;
+  document.getElementById('energyMid').textContent  = t.energyMid;
+  document.getElementById('energyHigh').textContent = t.energyHigh;
+
+  document.getElementById('infoText').textContent     = t.infoText;
+  document.getElementById('continueLabel').textContent = t.continue;
+  document.getElementById('skipBtn').textContent      = t.skip;
+}
+
+langToggle.addEventListener('click', () => {
+  applyLanguage(currentLang === 'en' ? 'ar' : 'en');
+});
+
+/* ============================================
+   STATE
+============================================ */
+const state = {
+  sleep: null,
+  stress: null,
+  energy: null
+};
+
+/* ============================================
+   OPTIONS
+============================================ */
+document.querySelectorAll('.q-options').forEach(group => {
+  const question = group.dataset.question;
+  const options = group.querySelectorAll('.q-opt');
+
+  options.forEach(opt => {
+    opt.addEventListener('click', () => {
+      options.forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      state[question] = opt.dataset.value;
+
+      // Mark question as answered
+      const questionEl = group.closest('.question');
+      questionEl.classList.add('answered');
+
+      // Update continue button label
+      updateContinueLabel();
+    });
+  });
+});
+
+/* ============================================
+   UPDATE CONTINUE LABEL
+============================================ */
+function updateContinueLabel() {
+  const answered = Object.values(state).filter(v => v !== null).length;
+  const label = document.getElementById('continueLabel');
+
+  if (answered === 0) {
+    label.textContent = I18N[currentLang].skip;
+  } else if (answered === 3) {
+    label.textContent = I18N[currentLang].continue;
+  } else {
+    label.textContent = I18N[currentLang].continue;
+  }
+}
+
+/* ============================================
+   CONTINUE
+============================================ */
+document.getElementById('continueBtn').addEventListener('click', () => {
+  // حفظ الحالة
+  localStorage.setItem('memento_daily_context', JSON.stringify(state));
+  localStorage.setItem('memento_daily_context_date', new Date().toISOString().split('T')[0]);
+
+  const btn = document.getElementById('continueBtn');
+  btn.style.transform = 'scale(0.96)';
+  setTimeout(() => { btn.style.transform = ''; }, 150);
+
+  setTimeout(() => {
+    window.location.href = 'assessment-intro.html';
+  }, 250);
+});
+
+/* ============================================
+   SKIP
+============================================ */
+document.getElementById('skipBtn').addEventListener('click', () => {
+  // مسح أي بيانات
+  localStorage.removeItem('memento_daily_context');
+  window.location.href = 'assessment-intro.html';
+});
+
+/* ============================================
+   BACK
+============================================ */
+document.getElementById('backBtn').addEventListener('click', () => {
+  window.location.href = 'profile-setup.html';
+});
+
+/* ============================================
+   INIT
+============================================ */
+applyLanguage(currentLang);
+updateContinueLabel();
+</script>
+
+</body>
+</html>

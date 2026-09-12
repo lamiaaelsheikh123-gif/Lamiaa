@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#FAF8F3" />
+<title>Memento AI — Add Item</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --c-primary: #0E7C7B;
+  --c-primary-light: #4DB6AC;
+  --c-secondary: #9B7EDE;
+  --c-blue: #5B9BD5;
+  --c-navy: #0F2C4C;
+  --c-slate: #5A6C7D;
+  --c-bg: #FAF8F3;
+  --c-card: #FFFFFF;
+  --c-border: #EAE6DE;
+  --c-error: #E57373;
+  --c-success: #4CAF50;
+
+  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
+  --g-care: linear-gradient(135deg, #9B7EDE 0%, #5B9BD5 100%);
+  --g-people: linear-gradient(135deg, #E8A0BF, #9B7EDE);
+  --g-places: linear-gradient(135deg, #0E7C7B, #4DB6AC);
+  --g-events: linear-gradient(135deg, #FF9800, #FFB74D);
+  --g-things: linear-gradient(135deg, #5B9BD5, #4DB6AC);
+  --g-dates: linear-gradient(135deg, #9B7EDE, #5B9BD5);
+
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+  --sh-focus: 0 0 0 4px rgba(155, 126, 222, 0.15);
+
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+
+  --phone-w: 375px;
+  --phone-h: 812px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--f-en);
+  -webkit-font-smoothing: antialiased;
+  background: #E8E4DC;
+  overflow: hidden;
+}
+
+html[lang="ar"] body { font-family: var(--f-ar); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, textarea, select { font-family: inherit; }
+
+/* PHONE FRAME */
+.stage {
+  width: 100vw; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
+    #E8E4DC;
+}
+
+.phone {
+  position: relative;
+  width: var(--phone-w);
+  height: var(--phone-h);
+  max-height: calc(100vh - 40px);
+  background: var(--c-bg);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 10px #1a1a1a,
+    0 0 0 12px #2a2a2a,
+    0 40px 80px rgba(0, 0, 0, 0.35),
+    0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 130px; height: 26px;
+  background: #1a1a1a;
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+}
+
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; }
+  .phone::before { display: none; }
+}
+
+/* SCREEN */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  overflow: hidden;
+}
+
+.screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(155, 126, 222, 0.10), transparent 45%),
+    radial-gradient(circle at 80% 85%, rgba(91, 155, 213, 0.08), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* TOP BAR */
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 52px 22px 0;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(155,126,222,0.2);
+  box-shadow: 0 4px 14px rgba(15,44,76,0.05);
+  transition: all 0.25s ease;
+}
+
+.back-btn:hover {
+  background: #fff;
+  border-color: rgba(155,126,222,0.5);
+  transform: translateX(-2px);
+}
+
+html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
+
+.back-btn svg { width: 16px; height: 16px; stroke: var(--c-secondary); stroke-width: 2.4; fill: none; }
+html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
+
+.lang-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(155,126,222,0.2);
+  border-radius: var(--r-pill);
+  font-size: 12px; font-weight: 600;
+  color: var(--c-navy);
+  box-shadow: 0 4px 14px rgba(15,44,76,0.05);
+  transition: all 0.25s ease;
+}
+
+.lang-toggle:hover {
+  background: #fff;
+  border-color: rgba(155,126,222,0.5);
+  transform: translateY(-1px);
+}
+
+.lang-toggle .lang-globe { width: 14px; height: 14px; stroke: var(--c-secondary); stroke-width: 2.2; fill: none; }
+.lang-toggle .lang-label { color: var(--c-secondary); }
+.lang-toggle .divider { color: var(--c-border); }
+.lang-toggle .lang-inactive { color: var(--c-slate); }
+
+/* CONTENT */
+.content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  min-height: 0;
+}
+
+.content::-webkit-scrollbar { display: none; }
+
+/* HEADER */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.5s ease 0.1s forwards;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  align-self: flex-start;
+  box-shadow: 0 6px 16px rgba(155, 126, 222, 0.3);
+}
+
+.header-badge.people { background: var(--g-people); }
+.header-badge.places { background: var(--g-places); }
+.header-badge.events { background: var(--g-events); }
+.header-badge.things { background: var(--g-things); }
+.header-badge.dates  { background: var(--g-dates); }
+
+.header-badge svg {
+  width: 13px; height: 13px;
+  stroke: #fff;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+html[lang="ar"] .header-badge {
+  font-family: var(--f-ar);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -0.4px;
+  line-height: 1.25;
+}
+
+html[lang="ar"] .header-title { font-family: var(--f-ar); font-size: 23px; letter-spacing: 0; }
+
+.header-sub {
+  font-size: 13px;
+  color: var(--c-slate);
+  line-height: 1.55;
+}
+
+html[lang="ar"] .header-sub { font-family: var(--f-ar); font-size: 14px; }
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* PHOTO UPLOAD */
+.photo-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.2s forwards;
+}
+
+.photo-btn {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: rgba(155, 126, 222, 0.08);
+  border: 2px dashed rgba(155, 126, 222, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-btn:hover {
+  background: rgba(155, 126, 222, 0.15);
+  border-color: rgba(155, 126, 222, 0.7);
+  transform: scale(1.03);
+}
+
+.photo-btn:active { transform: scale(0.97); }
+
+.photo-btn svg {
+  width: 26px; height: 26px;
+  stroke: var(--c-secondary);
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.photo-btn .photo-text {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--c-secondary);
+  letter-spacing: 0.3px;
+  text-align: center;
+  padding: 0 8px;
+}
+
+html[lang="ar"] .photo-btn .photo-text { font-family: var(--f-ar); font-size: 11.5px; letter-spacing: 0; }
+
+.photo-btn.has-photo {
+  border-style: solid;
+  border-color: transparent;
+  padding: 0;
+}
+
+.photo-btn.has-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-btn.has-photo svg,
+.photo-btn.has-photo .photo-text { display: none; }
+
+.photo-clear {
+  font-size: 11.5px;
+  color: var(--c-error);
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: rgba(229, 115, 115, 0.1);
+  transition: all 0.2s ease;
+  display: none;
+}
+
+.photo-clear.show { display: inline-block; }
+.photo-clear:hover { background: rgba(229, 115, 115, 0.2); }
+
+html[lang="ar"] .photo-clear { font-family: var(--f-ar); font-size: 12.5px; }
+
+.photo-hint {
+  font-size: 11px;
+  color: var(--c-slate);
+  text-align: center;
+  font-weight: 500;
+}
+
+html[lang="ar"] .photo-hint { font-family: var(--f-ar); font-size: 12px; }
+
+/* FORM */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 0.4s ease forwards;
+}
+
+.field:nth-child(1) { animation-delay: 0.3s; }
+.field:nth-child(2) { animation-delay: 0.37s; }
+.field:nth-child(3) { animation-delay: 0.44s; }
+.field:nth-child(4) { animation-delay: 0.51s; }
+
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.2px;
+  padding-inline-start: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.field-label .required {
+  color: var(--c-error);
+  font-weight: 800;
+}
+
+.field-label .optional {
+  color: var(--c-slate);
+  font-weight: 500;
+  font-size: 10.5px;
+  font-style: italic;
+}
+
+html[lang="ar"] .field-label { font-family: var(--f-ar); font-size: 13px; }
+
+.text-input-wrap {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.text-input-wrap:focus-within {
+  border-color: var(--c-secondary);
+  box-shadow: var(--sh-focus);
+}
+
+.text-input-wrap.error {
+  border-color: var(--c-error);
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-6px); }
+  75%      { transform: translateX(6px); }
+}
+
+.text-input-wrap .input-icon {
+  width: 18px; height: 18px;
+  margin-inline-start: 14px;
+  stroke: var(--c-slate);
+  stroke-width: 2;
+  fill: none;
+  flex-shrink: 0;
+  transition: stroke 0.25s ease;
+}
+
+.text-input-wrap:focus-within .input-icon { stroke: var(--c-secondary); }
+
+.text-input {
+  flex: 1;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-navy);
+  border: none;
+  outline: none;
+  background: transparent;
+  letter-spacing: 0.1px;
+}
+
+.text-input::placeholder {
+  color: #B0B8C1;
+  font-weight: 400;
+}
+
+html[lang="ar"] .text-input {
+  font-family: var(--f-ar);
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+/* TEXTAREA */
+.textarea-wrap {
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.textarea-wrap:focus-within {
+  border-color: var(--c-secondary);
+  box-shadow: var(--sh-focus);
+}
+
+.textarea-input {
+  width: 100%;
+  padding: 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-navy);
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: none;
+  min-height: 70px;
+  letter-spacing: 0.1px;
+  line-height: 1.5;
+}
+
+.textarea-input::placeholder {
+  color: #B0B8C1;
+  font-weight: 400;
+}
+
+html[lang="ar"] .textarea-input {
+  font-family: var(--f-ar);
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+/* DATE INPUT */
+.date-input {
+  width: 100%;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-navy);
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  outline: none;
+  transition: all 0.25s ease;
+  letter-spacing: 0.1px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.date-input:focus {
+  border-color: var(--c-secondary);
+  box-shadow: var(--sh-focus);
+}
+
+html[lang="ar"] .date-input { font-family: var(--f-ar); font-size: 15px; }
+
+/* RELATIONSHIP CHIPS */
+.rel-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rel-chip {
+  padding: 10px 14px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-pill);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-navy);
+  transition: all 0.28s cubic-bezier(0.65, 0, 0.35, 1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.2px;
+}
+
+html[lang="ar"] .rel-chip { font-family: var(--f-ar); font-size: 13.5px; letter-spacing: 0; }
+
+.rel-chip:hover {
+  border-color: rgba(155, 126, 222, 0.4);
+  transform: translateY(-2px);
+}
+
+.rel-chip.active {
+  background: var(--g-care);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 8px 20px rgba(155, 126, 222, 0.35);
+  transform: translateY(-2px);
+}
+
+.rel-chip.active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+  animation: chipPop 0.5s ease;
+}
+
+@keyframes chipPop {
+  0%   { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* ERROR */
+.err-msg {
+  font-size: 11.5px;
+  color: var(--c-error);
+  font-weight: 500;
+  padding-inline-start: 4px;
+  min-height: 0;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.field.has-error .err-msg {
+  min-height: 16px;
+  max-height: 30px;
+  opacity: 1;
+}
+
+html[lang="ar"] .err-msg { font-family: var(--f-ar); font-size: 12.5px; }
+
+/* BOTTOM */
+.bottom {
+  position: relative;
+  z-index: 10;
+  padding: 20px 24px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.btn-primary {
+  position: relative;
+  width: 100%;
+  padding: 17px 24px;
+  background: var(--g-care);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(155, 126, 222, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.25s ease, opacity 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.7s ease;
+}
+
+.btn-primary:hover::before { left: 100%; }
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(155, 126, 222, 0.4);
+}
+
+.btn-primary:active:not(:disabled) { transform: scale(0.97); }
+
+.btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-primary svg {
+  width: 16px; height: 16px;
+  stroke: #fff;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.btn-primary .check-icon { display: none; }
+.btn-primary .arrow-icon { display: block; }
+.btn-primary .arrow-icon.rtl { transform: scaleX(-1); }
+
+html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
+
+.btn-cancel {
+  width: 100%;
+  padding: 12px;
+  color: var(--c-slate);
+  font-size: 13.5px;
+  font-weight: 500;
+  border-radius: var(--r-md);
+  transition: all 0.25s ease;
+  text-align: center;
+}
+
+.btn-cancel:hover {
+  color: var(--c-secondary);
+  background: rgba(155, 126, 222, 0.06);
+}
+
+html[lang="ar"] .btn-cancel { font-family: var(--f-ar); font-size: 14.5px; }
+
+/* HIDDEN FILE INPUT */
+.file-input { display: none; }
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+
+      <!-- Top Bar -->
+      <div class="topbar">
+        <button class="back-btn" id="backBtn" aria-label="Back">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+          <svg class="lang-globe" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="lang-label" id="langCurrent">EN</span>
+          <span class="divider">|</span>
+          <span class="lang-inactive" id="langOther">ع</span>
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+
+        <!-- Header -->
+        <div class="header">
+          <div class="header-badge" id="headerBadge">
+            <svg viewBox="0 0 24 24" id="badgeIcon">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span id="badgeText">Add Person</span>
+          </div>
+          <h1 class="header-title" id="headerTitle">New Person</h1>
+          <p class="header-sub" id="headerSub">Add someone important to their memory bank.</p>
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="photo-upload" id="photoUploadSection">
+          <button class="photo-btn" id="photoBtn" type="button">
+            <svg viewBox="0 0 24 24">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+              <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            <span class="photo-text" id="photoText">Add Photo</span>
+          </button>
+          <button class="photo-clear" id="photoClear" type="button">Remove photo</button>
+          <div class="photo-hint" id="photoHint">Optional — a photo makes it memorable</div>
+          <input type="file" class="file-input" id="photoInput" accept="image/*">
+        </div>
+
+        <!-- Form -->
+        <form class="form" id="itemForm" novalidate>
+
+          <!-- Name -->
+          <div class="field" data-field="name">
+            <label class="field-label">
+              <span id="labelName">Name</span>
+              <span class="required">*</span>
+            </label>
+            <div class="text-input-wrap" id="nameWrap">
+              <svg class="input-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <input type="text" class="text-input" id="nameInput" placeholder="" autocomplete="off" />
+            </div>
+            <div class="err-msg" id="errName"></div>
+          </div>
+
+          <!-- Relationship (Person only) -->
+          <div class="field" data-field="relationship" id="fieldRelationship" style="display:none;">
+            <label class="field-label">
+              <span id="labelRelationship">Relationship to You</span>
+              <span class="required">*</span>
+            </label>
+            <div class="rel-chips" id="relChips">
+              <button class="rel-chip" type="button" data-rel="parent">👨‍🦳 <span id="relParent">Parent</span></button>
+              <button class="rel-chip" type="button" data-rel="grandparent">👴 <span id="relGrandparent">Grandparent</span></button>
+              <button class="rel-chip" type="button" data-rel="child">👶 <span id="relChild">Child</span></button>
+              <button class="rel-chip" type="button" data-rel="sibling">🧑 <span id="relSibling">Sibling</span></button>
+              <button class="rel-chip" type="button" data-rel="spouse">💑 <span id="relSpouse">Spouse</span></button>
+              <button class="rel-chip" type="button" data-rel="friend">🤝 <span id="relFriend">Friend</span></button>
+              <button class="rel-chip" type="button" data-rel="other">👤 <span id="relOther">Other</span></button>
+            </div>
+            <div class="err-msg" id="errRelationship"></div>
+          </div>
+
+          <!-- Date (Event & Date only) -->
+          <div class="field" data-field="date" id="fieldDate" style="display:none;">
+            <label class="field-label">
+              <span id="labelDate">Date</span>
+              <span class="optional" id="dateOptional">(optional)</span>
+            </label>
+            <input type="date" class="date-input" id="dateInput" />
+            <div class="err-msg" id="errDate"></div>
+          </div>
+
+          <!-- Description (Place, Event, Thing) -->
+          <div class="field" data-field="description" id="fieldDescription" style="display:none;">
+            <label class="field-label">
+              <span id="labelDescription">Description</span>
+              <span class="optional" id="descOptional">(optional)</span>
+            </label>
+            <div class="textarea-wrap">
+              <textarea class="textarea-input" id="descInput" placeholder=""></textarea>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- Bottom -->
+      <div class="bottom">
+        <button class="btn-primary" id="saveBtn" type="submit">
+          <span id="saveLabel">Save</span>
+          <svg class="arrow-icon" id="saveIcon" viewBox="0 0 24 24">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+        <button class="btn-cancel" id="cancelBtn">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   TYPES CONFIG
+============================================ */
+const TYPES = {
+  person: {
+    categoryKey: 'people',
+    storageKey: 'memento_bank_people',
+    badgeClass: 'people',
+    icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>`,
+    namePlaceholder: 'e.g. Sara',
+    descPlaceholder: '',
+    hasRelationship: true,
+    hasDate: false,
+    hasDescription: false
+  },
+  place: {
+    categoryKey: 'places',
+    storageKey: 'memento_bank_places',
+    badgeClass: 'places',
+    icon: `<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>`,
+    namePlaceholder: 'e.g. Home, The Park',
+    descPlaceholder: 'A short description of this place...',
+    hasRelationship: false,
+    hasDate: false,
+    hasDescription: true
+  },
+  event: {
+    categoryKey: 'events',
+    storageKey: 'memento_bank_events',
+    badgeClass: 'events',
+    icon: `<path d="M12 2 L15 9 L22 9 L16 14 L18 21 L12 17 L6 21 L8 14 L2 9 L9 9 Z"></path>`,
+    namePlaceholder: 'e.g. Wedding Anniversary',
+    descPlaceholder: 'What happened? Who was there?',
+    hasRelationship: false,
+    hasDate: true,
+    hasDescription: true
+  },
+  thing: {
+    categoryKey: 'things',
+    storageKey: 'memento_bank_things',
+    badgeClass: 'things',
+    icon: `<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>`,
+    namePlaceholder: 'e.g. Favorite song, Tea',
+    descPlaceholder: 'Why is it special?',
+    hasRelationship: false,
+    hasDate: false,
+    hasDescription: true
+  },
+  date: {
+    categoryKey: 'dates',
+    storageKey: 'memento_bank_dates',
+    badgeClass: 'dates',
+    icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>`,
+    namePlaceholder: 'e.g. Birthday, Wedding Day',
+    descPlaceholder: '',
+    hasRelationship: false,
+    hasDate: true,
+    hasDescription: false
+  }
+};
+
+/* ============================================
+   TRANSLATIONS
+============================================ */
+const I18N = {
+  en: {
+    // Person
+    badgePerson: 'Add Person',
+    titlePerson: 'New Person',
+    subPerson: 'Add someone important to their memory bank.',
+
+    // Place
+    badgePlace: 'Add Place',
+    titlePlace: 'New Place',
+    subPlace: 'Add an important place they know and love.',
+
+    // Event
+    badgeEvent: 'Add Event',
+    titleEvent: 'New Event',
+    subEvent: 'Add a meaningful moment in their life.',
+
+    // Thing
+    badgeThing: 'Add Favorite',
+    titleThing: 'New Favorite',
+    subThing: 'Add something they love or enjoy.',
+
+    // Date
+    badgeDate: 'Add Date',
+    titleDate: 'New Date',
+    subDate: 'Add an important date to remember.',
+
+    // Common
+    photoText: 'Add Photo',
+    photoHint: 'Optional — a photo makes it memorable',
+    removePhoto: 'Remove photo',
+
+    labelName: 'Name',
+    labelRelationship: 'Relationship to You',
+    labelDate: 'Date',
+    labelDescription: 'Description',
+
+    optional: '(optional)',
+
+    relParent: 'Parent',
+    relGrandparent: 'Grandparent',
+    relChild: 'Child',
+    relSibling: 'Sibling',
+    relSpouse: 'Spouse',
+    relFriend: 'Friend',
+    relOther: 'Other',
+
+    save: 'Save',
+    cancel: 'Cancel',
+
+    errName: 'Please enter a name',
+    errRelationship: 'Please select a relationship'
+  },
+  ar: {
+    badgePerson: 'إضافة شخص',
+    titlePerson: 'شخص جديد',
+    subPerson: 'أضف شخصًا مهمًا إلى بنك ذكرياتهم.',
+
+    badgePlace: 'إضافة مكان',
+    titlePlace: 'مكان جديد',
+    subPlace: 'أضف مكانًا مهمًا يعرفونه ويحبونه.',
+
+    badgeEvent: 'إضافة مناسبة',
+    titleEvent: 'مناسبة جديدة',
+    subEvent: 'أضف لحظة مهمة في حياتهم.',
+
+    badgeThing: 'إضافة مفضل',
+    titleThing: 'مفضل جديد',
+    subThing: 'أضف شيئًا يحبونه.',
+
+    badgeDate: 'إضافة تاريخ',
+    titleDate: 'تاريخ جديد',
+    subDate: 'أضف تاريخًا مهمًا للتذكر.',
+
+    photoText: 'إضافة صورة',
+    photoHint: 'اختياري — الصورة تجعله لا يُنسى',
+    removePhoto: 'إزالة الصورة',
+
+    labelName: 'الاسم',
+    labelRelationship: 'العلاقة بك',
+    labelDate: 'التاريخ',
+    labelDescription: 'الوصف',
+
+    optional: '(اختياري)',
+
+    relParent: 'والد/والدة',
+    relGrandparent: 'جد/جدة',
+    relChild: 'ابن/ابنة',
+    relSibling: 'أخ/أخت',
+    relSpouse: 'زوج/زوجة',
+    relFriend: 'صديق',
+    relOther: 'أخرى',
+
+    save: 'حفظ',
+    cancel: 'إلغاء',
+
+    errName: 'الرجاء إدخال الاسم',
+    errRelationship: 'الرجاء اختيار العلاقة'
+  }
+};
+
+/* ============================================
+   STATE
+============================================ */
+let currentType = 'person';
+let currentConfig = TYPES.person;
+let photoData = null;
+let selectedRelationship = null;
+
+/* ============================================
+   LANGUAGE
+============================================ */
+const STORAGE_KEY = 'memento_lang';
+let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+const htmlEl = document.documentElement;
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+  htmlEl.lang = lang;
+  htmlEl.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+  document.getElementById('langCurrent').textContent = lang === 'en' ? 'EN' : 'ع';
+  document.getElementById('langOther').textContent = lang === 'en' ? 'ع' : 'EN';
+
+  // Rotate arrow in RTL
+  const arrow = document.getElementById('saveIcon');
+  if (lang === 'ar') {
+    arrow.style.transform = 'scaleX(-1)';
+  } else {
+    arrow.style.transform = '';
+  }
+
+  renderText();
+}
+
+document.getElementById('langToggle').addEventListener('click', () => {
+  applyLanguage(currentLang === 'en' ? 'ar' : 'en');
+});
+
+/* ============================================
+   RENDER TEXT
+============================================ */
+function renderText() {
+  const t = I18N[currentLang];
+  const typeKey = currentType.charAt(0).toUpperCase() + currentType.slice(1);
+
+  // Badge + Title + Sub
+  document.getElementById('badgeText').textContent = t['badge' + typeKey];
+  document.getElementById('headerTitle').textContent = t['title' + typeKey];
+  document.getElementById('headerSub').textContent = t['sub' + typeKey];
+
+  // Badge icon
+  document.getElementById('badgeIcon').innerHTML = currentConfig.icon;
+  document.getElementById('headerBadge').className = 'header-badge ' + currentConfig.badgeClass;
+
+  // Photo
+  document.getElementById('photoText').textContent = t.photoText;
+  document.getElementById('photoHint').textContent = t.photoHint;
+  document.getElementById('photoClear').textContent = t.removePhoto;
+
+  // Name
+  document.getElementById('labelName').textContent = t.labelName;
+  document.getElementById('nameInput').placeholder = currentConfig.namePlaceholder;
+
+  // Relationship (if Person)
+  if (currentConfig.hasRelationship) {
+    document.getElementById('labelRelationship').textContent = t.labelRelationship;
+    document.getElementById('relParent').textContent = t.relParent;
+    document.getElementById('relGrandparent').textContent = t.relGrandparent;
+    document.getElementById('relChild').textContent = t.relChild;
+    document.getElementById('relSibling').textContent = t.relSibling;
+    document.getElementById('relSpouse').textContent = t.relSpouse;
+    document.getElementById('relFriend').textContent = t.relFriend;
+    document.getElementById('relOther').textContent = t.relOther;
+  }
+
+  // Date
+  if (currentConfig.hasDate) {
+    document.getElementById('labelDate').textContent = t.labelDate;
+    document.getElementById('dateOptional').textContent = t.optional;
+  }
+
+  // Description
+  if (currentConfig.hasDescription) {
+    document.getElementById('labelDescription').textContent = t.labelDescription;
+    document.getElementById('descOptional').textContent = t.optional;
+    document.getElementById('descInput').placeholder = currentConfig.descPlaceholder;
+  }
+
+  // Save / Cancel
+  document.getElementById('saveLabel').textContent = t.save;
+  document.getElementById('cancelBtn').textContent = t.cancel;
+
+  // Errors
+  if (document.querySelector('[data-field="name"]').classList.contains('has-error')) {
+    document.getElementById('errName').textContent = t.errName;
+  }
+  if (document.querySelector('[data-field="relationship"]').classList.contains('has-error')) {
+    document.getElementById('errRelationship').textContent = t.errRelationship;
+  }
+}
+
+/* ============================================
+   LOAD TYPE
+============================================ */
+function loadType() {
+  const savedType = localStorage.getItem('memento_add_type') || 'person';
+
+  if (TYPES[savedType]) {
+    currentType = savedType;
+    currentConfig = TYPES[savedType];
+  } else {
+    currentType = 'person';
+    currentConfig = TYPES.person;
+  }
+
+  console.log('🎯 Add type:', currentType);
+
+  // Show/hide conditional fields
+  document.getElementById('fieldRelationship').style.display =
+    currentConfig.hasRelationship ? 'flex' : 'none';
+  document.getElementById('fieldDate').style.display =
+    currentConfig.hasDate ? 'flex' : 'none';
+  document.getElementById('fieldDescription').style.display =
+    currentConfig.hasDescription ? 'flex' : 'none';
+
+  // Date field default value = today
+  if (currentConfig.hasDate) {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('dateInput').value = today;
+  }
+}
+
+/* ============================================
+   PHOTO UPLOAD
+============================================ */
+const photoBtn = document.getElementById('photoBtn');
+const photoInput = document.getElementById('photoInput');
+const photoClear = document.getElementById('photoClear');
+
+photoBtn.addEventListener('click', () => photoInput.click());
+
+photoInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 2 * 1024 * 1024) {
+    alert(currentLang === 'en'
+      ? 'Image is too large. Max 2MB.'
+      : 'الصورة كبيرة. الحد الأقصى 2 ميجا.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    photoData = ev.target.result;
+    photoBtn.innerHTML = `<img src="${photoData}" alt="">`;
+    photoBtn.classList.add('has-photo');
+    photoClear.classList.add('show');
+  };
+  reader.readAsDataURL(file);
+});
+
+photoClear.addEventListener('click', (e) => {
+  e.stopPropagation();
+  photoData = null;
+  photoInput.value = '';
+  photoBtn.classList.remove('has-photo');
+  photoBtn.innerHTML = `
+    <svg viewBox="0 0 24 24">
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+      <circle cx="12" cy="13" r="4"></circle>
+    </svg>
+    <span class="photo-text" id="photoText">${I18N[currentLang].photoText}</span>
+  `;
+  photoClear.classList.remove('show');
+});
+
+/* ============================================
+   RELATIONSHIP CHIPS
+============================================ */
+document.querySelectorAll('.rel-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.rel-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    selectedRelationship = chip.dataset.rel;
+    clearError('relationship');
+  });
+});
+
+/* ============================================
+   ERROR HELPERS
+============================================ */
+function showError(field, key) {
+  const fieldEl = document.querySelector(`[data-field="${field}"]`);
+  fieldEl.classList.add('has-error');
+
+  if (field === 'name') {
+    document.getElementById('nameWrap').classList.add('error');
+    document.getElementById('errName').textContent = I18N[currentLang][key];
+  }
+  if (field === 'relationship') {
+    document.getElementById('errRelationship').textContent = I18N[currentLang][key];
+  }
+}
+
+function clearError(field) {
+  const fieldEl = document.querySelector(`[data-field="${field}"]`);
+  if (!fieldEl) return;
+  fieldEl.classList.remove('has-error');
+
+  if (field === 'name') {
+    document.getElementById('nameWrap').classList.remove('error');
+    document.getElementById('errName').textContent = '';
+  }
+  if (field === 'relationship') {
+    document.getElementById('errRelationship').textContent = '';
+  }
+}
+
+/* Clear error on input */
+document.getElementById('nameInput').addEventListener('input', () => {
+  clearError('name');
+});
+
+/* ============================================
+   SAVE
+============================================ */
+document.getElementById('saveBtn').addEventListener('click', saveItem);
+document.getElementById('itemForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  saveItem();
+});
+
+function saveItem() {
+  const t = I18N[currentLang];
+  const name = document.getElementById('nameInput').value.trim();
+
+  // Validate name
+  if (name.length < 1) {
+    showError('name', 'errName');
+    return;
+  }
+
+  // Validate relationship if required
+  if (currentConfig.hasRelationship && !selectedRelationship) {
+    showError('relationship', 'errRelationship');
+    return;
+  }
+
+  // Build item
+  const item = {
+    name,
+    photo: photoData || null
+  };
+
+  // Add relationship (Person)
+  if (currentConfig.hasRelationship && selectedRelationship) {
+    const relKey = 'rel' + selectedRelationship.charAt(0).toUpperCase() + selectedRelationship.slice(1);
+    item.meta = I18N[currentLang][relKey] || selectedRelationship;
+    item.relationship = selectedRelationship;
+  }
+
+  // Add date (Event / Date)
+  if (currentConfig.hasDate) {
+    const dateVal = document.getElementById('dateInput').value;
+    if (dateVal) {
+      item.date = dateVal;
+      item.meta = formatDate(dateVal);
+    }
+  }
+
+  // Add description (Place / Event / Thing)
+  if (currentConfig.hasDescription) {
+    const desc = document.getElementById('descInput').value.trim();
+    if (desc) {
+      item.description = desc;
+      // If no meta yet, use description as meta
+      if (!item.meta) item.meta = desc;
+    }
+  }
+
+  // Load existing items
+  let items = [];
+  try {
+    items = JSON.parse(localStorage.getItem(currentConfig.storageKey) || '[]');
+    if (!Array.isArray(items)) items = [];
+  } catch (e) { items = []; }
+
+  // Add new item
+  items.push(item);
+  localStorage.setItem(currentConfig.storageKey, JSON.stringify(items));
+
+  console.log('✅ Saved:', item);
+
+  // Animate save button
+  const saveBtn = document.getElementById('saveBtn');
+  const saveLabel = document.getElementById('saveLabel');
+  const saveIcon = document.getElementById('saveIcon');
+
+  saveLabel.textContent = currentLang === 'en' ? 'Saved!' : 'تم الحفظ!';
+  saveIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+  saveBtn.style.background = 'linear-gradient(135deg, #4CAF50, #66BB6A)';
+
+  // Redirect back after delay
+  setTimeout(() => {
+    window.location.href = 'personal-memory-bank.html';
+  }, 800);
+}
+
+/* ============================================
+   FORMAT DATE
+============================================ */
+function formatDate(dateStr) {
+  try {
+    const d = new Date(dateStr);
+    const months = currentLang === 'ar'
+      ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+      : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  } catch (e) {
+    return dateStr;
+  }
+}
+
+/* ============================================
+   CANCEL
+============================================ */
+document.getElementById('cancelBtn').addEventListener('click', () => {
+  window.location.href = 'personal-memory-bank.html';
+});
+
+/* ============================================
+   BACK
+============================================ */
+document.getElementById('backBtn').addEventListener('click', () => {
+  window.location.href = 'personal-memory-bank.html';
+});
+
+/* ============================================
+   INIT
+============================================ */
+loadType();
+applyLanguage(currentLang);
+</script>
+
+</body>
+</html>

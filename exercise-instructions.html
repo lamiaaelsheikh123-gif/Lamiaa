@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#FAF8F3" />
+<title>Memento AI — Exercise Instructions</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --c-primary: #0E7C7B; --c-primary-light: #4DB6AC; --c-secondary: #9B7EDE;
+  --c-blue: #5B9BD5; --c-navy: #0F2C4C; --c-slate: #5A6C7D;
+  --c-bg: #FAF8F3; --c-card: #FFFFFF; --c-border: #EAE6DE;
+  --c-error: #E57373; --c-success: #4CAF50; --c-warning: #FF9800;
+
+  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
+  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+
+  --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
+  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+
+  --phone-w: 375px;
+  --phone-h: 812px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--f-en);
+  -webkit-font-smoothing: antialiased;
+  background: #E8E4DC;
+  overflow: hidden;
+}
+
+html[lang="ar"] body { font-family: var(--f-ar); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+.stage {
+  width: 100vw; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
+    #E8E4DC;
+}
+
+.phone {
+  position: relative;
+  width: var(--phone-w); height: var(--phone-h);
+  max-height: calc(100vh - 40px);
+  background: var(--c-bg);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a,
+    0 40px 80px rgba(0, 0, 0, 0.35), 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 130px; height: 26px;
+  background: #1a1a1a;
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+}
+
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; }
+  .phone::before { display: none; }
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex; flex-direction: column;
+  background: var(--c-bg);
+  overflow: hidden;
+}
+
+.screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 52px 22px 0;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  width: 38px; height: 38px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.back-btn:hover { background: #fff; border-color: rgba(14, 124, 123, 0.35); transform: translateX(-2px); }
+html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
+
+.back-btn svg { width: 16px; height: 16px; stroke: var(--c-primary); stroke-width: 2.4; fill: none; }
+html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
+
+.queue-dots { display: flex; align-items: center; gap: 6px; }
+.queue-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(14, 124, 123, 0.15);
+  transition: all 0.3s ease;
+}
+.queue-dot.done { background: var(--c-success); box-shadow: 0 0 8px rgba(76, 175, 80, 0.4); }
+.queue-dot.active {
+  width: 22px; border-radius: var(--r-pill);
+  background: var(--g-brand);
+  box-shadow: 0 0 10px rgba(14, 124, 123, 0.4);
+}
+
+.content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  padding: 16px 24px 24px;
+  display: flex; flex-direction: column; gap: 16px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  min-height: 0;
+}
+
+.content::-webkit-scrollbar { display: none; }
+
+.hero-illus {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  padding: 8px 0 4px;
+  opacity: 0; transform: translateY(14px);
+  animation: fadeUp 0.6s ease 0.1s forwards;
+}
+
+.exercise-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, rgba(14, 124, 123, 0.12), rgba(91, 155, 213, 0.12));
+  border: 1px solid rgba(14, 124, 123, 0.25);
+  border-radius: var(--r-pill);
+  font-size: 10.5px; font-weight: 700;
+  color: var(--c-primary);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+html[lang="ar"] .exercise-badge {
+  font-family: var(--f-ar);
+  text-transform: none; letter-spacing: 0; font-size: 12px;
+}
+
+.illus-circle {
+  position: relative;
+  width: 130px; height: 130px;
+  display: flex; align-items: center; justify-content: center;
+}
+.illus-circle::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(14, 124, 123, 0.18) 0%, transparent 65%);
+  filter: blur(24px);
+  z-index: -1;
+  animation: pulseGlow 2.8s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+.illus-circle svg { width: 100%; height: 100%; overflow: visible; }
+
+.exercise-title {
+  font-size: 26px; font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -0.5px; line-height: 1.2;
+  text-align: center;
+}
+html[lang="ar"] .exercise-title { font-family: var(--f-ar); font-size: 25px; letter-spacing: 0; }
+
+.exercise-sub {
+  font-size: 13.5px; color: var(--c-slate);
+  line-height: 1.55; text-align: center; max-width: 300px;
+}
+html[lang="ar"] .exercise-sub { font-family: var(--f-ar); font-size: 14.5px; }
+
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+.meta-row {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.3s forwards;
+}
+.meta-card {
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  padding: 12px 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  transition: all 0.25s ease;
+}
+.meta-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 44, 76, 0.06); }
+.meta-icon {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: rgba(14, 124, 123, 0.08);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.meta-icon svg {
+  width: 14px; height: 14px;
+  stroke: var(--c-primary); stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.meta-value { font-size: 13.5px; font-weight: 800; color: var(--c-navy); letter-spacing: -0.3px; }
+.meta-label {
+  font-size: 9.5px; font-weight: 600; color: var(--c-slate);
+  letter-spacing: 0.3px; text-transform: uppercase; text-align: center;
+}
+html[lang="ar"] .meta-label { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 10.5px; }
+
+.difficulty-card {
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.4s forwards;
+}
+.diff-left { display: flex; align-items: center; gap: 10px; }
+.diff-icon {
+  width: 30px; height: 30px; border-radius: 9px;
+  background: linear-gradient(135deg, #FF9800, #FFB74D);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.28);
+}
+.diff-icon svg {
+  width: 16px; height: 16px;
+  stroke: #fff; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.diff-text { display: flex; flex-direction: column; gap: 1px; }
+.diff-label {
+  font-size: 10.5px; font-weight: 600; color: var(--c-slate);
+  letter-spacing: 0.3px; text-transform: uppercase;
+}
+html[lang="ar"] .diff-label { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 11.5px; }
+.diff-level { font-size: 14px; font-weight: 800; color: var(--c-navy); letter-spacing: -0.2px; }
+html[lang="ar"] .diff-level { font-family: var(--f-ar); font-size: 15px; }
+.diff-dots { display: flex; gap: 5px; }
+.diff-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: rgba(255, 152, 0, 0.15);
+  transition: all 0.3s ease;
+}
+.diff-dot.filled {
+  background: linear-gradient(135deg, #FF9800, #FFB74D);
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.5);
+}
+
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-inline-start: 4px; margin-top: 4px;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.5s forwards;
+}
+.section-title {
+  font-size: 13.5px; font-weight: 700; color: var(--c-navy);
+  letter-spacing: 0.2px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title::before {
+  content: '';
+  width: 3px; height: 14px;
+  background: var(--g-brand);
+  border-radius: var(--r-pill);
+}
+html[lang="ar"] .section-title { font-family: var(--f-ar); font-size: 14.5px; letter-spacing: 0; }
+
+.steps-list { display: flex; flex-direction: column; gap: 10px; }
+
+.step-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-lg);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  opacity: 0; transform: translateY(14px);
+  animation: stepIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.step-item:nth-child(1) { animation-delay: 0.55s; }
+.step-item:nth-child(2) { animation-delay: 0.63s; }
+.step-item:nth-child(3) { animation-delay: 0.71s; }
+@keyframes stepIn { to { opacity: 1; transform: translateY(0); } }
+.step-item:hover {
+  border-color: rgba(14, 124, 123, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 44, 76, 0.06);
+}
+.step-num {
+  width: 32px; height: 32px; border-radius: 10px;
+  background: var(--g-brand);
+  color: #fff; font-size: 14px; font-weight: 800;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 6px 14px rgba(14, 124, 123, 0.28);
+  position: relative;
+  overflow: hidden;
+}
+.step-body {
+  flex: 1;
+  display: flex; flex-direction: column; gap: 3px;
+  min-width: 0; padding-top: 2px;
+}
+.step-text { font-size: 13px; font-weight: 700; color: var(--c-navy); line-height: 1.4; }
+html[lang="ar"] .step-text { font-family: var(--f-ar); font-size: 14px; }
+.step-hint { font-size: 11.5px; color: var(--c-slate); font-weight: 500; line-height: 1.5; }
+html[lang="ar"] .step-hint { font-family: var(--f-ar); font-size: 12.5px; }
+
+.tip-card {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(155, 126, 222, 0.08), rgba(91, 155, 213, 0.06));
+  border: 1.5px solid rgba(155, 126, 222, 0.22);
+  border-radius: var(--r-lg);
+  position: relative;
+  overflow: hidden;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.5s ease 0.8s forwards;
+}
+.tip-icon {
+  width: 30px; height: 30px; border-radius: 9px;
+  background: linear-gradient(135deg, #9B7EDE, #5B9BD5);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(155, 126, 222, 0.3);
+}
+.tip-icon svg {
+  width: 15px; height: 15px;
+  stroke: #fff; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.tip-body { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.tip-label {
+  font-size: 10.5px; font-weight: 700; color: var(--c-secondary);
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+html[lang="ar"] .tip-label { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 11.5px; }
+.tip-text { font-size: 12px; color: var(--c-navy); font-weight: 500; line-height: 1.55; }
+html[lang="ar"] .tip-text { font-family: var(--f-ar); font-size: 13px; }
+
+.bottom {
+  position: relative;
+  z-index: 10;
+  padding: 16px 24px 44px;
+  display: flex; flex-direction: column; gap: 10px;
+  flex-shrink: 0;
+}
+
+.btn-primary {
+  position: relative;
+  width: 100%;
+  padding: 18px 24px;
+  background: var(--g-brand);
+  color: #fff;
+  font-size: 15.5px; font-weight: 600;
+  letter-spacing: 0.4px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.32);
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  opacity: 0; transform: translateY(20px);
+  animation: fadeUp 0.7s ease 0.9s forwards;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.7s ease;
+}
+.btn-primary:hover::before { left: 100%; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(14, 124, 123, 0.4); }
+.btn-primary:active { transform: scale(0.97); }
+.btn-primary .arrow {
+  width: 16px; height: 16px;
+  stroke: #fff; stroke-width: 2.4; fill: none;
+  transition: transform 0.3s ease;
+}
+html[dir="rtl"] .btn-primary .arrow { transform: scaleX(-1); }
+.btn-primary:hover .arrow { transform: translateX(4px); }
+html[dir="rtl"] .btn-primary:hover .arrow { transform: scaleX(-1) translateX(4px); }
+html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16.5px; }
+
+/* Loading state */
+.loading-state {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px;
+  text-align: center;
+}
+.loading-spinner {
+  width: 48px; height: 48px;
+  border: 3px solid rgba(14, 124, 123, 0.15);
+  border-top-color: var(--c-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  font-size: 14px; font-weight: 600;
+  color: var(--c-slate);
+}
+html[lang="ar"] .loading-text { font-family: var(--f-ar); font-size: 15px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+
+      <!-- Top Bar -->
+      <div class="topbar">
+        <button class="back-btn" id="backBtn" aria-label="Back">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div class="queue-dots" id="queueDots"></div>
+      </div>
+
+      <!-- Loading State -->
+      <div class="content" id="loadingContent" style="display:none;">
+        <div class="loading-state">
+          <div class="loading-spinner"></div>
+          <div class="loading-text" id="loadingText">All done! Taking you to your summary...</div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="content" id="mainContent">
+
+        <!-- Hero -->
+        <div class="hero-illus">
+          <div class="exercise-badge">
+            <span id="badgeText">Memory Track</span>
+          </div>
+
+          <div class="illus-circle" id="illusCircle"></div>
+
+          <h1 class="exercise-title" id="exerciseTitle">Sequence Memory</h1>
+          <p class="exercise-sub" id="exerciseSub">Remember the sequence of items in the correct order.</p>
+        </div>
+
+        <!-- Meta -->
+        <div class="meta-row">
+          <div class="meta-card">
+            <div class="meta-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="meta-value" id="metaDuration">5 min</div>
+            <div class="meta-label" id="metaDurationLabel">Duration</div>
+          </div>
+
+          <div class="meta-card">
+            <div class="meta-icon">
+              <svg viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </div>
+            <div class="meta-value" id="metaRounds">8 rounds</div>
+            <div class="meta-label" id="metaRoundsLabel">Rounds</div>
+          </div>
+
+          <div class="meta-card">
+            <div class="meta-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M13 2 L3 14 L12 14 L11 22 L21 10 L12 10 L13 2 Z"></path>
+              </svg>
+            </div>
+            <div class="meta-value" id="metaMode">Adaptive</div>
+            <div class="meta-label" id="metaModeLabel">Mode</div>
+          </div>
+        </div>
+
+        <!-- Difficulty -->
+        <div class="difficulty-card">
+          <div class="diff-left">
+            <div class="diff-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2 L15 9 L22 9 L16 14 L18 21 L12 17 L6 21 L8 14 L2 9 L9 9 Z"></path>
+              </svg>
+            </div>
+            <div class="diff-text">
+              <div class="diff-label" id="diffLabel">Difficulty</div>
+              <div class="diff-level" id="diffLevel">Level 3</div>
+            </div>
+          </div>
+          <div class="diff-dots">
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot filled"></div>
+            <div class="diff-dot"></div>
+            <div class="diff-dot"></div>
+          </div>
+        </div>
+
+        <!-- Section Head -->
+        <div class="section-head">
+          <div class="section-title" id="sectionTitle">How to play</div>
+        </div>
+
+        <!-- Steps -->
+        <div class="steps-list" id="stepsList"></div>
+
+        <!-- Tip -->
+        <div class="tip-card">
+          <div class="tip-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M9 21h6"></path>
+              <path d="M10 18h4"></path>
+              <path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"></path>
+            </svg>
+          </div>
+          <div class="tip-body">
+            <div class="tip-label" id="tipLabel">Quick Tip</div>
+            <div class="tip-text" id="tipText">Take your time. Accuracy is more important than speed here.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom -->
+      <div class="bottom" id="bottomBar">
+        <button class="btn-primary" id="startBtn">
+          <span id="startLabel">Start Exercise</span>
+          <svg class="arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   TRANSLATIONS
+============================================ */
+const I18N = {
+  en: {
+    sectionTitle: 'How to play',
+    tipLabel: 'Quick Tip',
+    startLabel: 'Start Exercise',
+    duration: 'Duration', rounds: 'Rounds', mode: 'Mode',
+    difficulty: 'Difficulty', level: 'Level',
+    min: 'min', adaptive: 'Adaptive',
+    loadingText: 'All done! Taking you to your summary...',
+    content: {
+      memory: {
+        badge: 'Memory Track', title: 'Sequence Memory',
+        sub: 'Remember the sequence of items in the correct order.',
+        rounds: '8 rounds',
+        steps: [
+          { title: 'Watch the sequence', hint: 'A series of items will appear one by one — pay close attention to their order.' },
+          { title: 'Repeat the order', hint: 'Tap the items in the same order you saw them. Take your time.' },
+          { title: 'Level up as you go', hint: 'Get it right and the sequence grows. Miss and we will adjust.' }
+        ],
+        tip: 'Take your time. Accuracy is more important than speed here.'
+      },
+      attention: {
+        badge: 'Attention Track', title: 'Focus & Tap',
+        sub: 'Tap the correct targets quickly while ignoring the distractors.',
+        rounds: '8 rounds',
+        steps: [
+          { title: 'Look at the screen', hint: 'Shapes will appear in random positions with different colors.' },
+          { title: 'Tap only the target', hint: 'Ignore all other shapes and colors — only the target counts.' },
+          { title: 'Stay focused', hint: 'Speed matters, but accuracy matters more.' }
+        ],
+        tip: 'Keep your eyes moving. Do not fixate on one spot.'
+      },
+      speed: {
+        badge: 'Speed Track', title: 'Quick Response',
+        sub: 'Solve simple problems as fast and accurately as you can.',
+        rounds: '8 rounds',
+        steps: [
+          { title: 'Read the problem', hint: 'Simple math or comparison appears on the screen.' },
+          { title: 'Tap the answer', hint: 'Choose from 4 options. You have limited time per question.' },
+          { title: 'Beat your time', hint: 'Speed improves with practice — but accuracy is key.' }
+        ],
+        tip: 'Trust your first instinct. Overthinking slows you down.'
+      },
+      problem: {
+        badge: 'Problem Solving', title: 'Think it Through',
+        sub: 'Solve puzzles and patterns. If you miss, we will help you think.',
+        rounds: '8 rounds',
+        steps: [
+          { title: 'Read the puzzle', hint: 'Patterns, logic, and odd-one-out puzzles will appear.' },
+          { title: 'Try your answer', hint: 'If wrong, you can try again.' },
+          { title: 'Learn from hints', hint: 'Two hints are available. After that, we show explanation.' }
+        ],
+        tip: 'Think before you tap. Quality over speed.'
+      },
+      visual: {
+        badge: 'Visual Track', title: 'Match the Shape',
+        sub: 'Identify the shape that matches the target — even if rotated.',
+        rounds: '8 rounds',
+        steps: [
+          { title: 'Look at the target', hint: 'A shape appears at the top of the screen.' },
+          { title: 'Find the match', hint: 'Choose the option that matches it.' },
+          { title: 'Watch for tricks', hint: 'Some options are rotated or mirrored.' }
+        ],
+        tip: 'Compare mentally — rotate the shape in your mind.'
+      },
+      language: {
+        badge: 'Language Track', title: 'Read & Remember',
+        sub: 'Read a short story, then answer questions about it.',
+        rounds: '8 rounds',
+        steps: [
+          { title: 'Read carefully', hint: 'A short story will appear for a limited time.' },
+          { title: 'The story hides', hint: 'After the timer ends, the story disappears.' },
+          { title: 'Answer the questions', hint: 'Choose the right answer from memory.' }
+        ],
+        tip: 'Focus on names, places, and key details.'
+      },
+      numerical: {
+        badge: 'Numerical Track', title: 'Numbers & Logic',
+        sub: 'Solve number patterns and calculations quickly.',
+        rounds: '8 rounds',
+        steps: [
+          { title: 'Read the question', hint: 'Simple calculations, patterns, or word problems appear.' },
+          { title: 'Pick the answer', hint: 'Choose from 4 options. Limited time per question.' },
+          { title: 'Keep the rhythm', hint: 'Speed matters, but do not rush too much.' }
+        ],
+        tip: 'For patterns, look at the difference between numbers first.'
+      }
+    }
+  },
+  ar: {
+    sectionTitle: 'كيف تلعب', tipLabel: 'نصيحة سريعة', startLabel: 'ابدأ التمرين',
+    duration: 'المدة', rounds: 'الجولات', mode: 'الوضع',
+    difficulty: 'الصعوبة', level: 'المستوى',
+    min: 'دقيقة', adaptive: 'تكيفي',
+    loadingText: 'اكتمل كل شيء! جاري تحويلك للملخص...',
+    content: {
+      memory: {
+        badge: 'مسار الذاكرة', title: 'ذاكرة التسلسل',
+        sub: 'تذكر ترتيب العناصر بالشكل الصحيح.',
+        rounds: '8 جولات',
+        steps: [
+          { title: 'شاهد التسلسل', hint: 'ستظهر سلسلة من العناصر واحدًا تلو الآخر.' },
+          { title: 'كرر الترتيب', hint: 'اضغط على العناصر بنفس الترتيب.' },
+          { title: 'ارتفع مستواك', hint: 'إذا أصبت، يطول التسلسل.' }
+        ],
+        tip: 'خذ وقتك. الدقة أهم من السرعة هنا.'
+      },
+      attention: {
+        badge: 'مسار الانتباه', title: 'التركيز واللمس',
+        sub: 'اضغط على الأهداف الصحيحة بسرعة.',
+        rounds: '8 جولات',
+        steps: [
+          { title: 'انظر للشاشة', hint: 'ستظهر أشكال بأماكن وألوان مختلفة.' },
+          { title: 'اضغط الهدف فقط', hint: 'تجاهل باقي الأشكال.' },
+          { title: 'ابقَ مركزًا', hint: 'السرعة مهمة، لكن الدقة أهم.' }
+        ],
+        tip: 'حرّك عينيك باستمرار.'
+      },
+      speed: {
+        badge: 'مسار السرعة', title: 'الرد السريع',
+        sub: 'حل مسائل بسيطة بأسرع شكل ممكن.',
+        rounds: '8 جولات',
+        steps: [
+          { title: 'اقرأ المسألة', hint: 'تظهر مسألة رياضية بسيطة.' },
+          { title: 'اختر الإجابة', hint: 'من 4 خيارات.' },
+          { title: 'تغلب على وقتك', hint: 'السرعة تتحسن مع التدريب.' }
+        ],
+        tip: 'ثق بحدسك الأول.'
+      },
+      problem: {
+        badge: 'حل المشكلات', title: 'فكّر جيدًا',
+        sub: 'حل الألغاز والأنماط.',
+        rounds: '8 جولات',
+        steps: [
+          { title: 'اقرأ اللغز', hint: 'ستظهر أنماط وألغاز منطقية.' },
+          { title: 'جرّب إجابتك', hint: 'لو أخطأت، تقدر تجرب تاني.' },
+          { title: 'تعلم من التلميحات', hint: 'تلميحان متاحان.' }
+        ],
+        tip: 'فكّر قبل أن تضغط.'
+      },
+      visual: {
+        badge: 'المسار البصري', title: 'طابق الشكل',
+        sub: 'حدد الشكل المطابق للهدف.',
+        rounds: '8 جولات',
+        steps: [
+          { title: 'انظر للهدف', hint: 'يظهر شكل في أعلى الشاشة.' },
+          { title: 'ابحث عن المطابق', hint: 'اختر الخيار المطابق.' },
+          { title: 'احترس من الحيل', hint: 'بعض الخيارات مدوّرة.' }
+        ],
+        tip: 'قارن ذهنيًا.'
+      },
+      language: {
+        badge: 'مسار اللغة', title: 'اقرأ وتذكر',
+        sub: 'اقرأ قصة قصيرة ثم أجب.',
+        rounds: '8 جولات',
+        steps: [
+          { title: 'اقرأ بعناية', hint: 'قصة قصيرة لمدة محدودة.' },
+          { title: 'القصة تختفي', hint: 'بعد انتهاء الوقت تختفي القصة.' },
+          { title: 'أجب عن الأسئلة', hint: 'اختر الإجابة من ذاكرتك.' }
+        ],
+        tip: 'ركّز على الأسماء والأماكن.'
+      },
+      numerical: {
+        badge: 'المسار الرقمي', title: 'أرقام ومنطق',
+        sub: 'حل أنماط الأرقام بسرعة.',
+        rounds: '8 جولات',
+        steps: [
+          { title: 'اقرأ السؤال', hint: 'تظهر حسابات بسيطة.' },
+          { title: 'اختر الإجابة', hint: 'من 4 خيارات.' },
+          { title: 'حافظ على الإيقاع', hint: 'متتسرعش.' }
+        ],
+        tip: 'انظر للفرق بين الأرقام أولًا.'
+      }
+    }
+  }
+};
+
+/* ============================================
+   ILLUSTRATIONS
+============================================ */
+const ILLUSTRATIONS = {
+  memory: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="m1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="100%" stop-color="#4DB6AC"/></linearGradient>
+      <linearGradient id="m2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5B9BD5"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
+      <linearGradient id="m3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF9800"/><stop offset="100%" stop-color="#FFB74D"/></linearGradient>
+    </defs>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <circle cx="100" cy="100" r="60" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.25"/>
+    <g style="animation: f1 3s ease-in-out infinite; transform-origin: 70px 90px;">
+      <rect x="55" y="75" width="32" height="32" rx="8" fill="url(#m1)"/>
+      <text x="71" y="97" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="18" font-weight="800">1</text>
+    </g>
+    <g style="animation: f2 3.4s ease-in-out infinite 0.3s; transform-origin: 100px 100px;">
+      <rect x="84" y="84" width="36" height="36" rx="9" fill="url(#m2)"/>
+      <text x="102" y="109" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="20" font-weight="800">2</text>
+    </g>
+    <g style="animation: f3 3.2s ease-in-out infinite 0.6s; transform-origin: 130px 105px;">
+      <rect x="117" y="90" width="32" height="32" rx="8" fill="url(#m3)"/>
+      <text x="133" y="112" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="18" font-weight="800">3</text>
+    </g>
+    <style>
+      @keyframes f1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-3px,-6px)} }
+      @keyframes f2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(0,-8px)} }
+      @keyframes f3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(4px,-5px)} }
+    </style>
+  </svg>`,
+  attention: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="a1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E53935"/><stop offset="100%" stop-color="#E57373"/></linearGradient>
+      <linearGradient id="a2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5B9BD5"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
+    </defs>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <circle cx="100" cy="100" r="42" fill="none" stroke="url(#a1)" stroke-width="3" opacity="0.3"/>
+    <circle cx="100" cy="100" r="28" fill="none" stroke="url(#a1)" stroke-width="3" opacity="0.5"/>
+    <circle cx="100" cy="100" r="14" fill="url(#a1)"/>
+    <circle cx="100" cy="100" r="5" fill="#fff"/>
+    <g style="animation: f1 3.5s ease-in-out infinite; transform-origin: 50px 70px;">
+      <rect x="42" y="62" width="16" height="16" rx="3" fill="url(#a2)" opacity="0.85"/>
+    </g>
+    <g style="animation: f2 4s ease-in-out infinite 0.3s; transform-origin: 150px 130px;">
+      <circle cx="150" cy="130" r="9" fill="#4DB6AC" opacity="0.8"/>
+    </g>
+    <style>
+      @keyframes f1 { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-10px) rotate(8deg)} }
+      @keyframes f2 { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-8px) rotate(-6deg)} }
+    </style>
+  </svg>`,
+  speed: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="s1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
+      <linearGradient id="s2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF9800"/><stop offset="100%" stop-color="#FFC107"/></linearGradient>
+    </defs>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <path d="M 55 130 A 55 55 0 1 1 145 130" fill="none" stroke="url(#s1)" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+    <g style="animation: needle 2.4s ease-in-out infinite; transform-origin: 100px 100px;">
+      <line x1="100" y1="100" x2="100" y2="58" stroke="url(#s1)" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="100" cy="100" r="8" fill="url(#s1)"/>
+      <circle cx="100" cy="100" r="3.5" fill="#fff"/>
+    </g>
+    <g style="animation: bolt 1.8s ease-in-out infinite; transform-origin: 100px 100px;">
+      <path d="M 100 82 L 92 100 L 99 100 L 96 118 L 108 98 L 100 98 L 105 82 Z" fill="url(#s2)"/>
+    </g>
+    <style>
+      @keyframes needle { 0%,100%{transform:rotate(-40deg)} 50%{transform:rotate(40deg)} }
+      @keyframes bolt { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+    </style>
+  </svg>`,
+  problem: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="p1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="100%" stop-color="#4DB6AC"/></linearGradient>
+      <linearGradient id="p2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5B9BD5"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
+      <linearGradient id="p3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9B7EDE"/><stop offset="100%" stop-color="#E8A0BF"/></linearGradient>
+    </defs>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <g style="animation: f1 3s ease-in-out infinite; transform-origin: 78px 78px;">
+      <path d="M 60 60 L 96 60 L 96 78 C 90 78, 88 82, 88 86 C 88 90, 90 94, 96 94 L 96 112 L 60 112 Z" fill="url(#p1)"/>
+    </g>
+    <g style="animation: f2 3.4s ease-in-out infinite 0.3s; transform-origin: 122px 78px;">
+      <path d="M 104 60 L 140 60 L 140 78 C 134 78, 132 82, 132 86 C 132 90, 134 94, 140 94 L 140 112 L 104 112 L 104 94 C 110 94, 112 90, 112 86 C 112 82, 110 78, 104 78 Z" fill="url(#p2)"/>
+    </g>
+    <g style="animation: f3 3.2s ease-in-out infinite 0.6s; transform-origin: 100px 130px;">
+      <path d="M 60 120 L 78 120 C 78 114, 82 112, 86 112 C 90 112, 94 114, 94 120 L 112 120 L 112 156 L 94 156 C 94 150, 90 148, 86 148 C 82 148, 78 150, 78 156 L 60 156 Z" fill="url(#p3)"/>
+    </g>
+    <style>
+      @keyframes f1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-3px,-4px)} }
+      @keyframes f2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(4px,-3px)} }
+      @keyframes f3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(0,5px)} }
+    </style>
+  </svg>`,
+  visual: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="v1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="50%" stop-color="#5B9BD5"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
+    </defs>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <path d="M 40 100 Q 100 50 160 100 Q 100 150 40 100 Z" fill="none" stroke="url(#v1)" stroke-width="3" stroke-linejoin="round"/>
+    <g style="animation: eye 3s ease-in-out infinite; transform-origin: 100px 100px;">
+      <circle cx="100" cy="100" r="22" fill="url(#v1)" opacity="0.95"/>
+      <circle cx="100" cy="100" r="10" fill="#fff"/>
+      <circle cx="95" cy="95" r="3" fill="#fff"/>
+    </g>
+    <style>
+      @keyframes eye { 0%,100%{transform:translateX(-6px)} 50%{transform:translateX(6px)} }
+    </style>
+  </svg>`,
+  language: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="l1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF9800"/><stop offset="100%" stop-color="#FFB74D"/></linearGradient>
+      <linearGradient id="l2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="100%" stop-color="#4DB6AC"/></linearGradient>
+      <linearGradient id="l3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9B7EDE"/><stop offset="100%" stop-color="#5B9BD5"/></linearGradient>
+    </defs>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <g style="animation: book 3s ease-in-out infinite; transform-origin: 100px 110px;">
+      <path d="M 60 70 L 100 80 L 100 140 L 60 130 Z" fill="url(#l1)"/>
+      <path d="M 100 80 L 140 70 L 140 130 L 100 140 Z" fill="url(#l2)"/>
+      <line x1="68" y1="92" x2="94" y2="96" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+      <line x1="68" y1="102" x2="94" y2="106" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+      <line x1="106" y1="96" x2="132" y2="92" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+      <line x1="106" y1="106" x2="132" y2="102" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+    </g>
+    <g style="animation: f1 3.5s ease-in-out infinite; transform-origin: 45px 55px;">
+      <circle cx="45" cy="55" r="8" fill="url(#l3)" opacity="0.85"/>
+    </g>
+    <g style="animation: f2 4s ease-in-out infinite 0.4s; transform-origin: 155px 60px;">
+      <circle cx="155" cy="60" r="6" fill="url(#l2)" opacity="0.85"/>
+    </g>
+    <style>
+      @keyframes book { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-5px) rotate(-1deg)} }
+      @keyframes f1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-4px,-8px)} }
+      @keyframes f2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(5px,-6px)} }
+    </style>
+  </svg>`,
+  numerical: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="100%" stop-color="#4DB6AC"/></linearGradient>
+      <linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5B9BD5"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
+      <linearGradient id="n3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9B7EDE"/><stop offset="100%" stop-color="#E8A0BF"/></linearGradient>
+      <linearGradient id="n4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF9800"/><stop offset="100%" stop-color="#FFB74D"/></linearGradient>
+    </defs>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <g style="animation: f1 3.5s ease-in-out infinite; transform-origin: 65px 65px;">
+      <circle cx="65" cy="65" r="22" fill="url(#n1)"/>
+      <text x="65" y="72" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="20" font-weight="800">7</text>
+    </g>
+    <g style="animation: f2 4s ease-in-out infinite 0.3s; transform-origin: 135px 65px;">
+      <circle cx="135" cy="65" r="20" fill="url(#n2)"/>
+      <text x="135" y="72" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="18" font-weight="800">3</text>
+    </g>
+    <g style="animation: f1 3.2s ease-in-out infinite 0.6s; transform-origin: 55px 130px;">
+      <circle cx="55" cy="130" r="18" fill="url(#n3)"/>
+      <text x="55" y="136" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="16" font-weight="800">5</text>
+    </g>
+    <g style="animation: f2 3.6s ease-in-out infinite 0.9s; transform-origin: 145px 130px;">
+      <circle cx="145" cy="130" r="20" fill="url(#n4)"/>
+      <text x="145" y="137" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="17" font-weight="800">+</text>
+    </g>
+    <g style="animation: bulb 2.5s ease-in-out infinite; transform-origin: 100px 100px;">
+      <circle cx="100" cy="100" r="14" fill="#0F2C4C"/>
+      <text x="100" y="106" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="14" font-weight="800">?</text>
+    </g>
+    <style>
+      @keyframes f1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-4px,-8px)} }
+      @keyframes f2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(5px,-7px)} }
+      @keyframes bulb { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+    </style>
+  </svg>`
+};
+
+/* ============================================
+   LANGUAGE
+============================================ */
+const STORAGE_KEY = 'memento_lang';
+let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+const htmlEl = document.documentElement;
+
+/* ============================================
+   QUEUE LOGIC
+============================================ */
+function buildFreshQueue() {
+  let plan = [];
+  try {
+    plan = JSON.parse(localStorage.getItem('memento_personalized_plan') || '[]');
+  } catch (e) { plan = []; }
+
+  if (!plan || plan.length === 0) {
+    plan = [
+      { key: 'memory',    rank: 1, sessions: 2, minutes: 10 },
+      { key: 'attention', rank: 2, sessions: 2, minutes: 10 },
+      { key: 'speed',     rank: 3, sessions: 1, minutes: 8  }
+    ];
+  }
+
+  const sortedPlan = [...plan].sort((a, b) => (a.rank || 99) - (b.rank || 99));
+
+  const todaySessions = [];
+  const maxSkills = Math.min(3, sortedPlan.length);
+
+  for (let i = 0; i < maxSkills; i++) {
+    const p = sortedPlan[i];
+    todaySessions.push({
+      key: p.key,
+      minutes: p.minutes || 10,
+      rank: p.rank || (i + 1),
+      done: false
+    });
+  }
+
+  localStorage.setItem('memento_workout_queue', JSON.stringify(todaySessions));
+  localStorage.setItem('memento_workout_date', new Date().toISOString().split('T')[0]);
+
+  return todaySessions;
+}
+
+function getQueue() {
+  const today = new Date().toISOString().split('T')[0];
+  const queueDate = localStorage.getItem('memento_workout_date');
+
+  let queue = [];
+  try {
+    queue = JSON.parse(localStorage.getItem('memento_workout_queue') || '[]');
+  } catch (e) { queue = []; }
+
+  if (queue && queue.length > 0 && queueDate === today) {
+    return queue;
+  }
+
+  return buildFreshQueue();
+}
+
+/* ============================================
+   STATE
+============================================ */
+let currentQueue = [];
+let currentIdx = -1;
+let currentExercise = null;
+
+/* ============================================
+   RENDER
+============================================ */
+function render() {
+  currentQueue = getQueue();
+
+  currentIdx = -1;
+  for (let i = 0; i < currentQueue.length; i++) {
+    if (!currentQueue[i].done) {
+      currentIdx = i;
+      break;
+    }
+  }
+
+  // ✅ All done? → go to session-complete
+  if (currentIdx === -1) {
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('bottomBar').style.display = 'none';
+    document.getElementById('loadingContent').style.display = 'flex';
+    document.getElementById('loadingText').textContent = I18N[currentLang].loadingText;
+
+    setTimeout(() => {
+      window.location.href = 'session-complete.html';
+    }, 1400);
+    return;
+  }
+
+  currentExercise = currentQueue[currentIdx];
+
+  localStorage.setItem('memento_current_exercise_idx', String(currentIdx));
+  localStorage.setItem('memento_current_exercise', JSON.stringify(currentExercise));
+  localStorage.setItem('memento_workout_queue', JSON.stringify(currentQueue));
+  localStorage.setItem('memento_workout_date', new Date().toISOString().split('T')[0]);
+
+  const t = I18N[currentLang];
+  const c = t.content[currentExercise.key];
+
+  if (!c) {
+    // Fallback
+    console.warn('Unknown exercise key:', currentExercise.key);
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('bottomBar').style.display = 'none';
+    document.getElementById('loadingContent').style.display = 'flex';
+    setTimeout(() => {
+      window.location.href = 'session-complete.html';
+    }, 1400);
+    return;
+  }
+
+  document.getElementById('badgeText').textContent = c.badge;
+  document.getElementById('illusCircle').innerHTML = ILLUSTRATIONS[currentExercise.key];
+  document.getElementById('exerciseTitle').textContent = c.title;
+  document.getElementById('exerciseSub').textContent = c.sub;
+
+  document.getElementById('metaDuration').textContent = currentExercise.minutes + ' ' + t.min;
+  document.getElementById('metaRounds').textContent = c.rounds;
+  document.getElementById('metaMode').textContent = t.adaptive;
+  document.getElementById('metaDurationLabel').textContent = t.duration;
+  document.getElementById('metaRoundsLabel').textContent = t.rounds;
+  document.getElementById('metaModeLabel').textContent = t.mode;
+
+  document.getElementById('diffLabel').textContent = t.difficulty;
+  document.getElementById('diffLevel').textContent = t.level + ' 3';
+
+  document.getElementById('sectionTitle').textContent = t.sectionTitle;
+
+  const stepsList = document.getElementById('stepsList');
+  stepsList.innerHTML = '';
+  c.steps.forEach((step, i) => {
+    const el = document.createElement('div');
+    el.className = 'step-item';
+    el.innerHTML = `
+      <div class="step-num">${i + 1}</div>
+      <div class="step-body">
+        <div class="step-text">${step.title}</div>
+        <div class="step-hint">${step.hint}</div>
+      </div>
+    `;
+    stepsList.appendChild(el);
+  });
+
+  document.getElementById('tipLabel').textContent = t.tipLabel;
+  document.getElementById('tipText').textContent = c.tip;
+  document.getElementById('startLabel').textContent = t.startLabel;
+
+  renderQueueDots();
+}
+
+function renderQueueDots() {
+  const container = document.getElementById('queueDots');
+  container.innerHTML = '';
+
+  currentQueue.forEach((item, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'queue-dot';
+    if (item.done) dot.classList.add('done');
+    if (i === currentIdx) dot.classList.add('active');
+    container.appendChild(dot);
+  });
+}
+
+/* ============================================
+   LANGUAGE APPLY
+============================================ */
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+  htmlEl.lang = lang;
+  htmlEl.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  render();
+}
+
+/* ============================================
+   NAVIGATION
+============================================ */
+document.getElementById('backBtn').addEventListener('click', () => {
+  window.location.href = 'home.html';
+});
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  const btn = document.getElementById('startBtn');
+  btn.style.transform = 'scale(0.96)';
+  setTimeout(() => { btn.style.transform = ''; }, 150);
+
+  setTimeout(() => {
+    window.location.href = 'exercise-play.html';
+  }, 250);
+});
+
+/* ============================================
+   INIT
+============================================ */
+applyLanguage(currentLang);
+</script>
+
+</body>
+</html>

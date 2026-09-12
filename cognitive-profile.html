@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#FAF8F3" />
+<title>Memento AI — Cognitive Profile</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   DESIGN TOKENS
+============================================ */
+:root {
+  --c-primary: #0E7C7B;
+  --c-primary-light: #4DB6AC;
+  --c-secondary: #9B7EDE;
+  --c-blue: #5B9BD5;
+  --c-navy: #0F2C4C;
+  --c-slate: #5A6C7D;
+  --c-bg: #FAF8F3;
+  --c-card: #FFFFFF;
+  --c-border: #EAE6DE;
+  --c-error: #E57373;
+  --c-success: #4CAF50;
+  --c-warning: #FF9800;
+
+  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
+  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+  --g-success: linear-gradient(135deg, #4CAF50, #66BB6A);
+  --g-warning: linear-gradient(135deg, #FF9800, #FFB74D);
+  --g-error:   linear-gradient(135deg, #E57373, #EF5350);
+
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+  --sh-glow: 0 20px 60px rgba(14, 124, 123, 0.18);
+
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+
+  --phone-w: 375px;
+  --phone-h: 812px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--f-en);
+  -webkit-font-smoothing: antialiased;
+  background: #E8E4DC;
+  overflow: hidden;
+}
+
+html[lang="ar"] body { font-family: var(--f-ar); }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ============================================
+   PHONE FRAME
+============================================ */
+.stage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
+    #E8E4DC;
+}
+
+.phone {
+  position: relative;
+  width: var(--phone-w);
+  height: var(--phone-h);
+  max-height: calc(100vh - 40px);
+  background: var(--c-bg);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 10px #1a1a1a,
+    0 0 0 12px #2a2a2a,
+    0 40px 80px rgba(0, 0, 0, 0.35),
+    0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 130px; height: 26px;
+  background: #1a1a1a;
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+}
+
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone {
+    width: 100vw; height: 100vh;
+    max-height: 100vh;
+    border-radius: 0; box-shadow: none;
+  }
+  .phone::before { display: none; }
+}
+
+/* ============================================
+   SCREEN
+============================================ */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  overflow: hidden;
+}
+
+.screen::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================
+   TOP BAR
+============================================ */
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 52px 22px 0;
+  flex-shrink: 0;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-navy);
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.lang-toggle:hover {
+  background: #fff;
+  border-color: rgba(14, 124, 123, 0.35);
+  transform: translateY(-1px);
+}
+
+.lang-toggle .lang-globe {
+  width: 14px; height: 14px;
+  stroke: var(--c-primary);
+  stroke-width: 2.2;
+  fill: none;
+}
+
+.lang-toggle .lang-label { color: var(--c-primary); }
+.lang-toggle .divider { color: var(--c-border); font-weight: 300; }
+.lang-toggle .lang-inactive { color: var(--c-slate); font-weight: 500; }
+
+/* ============================================
+   CONTENT
+============================================ */
+.content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  padding: 16px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  min-height: 0;
+}
+
+.content::-webkit-scrollbar { display: none; }
+
+/* ============================================
+   HEADER
+============================================ */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 0.6s ease 0.1s forwards;
+}
+
+.header-greet {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-slate);
+  letter-spacing: 0.2px;
+}
+
+html[lang="ar"] .header-greet { font-family: var(--f-ar); font-size: 14px; }
+
+.header-name {
+  font-size: 24px;
+  font-weight: 800;
+  background: var(--g-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+
+html[lang="ar"] .header-name { font-family: var(--f-ar); font-size: 23px; letter-spacing: 0; }
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   OVERALL SCORE
+============================================ */
+.overall-card {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-xl);
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 8px 24px rgba(15, 44, 76, 0.04);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUp 0.6s ease 0.25s forwards;
+}
+
+.overall-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--g-brand);
+}
+
+.overall-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--c-slate);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+html[lang="ar"] .overall-label {
+  font-family: var(--f-ar);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12.5px;
+}
+
+/* Overall Ring */
+.overall-ring-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overall-ring-wrap svg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+
+.overall-track {
+  fill: none;
+  stroke: rgba(14, 124, 123, 0.08);
+  stroke-width: 12;
+}
+
+.overall-ring {
+  fill: none;
+  stroke: url(#overallGrad);
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke-dasharray: 439.82;
+  stroke-dashoffset: 439.82;
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.6s;
+}
+
+.overall-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.overall-score {
+  font-size: 42px;
+  font-weight: 800;
+  background: var(--g-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -2px;
+  line-height: 1;
+  font-feature-settings: "tnum";
+}
+
+.overall-percent {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-slate);
+  margin-top: 2px;
+}
+
+.overall-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.overall-status.excellent {
+  background: rgba(76, 175, 80, 0.12);
+  color: var(--c-success);
+}
+
+.overall-status.good {
+  background: rgba(255, 152, 0, 0.12);
+  color: var(--c-warning);
+}
+
+.overall-status.needs {
+  background: rgba(229, 115, 115, 0.12);
+  color: var(--c-error);
+}
+
+html[lang="ar"] .overall-status { font-family: var(--f-ar); font-size: 13px; letter-spacing: 0; }
+
+.overall-status svg {
+  width: 13px; height: 13px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ============================================
+   SECTION HEAD
+============================================ */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline-start: 4px;
+  margin-top: 4px;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.section-head.skills    { animation-delay: 0.4s; }
+.section-head.strengths { animation-delay: 0.7s; }
+.section-head.needs     { animation-delay: 0.9s; }
+
+.section-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  background: var(--g-brand);
+  border-radius: var(--r-pill);
+}
+
+.section-title.strengths-color::before { background: var(--g-success); }
+.section-title.needs-color::before     { background: var(--g-warning); }
+
+html[lang="ar"] .section-title { font-family: var(--f-ar); font-size: 14.5px; letter-spacing: 0; }
+
+/* ============================================
+   SKILLS GRID
+============================================ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.skill-card {
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-lg);
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: skillIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.skill-card:nth-child(1) { animation-delay: 0.45s; }
+.skill-card:nth-child(2) { animation-delay: 0.5s; }
+.skill-card:nth-child(3) { animation-delay: 0.55s; }
+.skill-card:nth-child(4) { animation-delay: 0.6s; }
+.skill-card:nth-child(5) { animation-delay: 0.65s; }
+.skill-card:nth-child(6) { animation-delay: 0.7s; }
+.skill-card:nth-child(7) { animation-delay: 0.75s; }
+
+@keyframes skillIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.skill-card:hover {
+  border-color: rgba(14, 124, 123, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 44, 76, 0.06);
+}
+
+.skill-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.skill-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: #fff;
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  position: relative;
+  z-index: 2;
+}
+
+.skill-icon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.skill-icon.memory::before    { background: linear-gradient(135deg, #0E7C7B, #4DB6AC); }
+.skill-icon.attention::before { background: linear-gradient(135deg, #E57373, #FF9800); }
+.skill-icon.speed::before     { background: linear-gradient(135deg, #5B9BD5, #4DB6AC); }
+.skill-icon.problem::before   { background: linear-gradient(135deg, #9B7EDE, #5B9BD5); }
+.skill-icon.visual::before    { background: linear-gradient(135deg, #4DB6AC, #9B7EDE); }
+.skill-icon.language::before  { background: linear-gradient(135deg, #FF9800, #E8A0BF); }
+.skill-icon.numerical::before { background: linear-gradient(135deg, #5B9BD5, #9B7EDE); }
+
+.skill-name {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: 0.1px;
+  line-height: 1.2;
+  flex: 1;
+}
+
+html[lang="ar"] .skill-name { font-family: var(--f-ar); font-size: 12.5px; letter-spacing: 0; }
+
+.skill-score-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.skill-score {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -1px;
+  line-height: 1;
+  font-feature-settings: "tnum";
+}
+
+.skill-percent {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-slate);
+}
+
+.skill-bar {
+  width: 100%;
+  height: 5px;
+  background: rgba(14, 124, 123, 0.08);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  position: relative;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: var(--r-pill);
+  background: var(--g-brand);
+  transition: width 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.9s;
+  box-shadow: 0 0 8px rgba(14, 124, 123, 0.3);
+}
+
+.skill-card.high .skill-score { color: var(--c-success); }
+.skill-card.mid  .skill-score { color: var(--c-warning); }
+.skill-card.low  .skill-score { color: var(--c-error); }
+
+.skill-card.high .skill-bar-fill { background: var(--g-success); }
+.skill-card.mid  .skill-bar-fill { background: var(--g-warning); }
+.skill-card.low  .skill-bar-fill { background: var(--g-error); }
+
+/* ============================================
+   HIGHLIGHT CARDS (Strengths / Needs)
+============================================ */
+.highlight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.highlight-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-lg);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: highlightIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.highlight-card.strength {
+  border-color: rgba(76, 175, 80, 0.25);
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(76, 175, 80, 0.02));
+}
+
+.highlight-card.needs {
+  border-color: rgba(255, 152, 0, 0.25);
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.05), rgba(255, 152, 0, 0.02));
+}
+
+.highlight-card:nth-child(1) { animation-delay: 0.75s; }
+.highlight-card:nth-child(2) { animation-delay: 0.8s; }
+
+.highlight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 44, 76, 0.06);
+}
+
+@keyframes highlightIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.highlight-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.highlight-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: #fff;
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  position: relative;
+  z-index: 2;
+}
+
+.highlight-icon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.highlight-icon.memory::before    { background: linear-gradient(135deg, #0E7C7B, #4DB6AC); }
+.highlight-icon.attention::before { background: linear-gradient(135deg, #E57373, #FF9800); }
+.highlight-icon.speed::before     { background: linear-gradient(135deg, #5B9BD5, #4DB6AC); }
+.highlight-icon.problem::before   { background: linear-gradient(135deg, #9B7EDE, #5B9BD5); }
+.highlight-icon.visual::before    { background: linear-gradient(135deg, #4DB6AC, #9B7EDE); }
+.highlight-icon.language::before  { background: linear-gradient(135deg, #FF9800, #E8A0BF); }
+.highlight-icon.numerical::before { background: linear-gradient(135deg, #5B9BD5, #9B7EDE); }
+
+.highlight-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.highlight-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: 0.1px;
+}
+
+html[lang="ar"] .highlight-name { font-family: var(--f-ar); font-size: 14.5px; letter-spacing: 0; }
+
+.highlight-tag {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--c-slate);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+html[lang="ar"] .highlight-tag {
+  font-family: var(--f-ar);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 11.5px;
+}
+
+.highlight-score {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  font-feature-settings: "tnum";
+}
+
+.highlight-card.strength .highlight-score { color: var(--c-success); }
+.highlight-card.needs    .highlight-score { color: var(--c-warning); }
+
+/* ============================================
+   BOTTOM
+============================================ */
+.bottom {
+  position: relative;
+  z-index: 10;
+  padding: 16px 24px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.btn-primary {
+  position: relative;
+  width: 100%;
+  padding: 18px 24px;
+  background: var(--g-brand);
+  color: #fff;
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.32);
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.7s ease 1.1s forwards;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.7s ease;
+}
+
+.btn-primary:hover::before { left: 100%; }
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(14, 124, 123, 0.4);
+}
+
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-primary .arrow {
+  width: 16px; height: 16px;
+  stroke: #fff;
+  stroke-width: 2.4;
+  fill: none;
+  transition: transform 0.3s ease;
+}
+
+html[dir="rtl"] .btn-primary .arrow { transform: scaleX(-1); }
+.btn-primary:hover .arrow { transform: translateX(4px); }
+html[dir="rtl"] .btn-primary:hover .arrow { transform: scaleX(-1) translateX(4px); }
+
+html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16.5px; }
+
+/* ============================================
+   REDUCED MOTION
+============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SVG gradients -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="overallGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E7C7B"/>
+      <stop offset="50%" stop-color="#5B9BD5"/>
+      <stop offset="100%" stop-color="#9B7EDE"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+
+      <!-- Top Bar -->
+      <div class="topbar">
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+          <svg class="lang-globe" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="lang-label" id="langCurrent">EN</span>
+          <span class="divider">|</span>
+          <span class="lang-inactive" id="langOther">ع</span>
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+
+        <!-- Header -->
+        <div class="header">
+          <div class="header-greet" id="greet">Welcome back,</div>
+          <div class="header-name" id="userName">User</div>
+        </div>
+
+        <!-- Overall Score -->
+        <div class="overall-card">
+          <div class="overall-label" id="overallLabel">Your Cognitive Score</div>
+
+          <div class="overall-ring-wrap">
+            <svg viewBox="0 0 150 150">
+              <circle class="overall-track" cx="75" cy="75" r="70"/>
+              <circle class="overall-ring" id="overallRing" cx="75" cy="75" r="70"/>
+            </svg>
+            <div class="overall-inner">
+              <div class="overall-score" id="overallScore">0</div>
+              <div class="overall-percent">%</div>
+            </div>
+          </div>
+
+          <div class="overall-status" id="overallStatus">
+            <svg viewBox="0 0 24 24" id="statusIcon">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span id="statusText">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Skills Grid -->
+        <div class="section-head skills">
+          <div class="section-title" id="sectionSkills">All Skills</div>
+        </div>
+        <div class="skills-grid" id="skillsGrid">
+          <!-- Filled by JS -->
+        </div>
+
+        <!-- Strengths -->
+        <div class="section-head strengths">
+          <div class="section-title strengths-color" id="sectionStrengths">Your Strengths</div>
+        </div>
+        <div class="highlight-list" id="strengthsList">
+          <!-- Filled by JS -->
+        </div>
+
+        <!-- Needs More Practice -->
+        <div class="section-head needs">
+          <div class="section-title needs-color" id="sectionNeeds">Needs More Practice</div>
+        </div>
+        <div class="highlight-list" id="needsList">
+          <!-- Filled by JS -->
+        </div>
+
+      </div>
+
+      <!-- Bottom -->
+      <div class="bottom">
+        <button class="btn-primary" id="nextBtn">
+          <span id="nextLabel">See My Training Plan</span>
+          <svg class="arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   TRANSLATIONS
+============================================ */
+const I18N = {
+  en: {
+    greet: 'Welcome back,',
+    overallLabel: 'Your Cognitive Score',
+    sectionSkills: 'All Skills',
+    sectionStrengths: 'Your Strengths',
+    sectionNeeds: 'Needs More Practice',
+    nextLabel: 'See My Training Plan',
+
+    statusExcellent: 'Excellent',
+    statusGood: 'Good',
+    statusNeeds: 'Needs Practice',
+
+    strengthTag: 'Top Skill',
+    needsTag: 'Priority Focus',
+
+    skills: {
+      memory:    'Memory',
+      attention: 'Attention',
+      speed:     'Processing Speed',
+      problem:   'Problem Solving',
+      visual:    'Visual Skills',
+      language:  'Language',
+      numerical: 'Numerical'
+    }
+  },
+  ar: {
+    greet: 'أهلًا بعودتك،',
+    overallLabel: 'نتيجتك الذهنية',
+    sectionSkills: 'كل المهارات',
+    sectionStrengths: 'نقاط قوتك',
+    sectionNeeds: 'تحتاج مزيدًا من التدريب',
+    nextLabel: 'شاهد خطة التدريب',
+
+    statusExcellent: 'ممتاز',
+    statusGood: 'جيد',
+    statusNeeds: 'يحتاج تدريب',
+
+    strengthTag: 'أقوى مهارة',
+    needsTag: 'أولوية التركيز',
+
+    skills: {
+      memory:    'الذاكرة',
+      attention: 'الانتباه',
+      speed:     'سرعة المعالجة',
+      problem:   'حل المشكلات',
+      visual:    'المهارات البصرية',
+      language:  'اللغة',
+      numerical: 'الرقمي'
+    }
+  }
+};
+
+/* ============================================
+   LANGUAGE
+============================================ */
+const STORAGE_KEY = 'memento_lang';
+let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+
+const htmlEl      = document.documentElement;
+const langCurrEl  = document.getElementById('langCurrent');
+const langOtherEl = document.getElementById('langOther');
+const langToggle  = document.getElementById('langToggle');
+
+let currentData = null; // cached scores
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+  htmlEl.lang = lang;
+  htmlEl.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+
+  langCurrEl.textContent  = lang === 'en' ? 'EN' : 'ع';
+  langOtherEl.textContent = lang === 'en' ? 'ع'  : 'EN';
+
+  const t = I18N[lang];
+
+  document.getElementById('greet').textContent         = t.greet;
+  document.getElementById('overallLabel').textContent  = t.overallLabel;
+  document.getElementById('sectionSkills').textContent     = t.sectionSkills;
+  document.getElementById('sectionStrengths').textContent  = t.sectionStrengths;
+  document.getElementById('sectionNeeds').textContent      = t.sectionNeeds;
+  document.getElementById('nextLabel').textContent         = t.nextLabel;
+
+  // Update status text based on cached data
+  if (currentData) updateStatusText();
+
+  // Re-render
+  renderAll();
+}
+
+langToggle.addEventListener('click', () => {
+  applyLanguage(currentLang === 'en' ? 'ar' : 'en');
+});
+
+/* ============================================
+   SKILLS CONFIG
+============================================ */
+const SKILLS = [
+  {
+    key: 'memory',
+    storageKey: 'memento_memory_result',
+    icon: `<svg viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>`
+  },
+  {
+    key: 'attention',
+    storageKey: 'memento_attention_result',
+    icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>`
+  },
+  {
+    key: 'speed',
+    storageKey: 'memento_speed_result',
+    icon: `<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`
+  },
+  {
+    key: 'problem',
+    storageKey: 'memento_problem_result',
+    icon: `<svg viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path></svg>`
+  },
+  {
+    key: 'visual',
+    storageKey: 'memento_visual_result',
+    icon: `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`
+  },
+  {
+    key: 'language',
+    storageKey: 'memento_language_result',
+    icon: `<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>`
+  },
+  {
+    key: 'numerical',
+    storageKey: 'memento_numerical_result',
+    icon: `<svg viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>`
+  }
+];
+
+/* ============================================
+   GET SCORES
+============================================ */
+function getScore(storageKey) {
+  try {
+    const data = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    if (typeof data.accuracy === 'number') return data.accuracy;
+    return 0;
+  } catch (e) {
+    return 0;
+  }
+}
+
+function getScoreClass(score) {
+  if (score >= 70) return 'high';
+  if (score >= 40) return 'mid';
+  return 'low';
+}
+
+function getStatusClass(score) {
+  if (score >= 70) return 'excellent';
+  if (score >= 40) return 'good';
+  return 'needs';
+}
+
+/* ============================================
+   LOAD DATA
+============================================ */
+function loadData() {
+  const scores = SKILLS.map(s => ({
+    key: s.key,
+    storageKey: s.storageKey,
+    icon: s.icon,
+    score: getScore(s.storageKey)
+  }));
+
+  const total = scores.reduce((sum, s) => sum + s.score, 0);
+  const overall = Math.round(total / scores.length);
+
+  // Sort by score (desc)
+  const sorted = [...scores].sort((a, b) => b.score - a.score);
+  const strengths = sorted.slice(0, 2);
+  const needs = sorted.slice(-2).reverse();
+
+  return { scores, overall, strengths, needs };
+}
+
+/* ============================================
+   RENDER ALL
+============================================ */
+function renderAll() {
+  const data = loadData();
+  currentData = data;
+
+  const t = I18N[currentLang];
+
+  // Header name
+  const name = localStorage.getItem('memento_user_name') || 'User';
+  document.getElementById('userName').textContent = name;
+
+  // Overall score
+  document.getElementById('overallScore').textContent = data.overall;
+  const ring = document.getElementById('overallRing');
+  const circumference = 439.82;
+  setTimeout(() => {
+    ring.style.strokeDashoffset = circumference * (1 - data.overall / 100);
+  }, 600);
+
+  // Status
+  updateStatusText();
+
+  // Skills grid
+  const grid = document.getElementById('skillsGrid');
+  grid.innerHTML = '';
+  data.scores.forEach(s => {
+    const cls = getScoreClass(s.score);
+    const card = document.createElement('div');
+    card.className = `skill-card ${cls}`;
+    card.innerHTML = `
+      <div class="skill-head">
+        <div class="skill-icon ${s.key}">${s.icon}</div>
+        <div class="skill-name">${t.skills[s.key]}</div>
+      </div>
+      <div class="skill-score-wrap">
+        <div class="skill-score" data-target="${s.score}">0</div>
+        <div class="skill-percent">%</div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-bar-fill" data-width="${s.score}"></div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Strengths list
+  renderHighlights('strengthsList', data.strengths, 'strength', t.strengthTag);
+
+  // Needs list
+  renderHighlights('needsList', data.needs, 'needs', t.needsTag);
+
+  // Trigger animations
+  setTimeout(() => {
+    document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.width + '%';
+    });
+    document.querySelectorAll('.skill-score').forEach(el => {
+      animateNumber(el, 0, parseInt(el.dataset.target), 1200);
+    });
+  }, 100);
+}
+
+function updateStatusText() {
+  if (!currentData) return;
+  const t = I18N[currentLang];
+  const cls = getStatusClass(currentData.overall);
+  const statusEl = document.getElementById('overallStatus');
+  const iconEl = document.getElementById('statusIcon');
+  const textEl = document.getElementById('statusText');
+
+  statusEl.className = 'overall-status ' + cls;
+
+  let text = '';
+  let iconSvg = '';
+
+  if (cls === 'excellent') {
+    text = t.statusExcellent;
+    iconSvg = `<polyline points="20 6 9 17 4 12"></polyline>`;
+  } else if (cls === 'good') {
+    text = t.statusGood;
+    iconSvg = `<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>`;
+  } else {
+    text = t.statusNeeds;
+    iconSvg = `<path d="M12 2 L15 9 L22 9 L16 14 L18 21 L12 17 L6 21 L8 14 L2 9 L9 9 Z" fill="none"></path>`;
+  }
+
+  textEl.textContent = text;
+  iconEl.innerHTML = iconSvg;
+}
+
+function renderHighlights(containerId, items, type, tag) {
+  const t = I18N[currentLang];
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+
+  items.forEach((s, i) => {
+    const card = document.createElement('div');
+    card.className = `highlight-card ${type}`;
+    card.innerHTML = `
+      <div class="highlight-icon ${s.key}">${s.icon}</div>
+      <div class="highlight-body">
+        <div class="highlight-name">${t.skills[s.key]}</div>
+        <div class="highlight-tag">${tag}</div>
+      </div>
+      <div class="highlight-score">${s.score}%</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+/* ============================================
+   NUMBER ANIMATION
+============================================ */
+function animateNumber(el, start, end, duration) {
+  const startTime = performance.now();
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = Math.round(start + (end - start) * eased);
+    el.textContent = value;
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = end;
+  }
+  requestAnimationFrame(step);
+}
+
+/* ============================================
+   NEXT
+============================================ */
+document.getElementById('nextBtn').addEventListener('click', () => {
+  const btn = document.getElementById('nextBtn');
+  btn.style.transform = 'scale(0.96)';
+  setTimeout(() => { btn.style.transform = ''; }, 150);
+
+  setTimeout(() => {
+    window.location.href = 'personalized-plan.html';
+  }, 250);
+});
+
+/* ============================================
+   INIT
+============================================ */
+applyLanguage(currentLang);
+</script>
+
+</body>
+</html>

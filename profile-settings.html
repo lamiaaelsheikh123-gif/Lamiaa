@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#FAF8F3" />
+<title>Memento AI — Settings</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --c-primary: #0E7C7B; --c-primary-light: #4DB6AC; --c-secondary: #9B7EDE;
+  --c-blue: #5B9BD5; --c-navy: #0F2C4C; --c-slate: #5A6C7D;
+  --c-bg: #FAF8F3; --c-card: #FFFFFF; --c-border: #EAE6DE;
+  --c-error: #E57373; --c-success: #4CAF50; --c-warning: #FF9800;
+
+  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
+  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+  --g-danger: linear-gradient(135deg, #E57373, #EF5350);
+
+  --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
+  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+
+  --phone-w: 375px;
+  --phone-h: 812px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--f-en);
+  -webkit-font-smoothing: antialiased;
+  background: #E8E4DC;
+  overflow: hidden;
+}
+
+html[lang="ar"] body { font-family: var(--f-ar); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input { font-family: inherit; }
+
+/* ============ FONT SIZE VARIANTS ============ */
+html[data-font-size="small"]  body { font-size: 13px; }
+html[data-font-size="medium"] body { font-size: 14px; }
+html[data-font-size="large"]  body { font-size: 16px; }
+
+html[data-font-size="small"]  .setting-label { font-size: 12px; }
+html[data-font-size="large"]  .setting-label { font-size: 14.5px; }
+
+html[data-font-size="small"]  .setting-value { font-size: 10.5px; }
+html[data-font-size="large"]  .setting-value { font-size: 13px; }
+
+.stage {
+  width: 100vw; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
+    #E8E4DC;
+}
+
+.phone {
+  position: relative;
+  width: var(--phone-w); height: var(--phone-h);
+  max-height: calc(100vh - 40px);
+  background: var(--c-bg);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a,
+    0 40px 80px rgba(0, 0, 0, 0.35), 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 130px; height: 26px;
+  background: #1a1a1a;
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+}
+
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; }
+  .phone::before { display: none; }
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex; flex-direction: column;
+  background: var(--c-bg);
+  overflow: hidden;
+}
+
+.screen::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* TOP BAR */
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 52px 22px 0;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  width: 38px; height: 38px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 124, 123, 0.15);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+}
+
+.back-btn:hover { background: #fff; border-color: rgba(14, 124, 123, 0.35); transform: translateX(-2px); }
+html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
+
+.back-btn svg { width: 16px; height: 16px; stroke: var(--c-primary); stroke-width: 2.4; fill: none; }
+html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
+
+.page-title-mini {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: 0.2px;
+  opacity: 0;
+  animation: fadeUp 0.4s ease 0.1s forwards;
+}
+
+html[lang="ar"] .page-title-mini { font-family: var(--f-ar); font-size: 14.5px; letter-spacing: 0; }
+
+/* CONTENT */
+.content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  padding: 16px 24px 24px;
+  display: flex; flex-direction: column; gap: 14px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  min-height: 0;
+}
+
+.content::-webkit-scrollbar { display: none; }
+
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+/* PROFILE HEADER */
+.profile-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px;
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-xl);
+  position: relative;
+  overflow: hidden;
+  opacity: 0; transform: translateY(14px);
+  animation: fadeUp 0.5s ease 0.15s forwards;
+}
+
+.profile-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: var(--g-brand);
+}
+
+.avatar {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: var(--g-brand);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(14, 124, 123, 0.3);
+  position: relative;
+  text-transform: uppercase;
+}
+
+.avatar::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(14, 124, 123, 0.2);
+}
+
+.profile-info {
+  flex: 1;
+  display: flex; flex-direction: column; gap: 3px;
+  min-width: 0;
+}
+
+.profile-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[lang="ar"] .profile-name { font-family: var(--f-ar); font-size: 17px; letter-spacing: 0; }
+
+.profile-meta {
+  font-size: 11.5px;
+  color: var(--c-slate);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+html[lang="ar"] .profile-meta { font-family: var(--f-ar); font-size: 12.5px; }
+
+.profile-meta-divider {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--c-border);
+}
+
+/* SECTIONS */
+.section {
+  opacity: 0; transform: translateY(14px);
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.section:nth-child(2) { animation-delay: 0.2s; }
+.section:nth-child(3) { animation-delay: 0.25s; }
+.section:nth-child(4) { animation-delay: 0.3s; }
+.section:nth-child(5) { animation-delay: 0.35s; }
+.section:nth-child(6) { animation-delay: 0.4s; }
+.section:nth-child(7) { animation-delay: 0.45s; }
+.section:nth-child(8) { animation-delay: 0.5s; }
+
+.section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-slate);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding-inline-start: 6px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+html[lang="ar"] .section-title {
+  font-family: var(--f-ar);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 13px;
+}
+
+.section-title::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: var(--g-brand);
+  border-radius: var(--r-pill);
+}
+
+/* CARD GROUP */
+.card-group {
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.setting-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
+  transition: background 0.2s ease;
+  position: relative;
+}
+
+.setting-row + .setting-row {
+  border-top: 1px solid var(--c-border);
+}
+
+.setting-row.clickable { cursor: pointer; }
+.setting-row.clickable:hover { background: rgba(14, 124, 123, 0.03); }
+.setting-row.clickable:active { background: rgba(14, 124, 123, 0.06); }
+
+.setting-icon {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.setting-icon::before { content: ''; position: absolute; inset: 0; z-index: 1; }
+.setting-icon.user::before       { background: linear-gradient(135deg, #0E7C7B, #4DB6AC); }
+.setting-icon.globe::before      { background: linear-gradient(135deg, #5B9BD5, #9B7EDE); }
+.setting-icon.bell::before       { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+.setting-icon.calendar::before   { background: linear-gradient(135deg, #9B7EDE, #5B9BD5); }
+.setting-icon.clock::before      { background: linear-gradient(135deg, #4DB6AC, #0E7C7B); }
+.setting-icon.timer::before      { background: linear-gradient(135deg, #E8A0BF, #9B7EDE); }
+.setting-icon.refresh::before    { background: linear-gradient(135deg, #5B9BD5, #4DB6AC); }
+.setting-icon.trash::before      { background: var(--g-danger); }
+.setting-icon.logout::before     { background: linear-gradient(135deg, #E57373, #EF5350); }
+.setting-icon.voice::before      { background: linear-gradient(135deg, #9B7EDE, #E8A0BF); }
+.setting-icon.font::before       { background: linear-gradient(135deg, #5B9BD5, #4DB6AC); }
+
+.setting-icon svg {
+  width: 16px; height: 16px;
+  stroke: #fff; stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+  position: relative; z-index: 2;
+}
+
+.setting-body {
+  flex: 1;
+  display: flex; flex-direction: column; gap: 2px;
+  min-width: 0;
+}
+
+.setting-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: 0.1px;
+  line-height: 1.2;
+}
+
+html[lang="ar"] .setting-label { font-family: var(--f-ar); font-size: 14px; letter-spacing: 0; }
+
+.setting-value {
+  font-size: 11.5px;
+  color: var(--c-slate);
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[lang="ar"] .setting-value { font-family: var(--f-ar); font-size: 12.5px; letter-spacing: 0; }
+
+.setting-value.primary {
+  color: var(--c-primary);
+  font-weight: 700;
+}
+
+/* Arrow */
+.setting-arrow {
+  width: 16px; height: 16px;
+  stroke: var(--c-slate);
+  stroke-width: 2.4;
+  fill: none;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+html[dir="rtl"] .setting-arrow { transform: scaleX(-1); }
+
+/* TOGGLE SWITCH */
+.toggle {
+  position: relative;
+  width: 44px; height: 26px;
+  border-radius: var(--r-pill);
+  background: rgba(14, 124, 123, 0.15);
+  transition: background 0.3s ease;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(15, 44, 76, 0.2);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.toggle.on {
+  background: var(--g-brand);
+}
+
+.toggle.on::after {
+  transform: translateX(18px);
+}
+
+html[dir="rtl"] .toggle.on::after {
+  transform: translateX(-18px);
+}
+
+/* LANGUAGE PILLS */
+.lang-pills {
+  display: flex;
+  gap: 6px;
+  background: rgba(14, 124, 123, 0.08);
+  border-radius: var(--r-pill);
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.lang-pill {
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--c-slate);
+  border-radius: var(--r-pill);
+  transition: all 0.25s ease;
+  letter-spacing: 0.3px;
+  min-width: 32px;
+  text-align: center;
+}
+
+.lang-pill.active {
+  background: #fff;
+  color: var(--c-primary);
+  box-shadow: 0 2px 8px rgba(15, 44, 76, 0.1);
+}
+
+.lang-pill:hover:not(.active) {
+  color: var(--c-primary);
+}
+
+/* Font size pills */
+.font-pills {
+  display: flex;
+  gap: 6px;
+  background: rgba(14, 124, 123, 0.08);
+  border-radius: var(--r-pill);
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.font-pill {
+  padding: 5px 10px;
+  font-weight: 800;
+  color: var(--c-slate);
+  border-radius: var(--r-pill);
+  transition: all 0.25s ease;
+  min-width: 30px;
+  text-align: center;
+  line-height: 1;
+}
+
+.font-pill[data-size="small"]  { font-size: 10px; }
+.font-pill[data-size="medium"] { font-size: 13px; }
+.font-pill[data-size="large"]  { font-size: 16px; }
+
+.font-pill.active {
+  background: #fff;
+  color: var(--c-primary);
+  box-shadow: 0 2px 8px rgba(15, 44, 76, 0.1);
+}
+
+.font-pill:hover:not(.active) {
+  color: var(--c-primary);
+}
+
+/* EDIT INPUT (for editing) */
+.edit-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-navy);
+  background: rgba(14, 124, 123, 0.04);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.edit-input:focus {
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 3px rgba(14, 124, 123, 0.1);
+  background: #fff;
+}
+
+/* Days chips (readonly) */
+.days-chips {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 180px;
+}
+
+.day-chip-mini {
+  padding: 3px 7px;
+  background: rgba(14, 124, 123, 0.1);
+  color: var(--c-primary);
+  font-size: 9.5px;
+  font-weight: 700;
+  border-radius: var(--r-pill);
+  letter-spacing: 0.2px;
+}
+
+html[lang="ar"] .day-chip-mini { font-family: var(--f-ar); font-size: 10.5px; }
+
+/* DANGER ZONE */
+.danger-zone .setting-row {
+  background: rgba(229, 115, 115, 0.03);
+}
+
+.danger-zone .setting-label {
+  color: var(--c-error);
+}
+
+/* MODAL */
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 44, 76, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 30px;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay.show { display: flex; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal {
+  background: #fff;
+  border-radius: var(--r-xl);
+  padding: 24px 22px 20px;
+  max-width: 300px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+@keyframes modalPop {
+  0%   { transform: scale(0.85); opacity: 0; }
+  60%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.modal-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--g-danger);
+  display: inline-flex; align-items: center; justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 8px 20px rgba(229, 115, 115, 0.35);
+}
+
+.modal-icon svg {
+  width: 26px; height: 26px;
+  stroke: #fff; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -0.3px;
+}
+
+html[lang="ar"] .modal-title { font-family: var(--f-ar); font-size: 17px; letter-spacing: 0; }
+
+.modal-text {
+  font-size: 12.5px;
+  color: var(--c-slate);
+  line-height: 1.55;
+  font-weight: 500;
+}
+
+html[lang="ar"] .modal-text { font-family: var(--f-ar); font-size: 13.5px; }
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: var(--r-md);
+  transition: all 0.2s ease;
+  letter-spacing: 0.2px;
+}
+
+.modal-btn.cancel {
+  background: rgba(14, 124, 123, 0.08);
+  color: var(--c-navy);
+}
+
+.modal-btn.cancel:hover { background: rgba(14, 124, 123, 0.15); }
+
+.modal-btn.confirm {
+  background: var(--g-danger);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(229, 115, 115, 0.35);
+}
+
+.modal-btn.confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(229, 115, 115, 0.45);
+}
+
+html[lang="ar"] .modal-btn { font-family: var(--f-ar); font-size: 14px; }
+
+/* TOAST */
+.toast {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--c-navy);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--r-pill);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  box-shadow: 0 12px 30px rgba(15, 44, 76, 0.35);
+  z-index: 300;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+html[lang="ar"] .toast { font-family: var(--f-ar); font-size: 13.5px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+
+      <!-- Top Bar -->
+      <div class="topbar">
+        <button class="back-btn" id="backBtn" aria-label="Back">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div class="page-title-mini" id="pageTitleMini">Settings</div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+
+        <!-- Profile Header -->
+        <div class="profile-header">
+          <div class="avatar" id="avatar">U</div>
+          <div class="profile-info">
+            <div class="profile-name" id="profileName">User</div>
+            <div class="profile-meta" id="profileMeta">
+              <span id="metaAge">24 years</span>
+              <div class="profile-meta-divider"></div>
+              <span id="metaAccount">Adult</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="section">
+          <div class="section-title" id="titleProfile">Profile</div>
+          <div class="card-group">
+            <div class="setting-row clickable" id="editNameRow">
+              <div class="setting-icon user">
+                <svg viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelName">Name</div>
+                <div class="setting-value" id="valueName">User</div>
+              </div>
+              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <div class="setting-row clickable" id="editAgeRow">
+              <div class="setting-icon user">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelAge">Age</div>
+                <div class="setting-value" id="valueAge">24</div>
+              </div>
+              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Language Section -->
+        <div class="section">
+          <div class="section-title" id="titleLanguage">Language</div>
+          <div class="card-group">
+            <div class="setting-row">
+              <div class="setting-icon globe">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelLanguage">App Language</div>
+                <div class="setting-value" id="valueLanguage">English</div>
+              </div>
+              <div class="lang-pills">
+                <button class="lang-pill active" data-lang="en" id="langEn">EN</button>
+                <button class="lang-pill" data-lang="ar" id="langAr">ع</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ⭐ Voice & Accessibility Section -->
+        <div class="section">
+          <div class="section-title" id="titleAccessibility">Voice & Accessibility</div>
+          <div class="card-group">
+
+            <div class="setting-row">
+              <div class="setting-icon voice">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="23"></line>
+                  <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelVoiceMode">Voice Mode</div>
+                <div class="setting-value" id="valueVoiceMode">Read Personal Memory aloud</div>
+              </div>
+              <div class="toggle" data-toggle="voice" id="toggleVoice"></div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-icon font">
+                <svg viewBox="0 0 24 24">
+                  <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                  <line x1="9" y1="20" x2="15" y2="20"></line>
+                  <line x1="12" y1="4" x2="12" y2="20"></line>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelFontSize">Font Size</div>
+                <div class="setting-value" id="valueFontSize">Adjust text size</div>
+              </div>
+              <div class="font-pills">
+                <button class="font-pill" data-size="small" id="sizeSmall">A</button>
+                <button class="font-pill active" data-size="medium" id="sizeMedium">A</button>
+                <button class="font-pill" data-size="large" id="sizeLarge">A</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div class="section">
+          <div class="section-title" id="titleNotifications">Notifications</div>
+          <div class="card-group">
+            <div class="setting-row">
+              <div class="setting-icon bell">
+                <svg viewBox="0 0 24 24">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelDailyReminder">Daily Reminder</div>
+                <div class="setting-value" id="valueDailyReminder">Get notified to train</div>
+              </div>
+              <div class="toggle on" data-toggle="daily" id="toggleDaily"></div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-icon bell">
+                <svg viewBox="0 0 24 24">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelWeeklyReport">Weekly Report</div>
+                <div class="setting-value" id="valueWeeklyReport">Summary every week</div>
+              </div>
+              <div class="toggle on" data-toggle="weekly" id="toggleWeekly"></div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-icon bell">
+                <svg viewBox="0 0 24 24">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelStreakAlert">Streak Alerts</div>
+                <div class="setting-value" id="valueStreakAlert">Keep your streak alive</div>
+              </div>
+              <div class="toggle" data-toggle="streak" id="toggleStreak"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Training Preferences -->
+        <div class="section">
+          <div class="section-title" id="titleTraining">Training Preferences</div>
+          <div class="card-group">
+            <div class="setting-row clickable" id="editDaysRow">
+              <div class="setting-icon calendar">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelDays">Training Days</div>
+                <div class="setting-value" id="valueDays">Not set</div>
+              </div>
+              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <div class="setting-row clickable" id="editTimeRow">
+              <div class="setting-icon clock">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelPreferredTime">Preferred Time</div>
+                <div class="setting-value" id="valuePreferredTime">Not set</div>
+              </div>
+              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <div class="setting-row clickable" id="editDurationRow">
+              <div class="setting-icon timer">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelDuration">Daily Duration</div>
+                <div class="setting-value" id="valueDuration">Not set</div>
+              </div>
+              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="section">
+          <div class="section-title" id="titleActions">Actions</div>
+          <div class="card-group">
+            <div class="setting-row clickable" id="retakeAssessmentRow">
+              <div class="setting-icon refresh">
+                <svg viewBox="0 0 24 24">
+                  <path d="M23 4v6h-6"></path>
+                  <path d="M1 20v-6h6"></path>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+                  <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelRetake">Re-take Assessment</div>
+                <div class="setting-value" id="valueRetake">Get a fresh cognitive profile</div>
+              </div>
+              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <div class="setting-row clickable" id="resetProgressRow">
+              <div class="setting-icon trash">
+                <svg viewBox="0 0 24 24">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path>
+                  <path d="M10 11v6"></path>
+                  <path d="M14 11v6"></path>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelReset">Reset Progress</div>
+                <div class="setting-value" id="valueReset">Start fresh (keeps account)</div>
+              </div>
+              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="section danger-zone">
+          <div class="section-title" id="titleAccount">Account</div>
+          <div class="card-group">
+            <div class="setting-row clickable" id="logoutRow">
+              <div class="setting-icon logout">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelLogout">Log Out</div>
+                <div class="setting-value" id="valueLogout">Sign out of your account</div>
+              </div>
+              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <div class="setting-row clickable" id="deleteAccountRow">
+              <div class="setting-icon trash">
+                <svg viewBox="0 0 24 24">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path>
+                  <path d="M10 11v6"></path>
+                  <path d="M14 11v6"></path>
+                </svg>
+              </div>
+              <div class="setting-body">
+                <div class="setting-label" id="labelDelete">Delete Account</div>
+                <div class="setting-value" id="valueDelete">Permanently remove all data</div>
+              </div>
+              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Confirmation Modal -->
+      <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+          <div class="modal-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+          <div class="modal-title" id="modalTitle">Are you sure?</div>
+          <div class="modal-text" id="modalText">This action cannot be undone.</div>
+          <div class="modal-actions">
+            <button class="modal-btn cancel" id="modalCancel">Cancel</button>
+            <button class="modal-btn confirm" id="modalConfirm">Confirm</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toast -->
+      <div class="toast" id="toast">Saved successfully</div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   TRANSLATIONS
+============================================ */
+const I18N = {
+  en: {
+    pageTitleMini: 'Settings',
+    titleProfile: 'Profile',
+    titleLanguage: 'Language',
+    titleAccessibility: 'Voice & Accessibility',
+    titleNotifications: 'Notifications',
+    titleTraining: 'Training Preferences',
+    titleActions: 'Actions',
+    titleAccount: 'Account',
+
+    labelName: 'Name',
+    labelAge: 'Age',
+    labelLanguage: 'App Language',
+    labelVoiceMode: 'Voice Mode',
+    labelFontSize: 'Font Size',
+    labelDailyReminder: 'Daily Reminder',
+    labelWeeklyReport: 'Weekly Report',
+    labelStreakAlert: 'Streak Alerts',
+    labelDays: 'Training Days',
+    labelPreferredTime: 'Preferred Time',
+    labelDuration: 'Daily Duration',
+    labelRetake: 'Re-take Assessment',
+    labelReset: 'Reset Progress',
+    labelLogout: 'Log Out',
+    labelDelete: 'Delete Account',
+
+    valueVoiceMode: 'Read Personal Memory aloud',
+    valueFontSize: 'Adjust text size',
+    valueDailyReminder: 'Get notified to train',
+    valueWeeklyReport: 'Summary every week',
+    valueStreakAlert: 'Keep your streak alive',
+    valueRetake: 'Get a fresh cognitive profile',
+    valueReset: 'Start fresh (keeps account)',
+    valueLogout: 'Sign out of your account',
+    valueDelete: 'Permanently remove all data',
+
+    langEnglish: 'English',
+    langArabic: 'Arabic',
+
+    years: 'years',
+    accountAdult: 'Adult',
+    accountChild: 'Child',
+
+    notSet: 'Not set',
+    daysSelected: 'days selected',
+    minPerDay: 'min / day',
+
+    timeMorning: 'Morning',
+    timeAfternoon: 'Afternoon',
+    timeEvening: 'Evening',
+
+    dayNames: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    dayNamesFull: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+
+    logoutTitle: 'Log out?',
+    logoutText: 'You can sign back in anytime.',
+    logoutConfirm: 'Log Out',
+
+    resetTitle: 'Reset progress?',
+    resetText: 'All your training data will be cleared. Your account stays active.',
+    resetConfirm: 'Reset',
+
+    deleteTitle: 'Delete account?',
+    deleteText: 'This will permanently delete your account and all data. This cannot be undone.',
+    deleteConfirm: 'Delete',
+
+    retakeTitle: 'Re-take assessment?',
+    retakeText: 'You will go through the cognitive assessment again and get a new profile.',
+    retakeConfirm: 'Start',
+
+    cancel: 'Cancel',
+    confirm: 'Confirm',
+    saved: 'Saved successfully',
+    languageChanged: 'Language changed'
+  },
+  ar: {
+    pageTitleMini: 'الإعدادات',
+    titleProfile: 'الملف الشخصي',
+    titleLanguage: 'اللغة',
+    titleAccessibility: 'الصوت وإمكانية الوصول',
+    titleNotifications: 'الإشعارات',
+    titleTraining: 'تفضيلات التدريب',
+    titleActions: 'إجراءات',
+    titleAccount: 'الحساب',
+
+    labelName: 'الاسم',
+    labelAge: 'العمر',
+    labelLanguage: 'لغة التطبيق',
+    labelVoiceMode: 'وضع الصوت',
+    labelFontSize: 'حجم الخط',
+    labelDailyReminder: 'تنبيه يومي',
+    labelWeeklyReport: 'تقرير أسبوعي',
+    labelStreakAlert: 'تنبيه السلسلة',
+    labelDays: 'أيام التدريب',
+    labelPreferredTime: 'الوقت المفضل',
+    labelDuration: 'المدة اليومية',
+    labelRetake: 'إعادة التقييم',
+    labelReset: 'إعادة تعيين التقدم',
+    labelLogout: 'تسجيل الخروج',
+    labelDelete: 'حذف الحساب',
+
+    valueVoiceMode: 'قراءة الذاكرة الشخصية بصوت',
+    valueFontSize: 'ضبط حجم النص',
+    valueDailyReminder: 'تذكير للتدريب',
+    valueWeeklyReport: 'ملخص كل أسبوع',
+    valueStreakAlert: 'حافظ على سلسلتك',
+    valueRetake: 'احصل على ملف ذهني جديد',
+    valueReset: 'ابدأ من جديد (يبقي الحساب)',
+    valueLogout: 'تسجيل الخروج من حسابك',
+    valueDelete: 'حذف كل البيانات نهائيًا',
+
+    langEnglish: 'الإنجليزية',
+    langArabic: 'العربية',
+
+    years: 'سنة',
+    accountAdult: 'بالغ',
+    accountChild: 'طفل',
+
+    notSet: 'غير محدد',
+    daysSelected: 'أيام محددة',
+    minPerDay: 'دقيقة / يوم',
+
+    timeMorning: 'صباحًا',
+    timeAfternoon: 'بعد الظهر',
+    timeEvening: 'مساءً',
+
+    dayNames: ['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'],
+    dayNamesFull: ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],
+
+    logoutTitle: 'تسجيل الخروج؟',
+    logoutText: 'يمكنك الدخول مرة أخرى في أي وقت.',
+    logoutConfirm: 'خروج',
+
+    resetTitle: 'إعادة تعيين التقدم؟',
+    resetText: 'سيتم حذف كل بيانات التدريب. حسابك سيبقى مفعّلًا.',
+    resetConfirm: 'إعادة',
+
+    deleteTitle: 'حذف الحساب؟',
+    deleteText: 'سيتم حذف حسابك وكل بياناتك نهائيًا. لا يمكن التراجع.',
+    deleteConfirm: 'حذف',
+
+    retakeTitle: 'إعادة التقييم؟',
+    retakeText: 'ستمر بالتقييم الذهني مرة أخرى وستحصل على ملف جديد.',
+    retakeConfirm: 'ابدأ',
+
+    cancel: 'إلغاء',
+    confirm: 'تأكيد',
+    saved: 'تم الحفظ',
+    languageChanged: 'تم تغيير اللغة'
+  }
+};
+
+/* ============================================
+   STATE
+============================================ */
+const STORAGE_KEY = 'memento_lang';
+let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+const htmlEl = document.documentElement;
+
+/* ============================================
+   LOAD USER DATA
+============================================ */
+function loadUserData() {
+  let notifications;
+  try {
+    notifications = JSON.parse(localStorage.getItem('memento_notifications') || '{"daily":true,"weekly":true,"streak":false}');
+  } catch (e) {
+    notifications = { daily: true, weekly: true, streak: false };
+  }
+
+  return {
+    name: localStorage.getItem('memento_user_name') || 'User',
+    age: parseInt(localStorage.getItem('memento_age') || '24'),
+    accountType: localStorage.getItem('memento_account_type') || 'myself',
+    days: JSON.parse(localStorage.getItem('memento_days') || '[]'),
+    time: localStorage.getItem('memento_time') || '',
+    duration: parseInt(localStorage.getItem('memento_duration') || '0'),
+    notifications,
+    voiceMode: localStorage.getItem('memento_voice_mode') === 'true',
+    fontSize: localStorage.getItem('memento_font_size') || 'medium'
+  };
+}
+
+/* ============================================
+   APPLY FONT SIZE
+============================================ */
+function applyFontSize(size) {
+  document.documentElement.setAttribute('data-font-size', size);
+  localStorage.setItem('memento_font_size', size);
+}
+
+/* ============================================
+   RENDER
+============================================ */
+function renderAll() {
+  const t = I18N[currentLang];
+  const user = loadUserData();
+
+  document.getElementById('pageTitleMini').textContent = t.pageTitleMini;
+
+  document.getElementById('avatar').textContent = user.name.charAt(0).toUpperCase();
+
+  document.getElementById('profileName').textContent = user.name;
+  document.getElementById('metaAge').textContent = user.age + ' ' + t.years;
+  document.getElementById('metaAccount').textContent =
+    user.accountType === 'child' ? t.accountChild : t.accountAdult;
+
+  document.getElementById('titleProfile').textContent = t.titleProfile;
+  document.getElementById('titleLanguage').textContent = t.titleLanguage;
+  document.getElementById('titleAccessibility').textContent = t.titleAccessibility;
+  document.getElementById('titleNotifications').textContent = t.titleNotifications;
+  document.getElementById('titleTraining').textContent = t.titleTraining;
+  document.getElementById('titleActions').textContent = t.titleActions;
+  document.getElementById('titleAccount').textContent = t.titleAccount;
+
+  document.getElementById('labelName').textContent = t.labelName;
+  document.getElementById('valueName').textContent = user.name;
+  document.getElementById('labelAge').textContent = t.labelAge;
+  document.getElementById('valueAge').textContent = user.age;
+
+  document.getElementById('labelLanguage').textContent = t.labelLanguage;
+  document.getElementById('valueLanguage').textContent =
+    currentLang === 'en' ? t.langEnglish : t.langArabic;
+  document.getElementById('langEn').classList.toggle('active', currentLang === 'en');
+  document.getElementById('langAr').classList.toggle('active', currentLang === 'ar');
+
+  // Voice & Accessibility
+  document.getElementById('labelVoiceMode').textContent = t.labelVoiceMode;
+  document.getElementById('valueVoiceMode').textContent = t.valueVoiceMode;
+  document.getElementById('labelFontSize').textContent = t.labelFontSize;
+  document.getElementById('valueFontSize').textContent = t.valueFontSize;
+
+  document.getElementById('toggleVoice').classList.toggle('on', user.voiceMode);
+
+  document.querySelectorAll('.font-pill').forEach(pill => {
+    pill.classList.toggle('active', pill.dataset.size === user.fontSize);
+  });
+
+  // Notifications
+  document.getElementById('labelDailyReminder').textContent = t.labelDailyReminder;
+  document.getElementById('valueDailyReminder').textContent = t.valueDailyReminder;
+  document.getElementById('labelWeeklyReport').textContent = t.labelWeeklyReport;
+  document.getElementById('valueWeeklyReport').textContent = t.valueWeeklyReport;
+  document.getElementById('labelStreakAlert').textContent = t.labelStreakAlert;
+  document.getElementById('valueStreakAlert').textContent = t.valueStreakAlert;
+
+  document.getElementById('toggleDaily').classList.toggle('on', user.notifications.daily);
+  document.getElementById('toggleWeekly').classList.toggle('on', user.notifications.weekly);
+  document.getElementById('toggleStreak').classList.toggle('on', user.notifications.streak);
+
+  // Training
+  document.getElementById('labelDays').textContent = t.labelDays;
+  document.getElementById('labelPreferredTime').textContent = t.labelPreferredTime;
+  document.getElementById('labelDuration').textContent = t.labelDuration;
+
+  const valueDaysEl = document.getElementById('valueDays');
+  if (user.days.length === 0) {
+    valueDaysEl.textContent = t.notSet;
+  } else {
+    valueDaysEl.textContent = user.days.map(d => {
+      const idx = ['sun','mon','tue','wed','thu','fri','sat'].indexOf(d);
+      return t.dayNames[idx] || d;
+    }).join(' · ');
+  }
+
+  const valueTimeEl = document.getElementById('valuePreferredTime');
+  if (!user.time) {
+    valueTimeEl.textContent = t.notSet;
+  } else {
+    const key = 'time' + user.time.charAt(0).toUpperCase() + user.time.slice(1);
+    valueTimeEl.textContent = t[key] || user.time;
+  }
+
+  const valueDurEl = document.getElementById('valueDuration');
+  if (!user.duration) {
+    valueDurEl.textContent = t.notSet;
+  } else {
+    valueDurEl.textContent = user.duration + ' ' + t.minPerDay;
+  }
+
+  // Actions
+  document.getElementById('labelRetake').textContent = t.labelRetake;
+  document.getElementById('valueRetake').textContent = t.valueRetake;
+  document.getElementById('labelReset').textContent = t.labelReset;
+  document.getElementById('valueReset').textContent = t.valueReset;
+  document.getElementById('labelLogout').textContent = t.labelLogout;
+  document.getElementById('valueLogout').textContent = t.valueLogout;
+  document.getElementById('labelDelete').textContent = t.labelDelete;
+  document.getElementById('valueDelete').textContent = t.valueDelete;
+}
+
+/* ============================================
+   LANGUAGE APPLY
+============================================ */
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+  htmlEl.lang = lang;
+  htmlEl.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  renderAll();
+}
+
+document.querySelectorAll('.lang-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    const lang = pill.dataset.lang;
+    if (lang === currentLang) return;
+    applyLanguage(lang);
+    showToast(I18N[lang].languageChanged);
+  });
+});
+
+/* ============================================
+   FONT SIZE PILLS
+============================================ */
+document.querySelectorAll('.font-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    const size = pill.dataset.size;
+    applyFontSize(size);
+    document.querySelectorAll('.font-pill').forEach(p => {
+      p.classList.toggle('active', p.dataset.size === size);
+    });
+    showToast(I18N[currentLang].saved);
+  });
+});
+
+/* ============================================
+   TOGGLES
+============================================ */
+document.querySelectorAll('.toggle').forEach(toggle => {
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('on');
+    const key = toggle.dataset.toggle;
+    const isOn = toggle.classList.contains('on');
+
+    if (key === 'voice') {
+      localStorage.setItem('memento_voice_mode', String(isOn));
+    } else {
+      const user = loadUserData();
+      user.notifications[key] = isOn;
+      localStorage.setItem('memento_notifications', JSON.stringify(user.notifications));
+    }
+
+    showToast(I18N[currentLang].saved);
+  });
+});
+
+/* ============================================
+   EDIT NAME
+============================================ */
+document.getElementById('editNameRow').addEventListener('click', () => {
+  const user = loadUserData();
+  const t = I18N[currentLang];
+  const newName = prompt(t.labelName + ':', user.name);
+  if (newName && newName.trim().length > 0) {
+    localStorage.setItem('memento_user_name', newName.trim());
+    renderAll();
+    showToast(t.saved);
+  }
+});
+
+/* ============================================
+   EDIT AGE
+============================================ */
+document.getElementById('editAgeRow').addEventListener('click', () => {
+  const user = loadUserData();
+  const t = I18N[currentLang];
+  const newAge = prompt(t.labelAge + ':', user.age);
+  const ageNum = parseInt(newAge);
+  if (!isNaN(ageNum) && ageNum >= 6 && ageNum <= 120) {
+    localStorage.setItem('memento_age', String(ageNum));
+    renderAll();
+    showToast(t.saved);
+  }
+});
+
+/* ============================================
+   EDIT TRAINING PREFERENCES
+============================================ */
+document.getElementById('editDaysRow').addEventListener('click', () => {
+  window.location.href = 'profile-setup.html';
+});
+
+document.getElementById('editTimeRow').addEventListener('click', () => {
+  window.location.href = 'profile-setup.html';
+});
+
+document.getElementById('editDurationRow').addEventListener('click', () => {
+  window.location.href = 'profile-setup.html';
+});
+
+/* ============================================
+   MODAL SYSTEM
+============================================ */
+const modalOverlay = document.getElementById('modalOverlay');
+const modalTitle = document.getElementById('modalTitle');
+const modalText = document.getElementById('modalText');
+const modalConfirm = document.getElementById('modalConfirm');
+
+let modalAction = null;
+
+function showModal(title, text, confirmText, action) {
+  modalTitle.textContent = title;
+  modalText.textContent = text;
+  modalConfirm.textContent = confirmText;
+  modalAction = action;
+  modalOverlay.classList.add('show');
+}
+
+function hideModal() {
+  modalOverlay.classList.remove('show');
+  modalAction = null;
+}
+
+document.getElementById('modalCancel').addEventListener('click', hideModal);
+modalOverlay.addEventListener('click', (e) => {
+  if (e.target === modalOverlay) hideModal();
+});
+
+modalConfirm.addEventListener('click', () => {
+  if (modalAction) modalAction();
+  hideModal();
+});
+
+/* ============================================
+   ACTIONS
+============================================ */
+
+// Logout
+document.getElementById('logoutRow').addEventListener('click', () => {
+  const t = I18N[currentLang];
+  showModal(t.logoutTitle, t.logoutText, t.logoutConfirm, () => {
+    localStorage.removeItem('memento_user_name');
+    localStorage.removeItem('memento_age');
+    localStorage.removeItem('memento_account_type');
+    localStorage.removeItem('memento_days');
+    localStorage.removeItem('memento_time');
+    localStorage.removeItem('memento_duration');
+    localStorage.removeItem('memento_workout_queue');
+    localStorage.removeItem('memento_workout_date');
+    localStorage.removeItem('memento_current_exercise');
+    localStorage.removeItem('memento_personalized_plan');
+    localStorage.removeItem('memento_streak');
+    localStorage.removeItem('memento_total_sessions');
+    localStorage.removeItem('memento_last_session_date');
+
+    window.location.href = 'login.html';
+  });
+});
+
+// Reset Progress
+document.getElementById('resetProgressRow').addEventListener('click', () => {
+  const t = I18N[currentLang];
+  showModal(t.resetTitle, t.resetText, t.resetConfirm, () => {
+    const keepKeys = [
+      'memento_user_name', 'memento_age', 'memento_account_type',
+      'memento_days', 'memento_time', 'memento_duration',
+      'memento_lang', 'memento_notifications',
+      'memento_voice_mode', 'memento_font_size'
+    ];
+    const allKeys = Object.keys(localStorage);
+    allKeys.forEach(key => {
+      if (key.startsWith('memento_') && !keepKeys.includes(key)) {
+        localStorage.removeItem(key);
+      }
+    });
+    showToast(t.saved);
+  });
+});
+
+// Delete Account
+document.getElementById('deleteAccountRow').addEventListener('click', () => {
+  const t = I18N[currentLang];
+  showModal(t.deleteTitle, t.deleteText, t.deleteConfirm, () => {
+    const allKeys = Object.keys(localStorage);
+    allKeys.forEach(key => {
+      if (key.startsWith('memento_')) localStorage.removeItem(key);
+    });
+    window.location.href = 'splash.html';
+  });
+});
+
+// Retake Assessment
+document.getElementById('retakeAssessmentRow').addEventListener('click', () => {
+  const t = I18N[currentLang];
+  showModal(t.retakeTitle, t.retakeText, t.retakeConfirm, () => {
+    localStorage.setItem('memento_reassess_mode', 'true');
+    window.location.href = 'assessment-intro.html';
+  });
+});
+
+/* ============================================
+   TOAST
+============================================ */
+let toastTimeout = null;
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 1800);
+}
+
+/* ============================================
+   NAVIGATION
+============================================ */
+document.getElementById('backBtn').addEventListener('click', () => {
+  window.location.href = 'home.html';
+});
+
+/* ============================================
+   INIT
+============================================ */
+applyFontSize(localStorage.getItem('memento_font_size') || 'medium');
+applyLanguage(currentLang);
+</script>
+
+</body>
+</html>
