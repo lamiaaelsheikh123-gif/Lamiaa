@@ -3,31 +3,37 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#FAF8F3" />
-<title>Memento AI — Analyzing</title>
+<meta name="theme-color" content="#F8FAFC" />
+<title>Omega — Analyzing</title>
 
+<!-- ✅ الخطوط الأصلية: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================
-   DESIGN TOKENS
+   DESIGN TOKENS — Omega Design System
 ============================================ */
 :root {
-  --c-primary: #0E7C7B;
-  --c-primary-light: #4DB6AC;
-  --c-secondary: #9B7EDE;
-  --c-blue: #5B9BD5;
-  --c-navy: #0F2C4C;
-  --c-slate: #5A6C7D;
-  --c-bg: #FAF8F3;
-  --c-card: #FFFFFF;
-  --c-border: #EAE6DE;
-  --c-success: #4CAF50;
+  --c-primary:       #0E9487;
+  --c-primary-light: #2EC4B6;
+  --c-primary-dark:  #076B5F;
+  --c-blue:          #3B82F6;
+  --c-purple:        #8B5CF6;
 
-  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
-  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+  --c-success: #22C55E;
+  --c-warning: #FBBF24;
+  --c-error:   #EF4444;
+
+  --c-navy:   #0F172A;
+  --c-slate:  #64748B;
+  --c-bg:     #F8FAFC;
+  --c-card:   #FFFFFF;
+  --c-border: #E2E8F0;
+
+  --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
 
   --r-sm: 10px;
   --r-md: 14px;
@@ -35,8 +41,8 @@
   --r-xl: 24px;
   --r-pill: 999px;
 
-  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
-  --sh-glow: 0 20px 60px rgba(14, 124, 123, 0.18);
+  --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
+  --sh-glow: 0 20px 60px rgba(14, 148, 135, 0.18);
 
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
@@ -51,7 +57,7 @@ html, body {
   height: 100%;
   font-family: var(--f-en);
   -webkit-font-smoothing: antialiased;
-  background: #E8E4DC;
+  background: #E2E8F0;
   overflow: hidden;
 }
 
@@ -59,9 +65,7 @@ html[lang="ar"] body { font-family: var(--f-ar); }
 
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-/* ============================================
-   PHONE FRAME
-============================================ */
+/* PHONE FRAME */
 .stage {
   width: 100vw;
   height: 100vh;
@@ -70,9 +74,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   justify-content: center;
   padding: 20px;
   background:
-    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
-    #E8E4DC;
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 148, 135, 0.10), transparent 50%),
+    #E2E8F0;
 }
 
 .phone {
@@ -112,9 +116,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .phone::before { display: none; }
 }
 
-/* ============================================
-   SCREEN
-============================================ */
+/* SCREEN */
 .screen {
   position: absolute;
   inset: 0;
@@ -129,15 +131,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
-    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+    radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 148, 135, 0.05), transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* ============================================
-   TOP BAR
-============================================ */
+/* TOP BAR */
 .topbar {
   position: relative;
   z-index: 10;
@@ -156,19 +156,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 124, 123, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.15);
   border-radius: var(--r-pill);
   font-size: 12px;
   font-weight: 600;
   color: var(--c-navy);
   letter-spacing: 0.3px;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
 .lang-toggle:hover {
   background: #fff;
-  border-color: rgba(14, 124, 123, 0.35);
+  border-color: rgba(14, 148, 135, 0.35);
   transform: translateY(-1px);
 }
 
@@ -183,9 +183,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .lang-toggle .divider { color: var(--c-border); font-weight: 300; }
 .lang-toggle .lang-inactive { color: var(--c-slate); font-weight: 500; }
 
-/* ============================================
-   CONTENT
-============================================ */
+/* CONTENT */
 .content {
   position: relative;
   z-index: 5;
@@ -200,9 +198,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   min-height: 0;
 }
 
-/* ============================================
-   BRAIN VISUAL
-============================================ */
+/* BRAIN VISUAL */
 .brain-wrap {
   position: relative;
   width: 200px;
@@ -223,7 +219,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: absolute;
   inset: -20px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(14, 124, 123, 0.25) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(14, 148, 135, 0.25) 0%, transparent 65%);
   filter: blur(30px);
   animation: glowPulse 2.6s ease-in-out infinite;
 }
@@ -243,7 +239,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .orbit-ring {
   position: absolute;
   inset: 5px;
-  border: 1.5px dashed rgba(155, 126, 222, 0.35);
+  border: 1.5px dashed rgba(139, 92, 246, 0.35);
   border-radius: 50%;
   animation: orbit 12s linear infinite;
 }
@@ -251,7 +247,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .orbit-ring-inner {
   position: absolute;
   inset: 25px;
-  border: 1px dashed rgba(14, 124, 123, 0.3);
+  border: 1px dashed rgba(14, 148, 135, 0.3);
   border-radius: 50%;
   animation: orbit 8s linear infinite reverse;
 }
@@ -278,9 +274,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   50%      { opacity: 1; transform: scale(1.4); }
 }
 
-/* ============================================
-   TEXT
-============================================ */
+/* TEXT */
 .text-wrap {
   display: flex;
   flex-direction: column;
@@ -313,9 +307,7 @@ html[lang="ar"] .title { font-family: var(--f-ar); font-size: 21px; letter-spaci
 
 html[lang="ar"] .subtitle { font-family: var(--f-ar); font-size: 14.5px; }
 
-/* ============================================
-   MESSAGE
-============================================ */
+/* MESSAGE */
 .message-box {
   position: relative;
   width: 100%;
@@ -328,7 +320,7 @@ html[lang="ar"] .subtitle { font-family: var(--f-ar); font-size: 14.5px; }
   background: #fff;
   border: 1.5px solid var(--c-border);
   border-radius: var(--r-md);
-  box-shadow: 0 6px 20px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
   opacity: 0;
   transform: translateY(12px);
   animation: fadeUp 0.7s ease 0.65s forwards;
@@ -339,7 +331,7 @@ html[lang="ar"] .subtitle { font-family: var(--f-ar); font-size: 14.5px; }
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(14, 124, 123, 0.04), rgba(155, 126, 222, 0.04));
+  background: linear-gradient(135deg, rgba(14, 148, 135, 0.04), rgba(139, 92, 246, 0.04));
   z-index: 0;
 }
 
@@ -391,9 +383,7 @@ html[lang="ar"] .message-text { font-family: var(--f-ar); font-size: 14.5px; let
   30%           { opacity: 1; transform: translateY(-4px); }
 }
 
-/* ============================================
-   PROGRESS
-============================================ */
+/* PROGRESS */
 .progress-wrap {
   width: 100%;
   max-width: 320px;
@@ -436,7 +426,7 @@ html[lang="ar"] .progress-label {
 .progress-bar {
   width: 100%;
   height: 6px;
-  background: rgba(14, 124, 123, 0.08);
+  background: rgba(14, 148, 135, 0.08);
   border-radius: var(--r-pill);
   overflow: hidden;
   position: relative;
@@ -449,15 +439,13 @@ html[lang="ar"] .progress-label {
   width: 0%;
   background: var(--g-brand);
   border-radius: var(--r-pill);
-  box-shadow: 0 0 12px rgba(14, 124, 123, 0.5);
+  box-shadow: 0 0 12px rgba(14, 148, 135, 0.5);
   transition: width 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 html[dir="rtl"] .progress-fill { left: auto; right: 0; }
 
-/* ============================================
-   STEPS LIST
-============================================ */
+/* STEPS LIST */
 .steps-list {
   width: 100%;
   max-width: 320px;
@@ -483,14 +471,14 @@ html[dir="rtl"] .progress-fill { left: auto; right: 0; }
 
 .step-item.active {
   opacity: 1;
-  border-color: rgba(14, 124, 123, 0.3);
-  box-shadow: 0 4px 14px rgba(14, 124, 123, 0.08);
+  border-color: rgba(14, 148, 135, 0.3);
+  box-shadow: 0 4px 14px rgba(14, 148, 135, 0.08);
 }
 
 .step-item.done {
   opacity: 0.85;
-  border-color: rgba(76, 175, 80, 0.3);
-  background: rgba(76, 175, 80, 0.04);
+  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.04);
 }
 
 .step-dot {
@@ -508,7 +496,7 @@ html[dir="rtl"] .progress-fill { left: auto; right: 0; }
 
 .step-item.active .step-dot {
   border-color: var(--c-primary);
-  background: rgba(14, 124, 123, 0.1);
+  background: rgba(14, 148, 135, 0.1);
 }
 
 .step-item.active .step-dot::after {
@@ -545,9 +533,7 @@ html[dir="rtl"] .progress-fill { left: auto; right: 0; }
 
 html[lang="ar"] .step-text { font-family: var(--f-ar); font-size: 13px; letter-spacing: 0; }
 
-/* ============================================
-   REDUCED MOTION
-============================================ */
+/* REDUCED MOTION */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -590,13 +576,13 @@ html[lang="ar"] .step-text { font-family: var(--f-ar); font-size: 13px; letter-s
           <svg class="brain-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="brainG" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#0E7C7B"/>
-                <stop offset="50%" stop-color="#5B9BD5"/>
-                <stop offset="100%" stop-color="#9B7EDE"/>
+                <stop offset="0%" stop-color="#0E9487"/>
+                <stop offset="50%" stop-color="#2EC4B6"/>
+                <stop offset="100%" stop-color="#3B82F6"/>
               </linearGradient>
               <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#9B7EDE"/>
-                <stop offset="100%" stop-color="#9B7EDE" stop-opacity="0"/>
+                <stop offset="0%" stop-color="#8B5CF6"/>
+                <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
               </radialGradient>
             </defs>
 
@@ -665,9 +651,7 @@ html[lang="ar"] .step-text { font-family: var(--f-ar); font-size: 13px; letter-s
         </div>
 
         <!-- Steps -->
-        <div class="steps-list" id="stepsList">
-          <!-- Filled by JS -->
-        </div>
+        <div class="steps-list" id="stepsList"></div>
 
       </div>
 
@@ -711,7 +695,7 @@ const I18N = {
 /* ============================================
    LANGUAGE
 ============================================ */
-const STORAGE_KEY = 'memento_lang';
+const STORAGE_KEY = 'omega_lang';
 let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
 
 const htmlEl      = document.documentElement;
@@ -734,12 +718,10 @@ function applyLanguage(lang) {
   document.getElementById('subtitle').textContent = t.subtitle;
   document.getElementById('progressLabel').textContent = t.progressLabel;
 
-  // Update message text if currently showing
   if (currentStepIndex < t.steps.length) {
     document.getElementById('messageLabel').textContent = t.steps[currentStepIndex].text;
   }
 
-  // Re-render steps
   renderSteps();
 }
 
@@ -790,14 +772,11 @@ function tick() {
   const elapsed = now - startTime;
   const progress = Math.min(elapsed / TOTAL_DURATION, 1);
 
-  // Update progress bar
   document.getElementById('progressFill').style.width = (progress * 100) + '%';
 
-  // Update percentage
   const percent = Math.round(progress * 100);
   document.getElementById('progressPercent').textContent = percent;
 
-  // Determine current step
   const newStep = Math.min(Math.floor(elapsed / STEP_DURATION), 4);
 
   if (newStep !== currentStepIndex) {
@@ -805,7 +784,6 @@ function tick() {
     updateStepUI();
   }
 
-  // When done, navigate
   if (progress >= 1) {
     setTimeout(() => {
       window.location.href = 'cognitive-profile.html';
@@ -819,15 +797,12 @@ function tick() {
 function updateStepUI() {
   const t = I18N[currentLang];
 
-  // Fade message out
   const msg = document.getElementById('messageText');
   msg.classList.add('fade-out');
 
   setTimeout(() => {
-    // Update text
     document.getElementById('messageLabel').textContent = t.steps[currentStepIndex].text;
 
-    // Fade in
     msg.classList.remove('fade-out');
     msg.classList.add('fade-in');
 
@@ -836,7 +811,6 @@ function updateStepUI() {
     }, 50);
   }, 380);
 
-  // Update step items
   const items = document.querySelectorAll('.step-item');
   items.forEach((item, i) => {
     item.classList.remove('active', 'done');
