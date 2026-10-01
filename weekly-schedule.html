@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8" />
@@ -223,7 +223,7 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 .lang-toggle .lang-inactive { color: var(--c-slate); font-weight: 500; }
 
 /* ============================================
-   VIEWS — 2 states
+   VIEWS
 ============================================ */
 .view {
   display: none;
@@ -245,7 +245,7 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
   overflow-y: auto;
   scrollbar-width: none;
   min-height: 0;
@@ -256,12 +256,12 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 /* Icon */
 .lock-icon-wrap {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 110px;
+  height: 110px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 8px;
+  margin-top: 4px;
   opacity: 0;
   transform: scale(0.6);
   animation: lockIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s forwards;
@@ -288,9 +288,9 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 }
 
 .lock-icon-inner {
-  width: 100px;
-  height: 100px;
-  border-radius: 28px;
+  width: 90px;
+  height: 90px;
+  border-radius: 26px;
   background: var(--g-premium);
   display: flex;
   align-items: center;
@@ -315,8 +315,8 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 }
 
 .lock-icon-inner svg {
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   stroke: #fff;
   stroke-width: 2.2;
   fill: none;
@@ -372,7 +372,7 @@ html[lang="ar"] .premium-badge {
 
 /* Title */
 .paywall-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--c-navy);
   text-align: center;
@@ -384,10 +384,10 @@ html[lang="ar"] .premium-badge {
   animation: fadeUp 0.6s ease 0.45s forwards;
 }
 
-html[lang="ar"] .paywall-title { font-family: var(--f-ar); font-size: 23px; letter-spacing: 0; }
+html[lang="ar"] .paywall-title { font-family: var(--f-ar); font-size: 21px; letter-spacing: 0; }
 
 .paywall-desc {
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--c-slate);
   line-height: 1.6;
   text-align: center;
@@ -397,7 +397,7 @@ html[lang="ar"] .paywall-title { font-family: var(--f-ar); font-size: 23px; lett
   animation: fadeUp 0.6s ease 0.55s forwards;
 }
 
-html[lang="ar"] .paywall-desc { font-family: var(--f-ar); font-size: 14.5px; }
+html[lang="ar"] .paywall-desc { font-family: var(--f-ar); font-size: 14px; }
 
 /* Feature List */
 .feature-list {
@@ -406,7 +406,7 @@ html[lang="ar"] .paywall-desc { font-family: var(--f-ar); font-size: 14.5px; }
   gap: 10px;
   width: 100%;
   max-width: 320px;
-  padding: 16px;
+  padding: 14px 16px;
   background: #fff;
   border: 1.5px solid var(--c-border);
   border-radius: var(--r-xl);
@@ -445,28 +445,28 @@ html[lang="ar"] .paywall-desc { font-family: var(--f-ar); font-size: 14.5px; }
 }
 
 .feature-text {
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--c-navy);
   font-weight: 500;
   line-height: 1.4;
   letter-spacing: 0.1px;
 }
 
-html[lang="ar"] .feature-text { font-family: var(--f-ar); font-size: 14px; }
+html[lang="ar"] .feature-text { font-family: var(--f-ar); font-size: 13.5px; }
 
 /* Price Card */
 .price-card {
   position: relative;
   width: 100%;
   max-width: 320px;
-  padding: 20px 18px 18px;
+  padding: 16px 18px 16px;
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(14, 148, 135, 0.06));
   border: 1.5px solid rgba(139, 92, 246, 0.3);
   border-radius: var(--r-xl);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   overflow: hidden;
   opacity: 0;
   transform: translateY(12px);
@@ -511,7 +511,7 @@ html[lang="ar"] .price-tag-label {
 }
 
 .price-amount {
-  font-size: 38px;
+  font-size: 34px;
   font-weight: 800;
   background: var(--g-premium);
   -webkit-background-clip: text;
@@ -523,7 +523,7 @@ html[lang="ar"] .price-tag-label {
 }
 
 .price-period {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--c-slate);
 }
@@ -531,14 +531,15 @@ html[lang="ar"] .price-tag-label {
 html[lang="ar"] .price-period { font-family: var(--f-ar); }
 
 .price-note {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--c-slate);
   font-weight: 500;
   position: relative;
   z-index: 2;
+  text-align: center;
 }
 
-html[lang="ar"] .price-note { font-family: var(--f-ar); font-size: 12px; }
+html[lang="ar"] .price-note { font-family: var(--f-ar); font-size: 11.5px; }
 
 /* ============================================
    SCHEDULE VIEW (Unlocked state)
@@ -1112,7 +1113,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 
 html[lang="ar"] .btn-premium { font-family: var(--f-ar); font-size: 16.5px; }
 
-/* Skip / Cancel Button */
+/* Skip Button */
 .btn-skip {
   width: 100%;
   padding: 14px;
@@ -1152,7 +1153,7 @@ html[lang="ar"] .btn-skip { font-family: var(--f-ar); font-size: 14.5px; }
   <div class="phone">
     <div class="screen">
 
-      <!-- Top Bar (shared) -->
+      <!-- Top Bar -->
       <div class="topbar">
         <button class="back-btn" id="backBtn" aria-label="Back">
           <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -1172,14 +1173,11 @@ html[lang="ar"] .btn-skip { font-family: var(--f-ar); font-size: 14.5px; }
         </button>
       </div>
 
-      <!-- ============================================
-           VIEW 1: PAYWALL (Locked)
-      ============================================ -->
+      <!-- VIEW 1: PAYWALL (Locked) -->
       <div class="view active" id="viewLocked">
 
         <div class="paywall-content">
 
-          <!-- Lock Icon -->
           <div class="lock-icon-wrap">
             <div class="lock-icon-inner">
               <svg viewBox="0 0 24 24">
@@ -1190,20 +1188,16 @@ html[lang="ar"] .btn-skip { font-family: var(--f-ar); font-size: 14.5px; }
             </div>
           </div>
 
-          <!-- Premium Badge -->
           <div class="premium-badge">
             <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             <span id="premiumBadge">Premium Feature</span>
           </div>
 
-          <!-- Title -->
           <h1 class="paywall-title" id="paywallTitle">Unlock Your Weekly Schedule</h1>
           <p class="paywall-desc" id="paywallDesc">Get a fully personalized week-by-week training plan built by AI around your life.</p>
 
-          <!-- Feature List -->
           <div class="feature-list" id="featureList"></div>
 
-          <!-- Price Card -->
           <div class="price-card">
             <div class="price-tag-label" id="priceLabel">One-time purchase</div>
             <div class="price-value">
@@ -1215,7 +1209,6 @@ html[lang="ar"] .btn-skip { font-family: var(--f-ar); font-size: 14.5px; }
 
         </div>
 
-        <!-- Bottom Buttons -->
         <div class="bottom">
           <button class="btn-premium" id="subscribeBtn">
             <span id="subscribeLabel">Subscribe Now</span>
@@ -1231,14 +1224,11 @@ html[lang="ar"] .btn-skip { font-family: var(--f-ar); font-size: 14.5px; }
 
       </div>
 
-      <!-- ============================================
-           VIEW 2: SCHEDULE (Unlocked)
-      ============================================ -->
+      <!-- VIEW 2: SCHEDULE (Unlocked) -->
       <div class="view" id="viewUnlocked">
 
         <div class="schedule-content">
 
-          <!-- Header -->
           <div class="header">
             <div class="unlocked-badge">
               <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
@@ -1248,7 +1238,6 @@ html[lang="ar"] .btn-skip { font-family: var(--f-ar); font-size: 14.5px; }
             <p class="header-sub" id="headerSub">Your personalized training schedule.</p>
           </div>
 
-          <!-- Stats -->
           <div class="stats-row">
             <div class="stat-card s1">
               <div class="stat-icon">
@@ -1275,17 +1264,14 @@ html[lang="ar"] .btn-skip { font-family: var(--f-ar); font-size: 14.5px; }
             </div>
           </div>
 
-          <!-- Section Head -->
           <div class="section-head">
             <div class="section-title" id="sectionTitle">Weekly Plan</div>
           </div>
 
-          <!-- Days List -->
           <div class="days-list" id="daysList"></div>
 
         </div>
 
-        <!-- Bottom -->
         <div class="bottom">
           <button class="btn-primary" id="goHomeBtn">
             <span id="goHomeLabel">Go to Home</span>
@@ -1308,7 +1294,6 @@ html[lang="ar"] .btn-skip { font-family: var(--f-ar); font-size: 14.5px; }
 ============================================ */
 const I18N = {
   en: {
-    /* Paywall */
     premiumBadge: 'Premium Feature',
     paywallTitle: 'Unlock Your Weekly Schedule',
     paywallDesc: 'Get a fully personalized week-by-week training plan built by AI around your life.',
@@ -1325,7 +1310,6 @@ const I18N = {
       'Progress tracking across each week'
     ],
 
-    /* Schedule view */
     unlockedBadge: 'Premium Unlocked',
     headerTitle: 'This Week',
     headerSub: 'Your personalized training schedule.',
@@ -1353,7 +1337,6 @@ const I18N = {
     }
   },
   ar: {
-    /* Paywall */
     premiumBadge: 'ميزة مميزة',
     paywallTitle: 'افتح جدولك الأسبوعي',
     paywallDesc: 'احصل على خطة تدريب أسبوعية مخصصة بالكامل، يبنيها الذكاء الاصطناعي حسب حياتك.',
@@ -1370,7 +1353,6 @@ const I18N = {
       'متابعة التقدم خلال كل أسبوع'
     ],
 
-    /* Schedule view */
     unlockedBadge: 'مميز · مفتوح',
     headerTitle: 'هذا الأسبوع',
     headerSub: 'جدولك التدريبي المخصص.',
@@ -1432,7 +1414,7 @@ function applyLanguage(lang) {
 
   const t = I18N[lang];
 
-  /* Paywall texts */
+  /* Paywall */
   document.getElementById('premiumBadge').textContent = t.premiumBadge;
   document.getElementById('paywallTitle').textContent = t.paywallTitle;
   document.getElementById('paywallDesc').textContent = t.paywallDesc;
@@ -1442,7 +1424,6 @@ function applyLanguage(lang) {
   document.getElementById('subscribeLabel').textContent = t.subscribeLabel;
   document.getElementById('skipLabel').textContent = t.skipLabel;
 
-  /* Features list */
   const featureList = document.getElementById('featureList');
   featureList.innerHTML = '';
   t.features.forEach(f => {
@@ -1457,7 +1438,7 @@ function applyLanguage(lang) {
     featureList.appendChild(item);
   });
 
-  /* Schedule texts */
+  /* Schedule */
   document.getElementById('unlockedBadge').textContent = t.unlockedBadge;
   document.getElementById('headerTitle').textContent = t.headerTitle;
   document.getElementById('headerSub').textContent = t.headerSub;
@@ -1476,7 +1457,7 @@ document.getElementById('langToggle').addEventListener('click', () => {
 });
 
 /* ============================================
-   INITIAL STATE — Check purchase
+   INITIAL STATE
 ============================================ */
 function initView() {
   const isPurchased = localStorage.getItem(PURCHASE_KEY) === 'true';
@@ -1499,20 +1480,16 @@ function showSchedule() {
 }
 
 /* ============================================
-   SUBSCRIBE
+   SUBSCRIBE → Redirect to payment.html
 ============================================ */
 document.getElementById('subscribeBtn').addEventListener('click', () => {
   const btn = document.getElementById('subscribeBtn');
   btn.style.transform = 'scale(0.96)';
   setTimeout(() => { btn.style.transform = ''; }, 150);
 
-  // Simulate payment success (in a real app, redirect to payment.html)
   setTimeout(() => {
-    localStorage.setItem(PURCHASE_KEY, 'true');
-    showSchedule();
-    // Scroll to top
-    document.querySelector('.schedule-content').scrollTop = 0;
-  }, 400);
+    window.location.href = 'payment.html';
+  }, 250);
 });
 
 /* ============================================
@@ -1523,17 +1500,10 @@ document.getElementById('skipBtn').addEventListener('click', () => {
 });
 
 /* ============================================
-   BACK BUTTON
+   BACK
 ============================================ */
 document.getElementById('backBtn').addEventListener('click', () => {
-  const isPurchased = localStorage.getItem(PURCHASE_KEY) === 'true';
-  if (isPurchased) {
-    // Already in schedule view → back to personalized plan
-    window.location.href = 'personalized-plan.html';
-  } else {
-    // In paywall → back to personalized plan
-    window.location.href = 'personalized-plan.html';
-  }
+  window.location.href = 'personalized-plan.html';
 });
 
 /* ============================================
@@ -1553,13 +1523,11 @@ document.getElementById('goHomeBtn').addEventListener('click', () => {
    BUILD SCHEDULE
 ============================================ */
 function buildSchedule() {
-  // Read plan
   let plan = [];
   try {
     plan = JSON.parse(localStorage.getItem('omega_personalized_plan') || '[]');
   } catch (e) { plan = []; }
 
-  // Fallback plan (لو مفيش بيانات)
   if (!plan || plan.length === 0) {
     plan = [
       { key: 'memory',    rank: 1, sessions: 3, minutes: 10 },
@@ -1568,7 +1536,6 @@ function buildSchedule() {
     ];
   }
 
-  // Read training days
   let trainingDays = [];
   try {
     trainingDays = JSON.parse(localStorage.getItem('omega_days') || '[]');
@@ -1578,12 +1545,10 @@ function buildSchedule() {
     trainingDays = ['sun', 'tue', 'thu', 'sat'];
   }
 
-  // Order days correctly
   const dayOrder = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
   const dayMap = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
   const sortedDays = [...trainingDays].sort((a, b) => dayMap[a] - dayMap[b]);
 
-  // Build a flat list of all sessions
   const allSessions = [];
   plan.forEach(p => {
     for (let i = 0; i < p.sessions; i++) {
@@ -1595,7 +1560,6 @@ function buildSchedule() {
     }
   });
 
-  // Distribute round-robin
   const daySessions = {};
   sortedDays.forEach(d => { daySessions[d] = []; });
 
@@ -1604,10 +1568,8 @@ function buildSchedule() {
     daySessions[day].push(sess);
   });
 
-  // Today's index
   const todayIdx = new Date().getDay();
 
-  // Build schedule array (7 days)
   const schedule = dayOrder.map((dayKey, idx) => ({
     key: dayKey,
     dayIndex: idx,
