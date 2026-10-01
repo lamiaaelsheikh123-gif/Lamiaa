@@ -1,36 +1,43 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#FAF8F3" />
-<title>Memento AI — Assessment Complete</title>
+<meta name="theme-color" content="#F8FAFC" />
+<title>Omega — Assessment Complete</title>
 
+<!-- ✅ الخطوط الأصلية: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+/* ============================================
+   DESIGN TOKENS — Omega Design System
+============================================ */
 :root {
-  --c-primary: #0E7C7B;
-  --c-primary-light: #4DB6AC;
-  --c-secondary: #9B7EDE;
-  --c-blue: #5B9BD5;
-  --c-navy: #0F2C4C;
-  --c-slate: #5A6C7D;
-  --c-bg: #FAF8F3;
-  --c-card: #FFFFFF;
-  --c-border: #EAE6DE;
-  --c-error: #E57373;
-  --c-success: #4CAF50;
-  --c-warning: #FF9800;
+  --c-primary:       #0E9487;
+  --c-primary-light: #2EC4B6;
+  --c-primary-dark:  #076B5F;
+  --c-blue:          #3B82F6;
+  --c-purple:        #8B5CF6;
 
-  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
-  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+  --c-success: #22C55E;
+  --c-warning: #FBBF24;
+  --c-error:   #EF4444;
+
+  --c-navy:   #0F172A;
+  --c-slate:  #64748B;
+  --c-bg:     #F8FAFC;
+  --c-card:   #FFFFFF;
+  --c-border: #E2E8F0;
+
+  --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
 
   --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
-  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
-  --sh-glow: 0 20px 60px rgba(14, 124, 123, 0.18);
+  --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
+  --sh-glow: 0 20px 60px rgba(14, 148, 135, 0.18);
 
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
@@ -45,22 +52,21 @@ html, body {
   height: 100%;
   font-family: var(--f-en);
   -webkit-font-smoothing: antialiased;
-  background: #E8E4DC;
+  background: #E2E8F0;
   overflow: hidden;
 }
 
 html[lang="ar"] body { font-family: var(--f-ar); }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-/* PHONE FRAME */
 .stage {
   width: 100vw; height: 100vh;
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   background:
-    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
-    #E8E4DC;
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 148, 135, 0.10), transparent 50%),
+    #E2E8F0;
 }
 
 .phone {
@@ -106,13 +112,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
-    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+    radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 148, 135, 0.05), transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* CONFETTI */
 .confetti-canvas {
   position: absolute;
   inset: 0;
@@ -120,7 +125,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   z-index: 4;
 }
 
-/* TOP BAR */
 .topbar {
   position: relative;
   z-index: 10;
@@ -139,19 +143,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 124, 123, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.15);
   border-radius: var(--r-pill);
   font-size: 12px;
   font-weight: 600;
   color: var(--c-navy);
   letter-spacing: 0.3px;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
 .lang-toggle:hover {
   background: #fff;
-  border-color: rgba(14, 124, 123, 0.35);
+  border-color: rgba(14, 148, 135, 0.35);
   transform: translateY(-1px);
 }
 
@@ -166,7 +170,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .lang-toggle .divider { color: var(--c-border); font-weight: 300; }
 .lang-toggle .lang-inactive { color: var(--c-slate); font-weight: 500; }
 
-/* CONTENT */
 .content {
   position: relative;
   z-index: 5;
@@ -181,8 +184,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 .content::-webkit-scrollbar { display: none; }
+.content > * { flex-shrink: 0; }
 
-/* HERO */
 .hero {
   display: flex;
   flex-direction: column;
@@ -215,7 +218,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: absolute;
   inset: -12px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(14, 124, 123, 0.28) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(14, 148, 135, 0.28) 0%, transparent 65%);
   filter: blur(26px);
   z-index: -1;
   animation: pulseGlow 2.4s ease-in-out infinite;
@@ -235,7 +238,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   align-items: center;
   justify-content: center;
   box-shadow:
-    0 12px 32px rgba(14, 124, 123, 0.35),
+    0 12px 32px rgba(14, 148, 135, 0.35),
     inset 0 -4px 12px rgba(0, 0, 0, 0.1),
     inset 0 4px 12px rgba(255, 255, 255, 0.3);
 }
@@ -286,14 +289,13 @@ html[lang="ar"] .hero-desc { font-family: var(--f-ar); font-size: 14.5px; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* AI NOTE */
 .ai-note {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  background: linear-gradient(135deg, rgba(155, 126, 222, 0.10), rgba(91, 155, 213, 0.10));
-  border: 1.5px solid rgba(155, 126, 222, 0.25);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.10), rgba(59, 130, 246, 0.10));
+  border: 1.5px solid rgba(139, 92, 246, 0.25);
   border-radius: var(--r-lg);
   opacity: 0;
   transform: translateY(12px);
@@ -326,7 +328,7 @@ html[lang="ar"] .hero-desc { font-family: var(--f-ar); font-size: 14.5px; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 6px 16px rgba(155, 126, 222, 0.35);
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.35);
   animation: sparkPulse 1.8s ease-in-out infinite;
   position: relative;
   z-index: 2;
@@ -369,7 +371,7 @@ html[lang="ar"] .ai-text { font-family: var(--f-ar); font-size: 13.5px; }
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: var(--c-secondary);
+  background: var(--c-purple);
   animation: dotBounce 1.2s ease-in-out infinite;
 }
 
@@ -382,7 +384,6 @@ html[lang="ar"] .ai-text { font-family: var(--f-ar); font-size: 13.5px; }
   30%           { opacity: 1; transform: translateY(-4px); }
 }
 
-/* SECTION HEAD */
 .section-head {
   display: flex;
   align-items: center;
@@ -417,14 +418,13 @@ html[lang="ar"] .section-title { font-family: var(--f-ar); font-size: 14.5px; le
   font-size: 11.5px;
   font-weight: 600;
   color: var(--c-slate);
-  background: rgba(14, 124, 123, 0.08);
+  background: rgba(14, 148, 135, 0.08);
   padding: 3px 9px;
   border-radius: var(--r-pill);
 }
 
 html[lang="ar"] .section-count { font-family: var(--f-ar); font-size: 12.5px; }
 
-/* SKILLS GRID */
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -497,13 +497,13 @@ html[lang="ar"] .section-count { font-family: var(--f-ar); font-size: 12.5px; }
   z-index: 1;
 }
 
-.skill-icon.memory::before    { background: linear-gradient(135deg, #0E7C7B, #4DB6AC); }
-.skill-icon.attention::before { background: linear-gradient(135deg, #E57373, #FF9800); }
-.skill-icon.speed::before     { background: linear-gradient(135deg, #5B9BD5, #4DB6AC); }
-.skill-icon.problem::before   { background: linear-gradient(135deg, #9B7EDE, #5B9BD5); }
-.skill-icon.visual::before    { background: linear-gradient(135deg, #4DB6AC, #9B7EDE); }
-.skill-icon.language::before  { background: linear-gradient(135deg, #FF9800, #E8A0BF); }
-.skill-icon.numerical::before { background: linear-gradient(135deg, #5B9BD5, #9B7EDE); }
+.skill-icon.memory::before    { background: linear-gradient(135deg, #0E9487, #2EC4B6); }
+.skill-icon.attention::before { background: linear-gradient(135deg, #EF4444, #FBBF24); }
+.skill-icon.speed::before     { background: linear-gradient(135deg, #3B82F6, #2EC4B6); }
+.skill-icon.problem::before   { background: linear-gradient(135deg, #8B5CF6, #3B82F6); }
+.skill-icon.visual::before    { background: linear-gradient(135deg, #2EC4B6, #8B5CF6); }
+.skill-icon.language::before  { background: linear-gradient(135deg, #FBBF24, #EC4899); }
+.skill-icon.numerical::before { background: linear-gradient(135deg, #3B82F6, #8B5CF6); }
 
 .skill-name {
   font-size: 11.5px;
@@ -540,7 +540,7 @@ html[lang="ar"] .skill-name { font-family: var(--f-ar); font-size: 12.5px; lette
 .skill-bar {
   width: 100%;
   height: 5px;
-  background: rgba(14, 124, 123, 0.08);
+  background: rgba(14, 148, 135, 0.08);
   border-radius: var(--r-pill);
   overflow: hidden;
   position: relative;
@@ -552,18 +552,17 @@ html[lang="ar"] .skill-name { font-family: var(--f-ar); font-size: 12.5px; lette
   border-radius: var(--r-pill);
   background: var(--g-brand);
   transition: width 1.2s cubic-bezier(0.65, 0, 0.35, 1) 1.4s;
-  box-shadow: 0 0 8px rgba(14, 124, 123, 0.3);
+  box-shadow: 0 0 8px rgba(14, 148, 135, 0.3);
 }
 
 .skill-card.high .skill-score { color: var(--c-success); }
 .skill-card.mid  .skill-score { color: var(--c-warning); }
 .skill-card.low  .skill-score { color: var(--c-error); }
 
-.skill-card.high .skill-bar-fill { background: linear-gradient(90deg, #4CAF50, #66BB6A); }
-.skill-card.mid  .skill-bar-fill { background: linear-gradient(90deg, #FF9800, #FFB74D); }
-.skill-card.low  .skill-bar-fill { background: linear-gradient(90deg, #E57373, #EF5350); }
+.skill-card.high .skill-bar-fill { background: linear-gradient(90deg, #22C55E, #4ADE80); }
+.skill-card.mid  .skill-bar-fill { background: linear-gradient(90deg, #FBBF24, #F59E0B); }
+.skill-card.low  .skill-bar-fill { background: linear-gradient(90deg, #EF4444, #F87171); }
 
-/* BOTTOM */
 .bottom {
   position: relative;
   z-index: 10;
@@ -585,7 +584,7 @@ html[lang="ar"] .skill-name { font-family: var(--f-ar); font-size: 12.5px; lette
   letter-spacing: 0.4px;
   border-radius: var(--r-md);
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.32);
+  box-shadow: 0 12px 28px rgba(14, 148, 135, 0.32);
   transition: transform 0.2s ease, box-shadow 0.25s ease;
   display: inline-flex;
   align-items: center;
@@ -609,7 +608,7 @@ html[lang="ar"] .skill-name { font-family: var(--f-ar); font-size: 12.5px; lette
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 36px rgba(14, 124, 123, 0.4);
+  box-shadow: 0 16px 36px rgba(14, 148, 135, 0.4);
 }
 
 .btn-primary:active { transform: scale(0.97); }
@@ -762,7 +761,7 @@ const I18N = {
 /* ============================================
    LANGUAGE
 ============================================ */
-const STORAGE_KEY = 'memento_lang';
+const STORAGE_KEY = 'omega_lang';
 let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
 
 const htmlEl = document.documentElement;
@@ -798,37 +797,37 @@ document.getElementById('langToggle').addEventListener('click', () => {
 const SKILLS = [
   {
     key: 'memory',
-    storageKey: 'memento_memory_result',
+    storageKey: 'omega_memory_result',
     icon: `<svg viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>`
   },
   {
     key: 'attention',
-    storageKey: 'memento_attention_result',
+    storageKey: 'omega_attention_result',
     icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>`
   },
   {
     key: 'speed',
-    storageKey: 'memento_speed_result',
+    storageKey: 'omega_speed_result',
     icon: `<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`
   },
   {
     key: 'problem',
-    storageKey: 'memento_problem_result',
+    storageKey: 'omega_problem_result',
     icon: `<svg viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path></svg>`
   },
   {
     key: 'visual',
-    storageKey: 'memento_visual_result',
+    storageKey: 'omega_visual_result',
     icon: `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`
   },
   {
     key: 'language',
-    storageKey: 'memento_language_result',
+    storageKey: 'omega_language_result',
     icon: `<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>`
   },
   {
     key: 'numerical',
-    storageKey: 'memento_numerical_result',
+    storageKey: 'omega_numerical_result',
     icon: `<svg viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>`
   }
 ];
@@ -914,10 +913,10 @@ const canvas = document.getElementById('confettiCanvas');
 const ctx = canvas.getContext('2d');
 
 const CONF_COLORS = [
-  '#0E7C7B', '#4DB6AC',
-  '#5B9BD5', '#9B7EDE',
-  '#FF9800', '#FFB74D',
-  '#E8A0BF', '#4CAF50'
+  '#0E9487', '#2EC4B6',
+  '#3B82F6', '#8B5CF6',
+  '#FBBF24', '#F59E0B',
+  '#EC4899', '#22C55E'
 ];
 
 let confettiPieces = [];
