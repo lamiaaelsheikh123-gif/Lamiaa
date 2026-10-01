@@ -3,33 +3,39 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#FAF8F3" />
-<title>Memento AI — Account Type</title>
+<meta name="theme-color" content="#F8FAFC" />
+<title>Omega — Account Type</title>
 
+<!-- ✅ الخطوط الأصلية: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================
-   DESIGN TOKENS
+   DESIGN TOKENS — Omega Design System
 ============================================ */
 :root {
-  --c-primary: #0E7C7B;
-  --c-primary-light: #4DB6AC;
-  --c-secondary: #9B7EDE;
-  --c-blue: #5B9BD5;
-  --c-navy: #0F2C4C;
-  --c-slate: #5A6C7D;
-  --c-bg: #FAF8F3;
-  --c-card: #FFFFFF;
-  --c-border: #EAE6DE;
-  --c-error: #E57373;
+  --c-primary:       #0E9487;
+  --c-primary-light: #2EC4B6;
+  --c-primary-dark:  #076B5F;
+  --c-blue:          #3B82F6;
+  --c-purple:        #8B5CF6;
 
-  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
-  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
-  --g-care: linear-gradient(135deg, #9B7EDE 0%, #5B9BD5 100%);
-  --g-user: linear-gradient(135deg, #0E7C7B 0%, #4DB6AC 100%);
+  --c-success: #22C55E;
+  --c-warning: #FBBF24;
+  --c-error:   #EF4444;
+
+  --c-navy:   #0F172A;
+  --c-slate:  #64748B;
+  --c-bg:     #F8FAFC;
+  --c-card:   #FFFFFF;
+  --c-border: #E2E8F0;
+
+  --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
+  --g-care:  linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+  --g-user:  linear-gradient(135deg, #0E9487 0%, #2EC4B6 100%);
 
   --r-sm: 10px;
   --r-md: 14px;
@@ -37,10 +43,11 @@
   --r-xl: 24px;
   --r-pill: 999px;
 
-  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
-  --sh-glow: 0 20px 60px rgba(14, 124, 123, 0.18);
-  --sh-focus: 0 0 0 4px rgba(14, 124, 123, 0.12);
+  --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
+  --sh-glow: 0 20px 60px rgba(14, 148, 135, 0.18);
+  --sh-focus: 0 0 0 4px rgba(14, 148, 135, 0.12);
 
+  /* ✅ الخطوط الأصلية */
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
 
@@ -54,7 +61,7 @@ html, body {
   height: 100%;
   font-family: var(--f-en);
   -webkit-font-smoothing: antialiased;
-  background: #E8E4DC;
+  background: #E2E8F0;
   overflow: hidden;
 }
 
@@ -62,15 +69,17 @@ html[lang="ar"] body { font-family: var(--f-ar); }
 
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-/* PHONE FRAME */
+/* ============================================
+   PHONE FRAME
+============================================ */
 .stage {
   width: 100vw; height: 100vh;
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   background:
-    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
-    #E8E4DC;
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 148, 135, 0.10), transparent 50%),
+    #E2E8F0;
 }
 
 .phone {
@@ -110,7 +119,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .phone::before { display: none; }
 }
 
-/* SCREEN */
+/* ============================================
+   SCREEN
+============================================ */
 .screen {
   position: absolute;
   inset: 0;
@@ -130,13 +141,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 15% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
-    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+    radial-gradient(circle at 15% 10%, rgba(139, 92, 246, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 148, 135, 0.05), transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* TOP BAR */
+/* ============================================
+   TOP BAR
+============================================ */
 .topbar {
   position: relative;
   z-index: 10;
@@ -156,14 +169,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 124, 123, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.15);
   transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
 .back-btn:hover {
   background: #fff;
-  border-color: rgba(14, 124, 123, 0.35);
+  border-color: rgba(14, 148, 135, 0.35);
   transform: translateX(-2px);
 }
 
@@ -186,19 +199,19 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 124, 123, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.15);
   border-radius: var(--r-pill);
   font-size: 12px;
   font-weight: 600;
   color: var(--c-navy);
   letter-spacing: 0.3px;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
 .lang-toggle:hover {
   background: #fff;
-  border-color: rgba(14, 124, 123, 0.35);
+  border-color: rgba(14, 148, 135, 0.35);
   transform: translateY(-1px);
 }
 
@@ -213,7 +226,9 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 .lang-toggle .divider { color: var(--c-border); font-weight: 300; }
 .lang-toggle .lang-inactive { color: var(--c-slate); font-weight: 500; }
 
-/* CONTENT */
+/* ============================================
+   CONTENT
+============================================ */
 .content {
   position: relative;
   z-index: 5;
@@ -237,7 +252,7 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 .progress-bar {
   flex: 1;
   height: 4px;
-  background: rgba(14, 124, 123, 0.10);
+  background: rgba(14, 148, 135, 0.10);
   border-radius: var(--r-pill);
   overflow: hidden;
   position: relative;
@@ -251,7 +266,7 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
   background: var(--g-brand);
   border-radius: var(--r-pill);
   transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
-  box-shadow: 0 0 10px rgba(14, 124, 123, 0.3);
+  box-shadow: 0 0 10px rgba(14, 148, 135, 0.3);
 }
 
 html[dir="rtl"] .progress-fill { left: auto; right: 0; }
@@ -340,14 +355,14 @@ html[lang="ar"] .subheading { font-family: var(--f-ar); font-size: 14.5px; }
 }
 
 .option:hover {
-  border-color: rgba(14, 124, 123, 0.35);
+  border-color: rgba(14, 148, 135, 0.35);
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(15, 44, 76, 0.08);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
 
 .option.selected {
   border-color: transparent;
-  box-shadow: 0 16px 40px rgba(14, 124, 123, 0.22);
+  box-shadow: 0 16px 40px rgba(14, 148, 135, 0.22);
   transform: translateY(-3px);
 }
 
@@ -361,7 +376,7 @@ html[lang="ar"] .subheading { font-family: var(--f-ar); font-size: 14.5px; }
   height: 62px;
   flex-shrink: 0;
   border-radius: var(--r-lg);
-  background: rgba(14, 124, 123, 0.06);
+  background: rgba(14, 148, 135, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -417,7 +432,7 @@ html[lang="ar"] .option-desc { font-family: var(--f-ar); font-size: 13.5px; }
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: rgba(14, 124, 123, 0.08);
+  background: rgba(14, 148, 135, 0.08);
   border: 2px solid var(--c-border);
   flex-shrink: 0;
   display: flex;
@@ -456,9 +471,9 @@ html[lang="ar"] .option-desc { font-family: var(--f-ar); font-size: 13.5px; }
   align-items: flex-start;
   gap: 10px;
   padding: 14px 16px;
-  background: rgba(155, 126, 222, 0.08);
+  background: rgba(139, 92, 246, 0.08);
   border-radius: var(--r-md);
-  border: 1px solid rgba(155, 126, 222, 0.18);
+  border: 1px solid rgba(139, 92, 246, 0.18);
   opacity: 0;
   transform: translateY(10px);
   animation: fadeUp 0.6s ease 0.65s forwards;
@@ -468,7 +483,7 @@ html[lang="ar"] .option-desc { font-family: var(--f-ar); font-size: 13.5px; }
 .info-note svg {
   width: 16px;
   height: 16px;
-  stroke: var(--c-secondary);
+  stroke: var(--c-purple);
   stroke-width: 2.2;
   fill: none;
   flex-shrink: 0;
@@ -483,7 +498,9 @@ html[lang="ar"] .option-desc { font-family: var(--f-ar); font-size: 13.5px; }
 
 html[lang="ar"] .info-text { font-family: var(--f-ar); font-size: 13px; }
 
-/* BOTTOM */
+/* ============================================
+   BOTTOM
+============================================ */
 .bottom {
   position: relative;
   z-index: 10;
@@ -505,7 +522,7 @@ html[lang="ar"] .info-text { font-family: var(--f-ar); font-size: 13px; }
   letter-spacing: 0.4px;
   border-radius: var(--r-md);
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.28);
+  box-shadow: 0 12px 28px rgba(14, 148, 135, 0.28);
   transition: transform 0.2s ease, box-shadow 0.25s ease, opacity 0.3s ease;
   display: inline-flex;
   align-items: center;
@@ -526,7 +543,7 @@ html[lang="ar"] .info-text { font-family: var(--f-ar); font-size: 13px; }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(14, 124, 123, 0.35);
+  box-shadow: 0 16px 34px rgba(14, 148, 135, 0.35);
 }
 
 .btn-primary:active:not(:disabled) { transform: scale(0.97); }
@@ -534,7 +551,7 @@ html[lang="ar"] .info-text { font-family: var(--f-ar); font-size: 13px; }
 .btn-primary:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-  box-shadow: 0 8px 20px rgba(14, 124, 123, 0.15);
+  box-shadow: 0 8px 20px rgba(14, 148, 135, 0.15);
 }
 
 .btn-primary .arrow {
@@ -614,12 +631,12 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
               <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="userGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#0E7C7B"/>
-                    <stop offset="100%" stop-color="#4DB6AC"/>
+                    <stop offset="0%" stop-color="#0E9487"/>
+                    <stop offset="100%" stop-color="#2EC4B6"/>
                   </linearGradient>
                   <linearGradient id="userGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#0E7C7B" stop-opacity="0.4"/>
-                    <stop offset="100%" stop-color="#4DB6AC" stop-opacity="0.2"/>
+                    <stop offset="0%" stop-color="#0E9487" stop-opacity="0.4"/>
+                    <stop offset="100%" stop-color="#2EC4B6" stop-opacity="0.2"/>
                   </linearGradient>
                 </defs>
                 <circle cx="32" cy="24" r="10" fill="url(#userGrad)"/>
@@ -644,12 +661,12 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
               <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="careGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#9B7EDE"/>
-                    <stop offset="100%" stop-color="#5B9BD5"/>
+                    <stop offset="0%" stop-color="#8B5CF6"/>
+                    <stop offset="100%" stop-color="#3B82F6"/>
                   </linearGradient>
                   <linearGradient id="careGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#9B7EDE" stop-opacity="0.4"/>
-                    <stop offset="100%" stop-color="#5B9BD5" stop-opacity="0.2"/>
+                    <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.4"/>
+                    <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.2"/>
                   </linearGradient>
                 </defs>
 
@@ -750,7 +767,7 @@ const I18N = {
 /* ============================================
    LANGUAGE
 ============================================ */
-const STORAGE_KEY = 'memento_lang';
+const STORAGE_KEY = 'omega_lang';
 let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
 
 const htmlEl      = document.documentElement;
@@ -801,7 +818,7 @@ options.forEach(opt => {
     opt.classList.add('selected');
     selectedValue = opt.dataset.value;
     continueBtn.disabled = false;
-    localStorage.setItem('memento_account_type', selectedValue);
+    localStorage.setItem('omega_account_type', selectedValue);
   });
 });
 
@@ -818,7 +835,6 @@ continueBtn.addEventListener('click', () => {
     if (selectedValue === 'myself') {
       window.location.href = 'profile-setup.html';
     } else {
-      // ✅ Caregiver Mode: go to Care Profile Setup
       window.location.href = 'care-profile-setup.html';
     }
   }, 250);
