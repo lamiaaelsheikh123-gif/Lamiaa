@@ -3,26 +3,41 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#FAF8F3" />
-<title>Memento AI — Settings</title>
+<meta name="theme-color" content="#F8FAFC" />
+<title>Omega — Settings</title>
 
+<!-- ✅ الخطوط الأصلية: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+/* ============================================
+   DESIGN TOKENS — Omega Design System
+============================================ */
 :root {
-  --c-primary: #0E7C7B; --c-primary-light: #4DB6AC; --c-secondary: #9B7EDE;
-  --c-blue: #5B9BD5; --c-navy: #0F2C4C; --c-slate: #5A6C7D;
-  --c-bg: #FAF8F3; --c-card: #FFFFFF; --c-border: #EAE6DE;
-  --c-error: #E57373; --c-success: #4CAF50; --c-warning: #FF9800;
+  --c-primary:       #0E9487;
+  --c-primary-light: #2EC4B6;
+  --c-primary-dark:  #076B5F;
+  --c-blue:          #3B82F6;
+  --c-purple:        #8B5CF6;
 
-  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
-  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
-  --g-danger: linear-gradient(135deg, #E57373, #EF5350);
+  --c-success: #22C55E;
+  --c-warning: #FBBF24;
+  --c-error:   #EF4444;
+
+  --c-navy:   #0F172A;
+  --c-slate:  #64748B;
+  --c-bg:     #F8FAFC;
+  --c-card:   #FFFFFF;
+  --c-border: #E2E8F0;
+
+  --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
+  --g-danger: linear-gradient(135deg, #EF4444, #F87171);
 
   --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
-  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+  --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
 
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
@@ -37,7 +52,7 @@ html, body {
   height: 100%;
   font-family: var(--f-en);
   -webkit-font-smoothing: antialiased;
-  background: #E8E4DC;
+  background: #E2E8F0;
   overflow: hidden;
 }
 
@@ -61,9 +76,9 @@ html[data-font-size="large"]  .setting-value { font-size: 13px; }
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   background:
-    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
-    #E8E4DC;
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 148, 135, 0.10), transparent 50%),
+    #E2E8F0;
 }
 
 .phone {
@@ -108,8 +123,8 @@ html[data-font-size="large"]  .setting-value { font-size: 13px; }
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
-    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+    radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 148, 135, 0.05), transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -130,12 +145,12 @@ html[data-font-size="large"]  .setting-value { font-size: 13px; }
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 124, 123, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.15);
   transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
-.back-btn:hover { background: #fff; border-color: rgba(14, 124, 123, 0.35); transform: translateX(-2px); }
+.back-btn:hover { background: #fff; border-color: rgba(14, 148, 135, 0.35); transform: translateX(-2px); }
 html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
 
 .back-btn svg { width: 16px; height: 16px; stroke: var(--c-primary); stroke-width: 2.4; fill: none; }
@@ -168,17 +183,23 @@ html[lang="ar"] .page-title-mini { font-family: var(--f-ar); font-size: 14.5px; 
 
 @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-/* PROFILE HEADER */
+/* ============================================
+   ✅ PROFILE HEADER — إصلاح الـ Avatar المضغوط
+============================================ */
 .profile-header {
-  display: flex; align-items: center; gap: 14px;
-  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 18px;
   background: #fff;
   border: 1.5px solid var(--c-border);
   border-radius: var(--r-xl);
   position: relative;
   overflow: hidden;
-  opacity: 0; transform: translateY(14px);
+  opacity: 0;
+  transform: translateY(14px);
   animation: fadeUp 0.5s ease 0.15s forwards;
+  min-height: 104px;
 }
 
 .profile-header::before {
@@ -190,18 +211,26 @@ html[lang="ar"] .page-title-mini { font-family: var(--f-ar); font-size: 14.5px; 
 }
 
 .avatar {
-  width: 60px; height: 60px;
+  width: 64px;
+  height: 64px;
+  min-width: 64px;     /* ✅ يمنع الضغط */
+  min-height: 64px;    /* ✅ */
+  aspect-ratio: 1 / 1; /* ✅ دايرة دائمًا */
   border-radius: 50%;
   background: var(--g-brand);
-  display: inline-flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 800;
   letter-spacing: -1px;
   flex-shrink: 0;
-  box-shadow: 0 8px 20px rgba(14, 124, 123, 0.3);
+  box-shadow: 0 8px 20px rgba(14, 148, 135, 0.3);
   position: relative;
   text-transform: uppercase;
+  padding: 0;
+  line-height: 1;
 }
 
 .avatar::after {
@@ -209,17 +238,20 @@ html[lang="ar"] .page-title-mini { font-family: var(--f-ar); font-size: 14.5px; 
   position: absolute;
   inset: -4px;
   border-radius: 50%;
-  border: 2px solid rgba(14, 124, 123, 0.2);
+  border: 2px solid rgba(14, 148, 135, 0.2);
 }
 
 .profile-info {
   flex: 1;
-  display: flex; flex-direction: column; gap: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   min-width: 0;
+  overflow: hidden;
 }
 
 .profile-name {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--c-navy);
   letter-spacing: -0.3px;
@@ -229,25 +261,26 @@ html[lang="ar"] .page-title-mini { font-family: var(--f-ar); font-size: 14.5px; 
   text-overflow: ellipsis;
 }
 
-html[lang="ar"] .profile-name { font-family: var(--f-ar); font-size: 17px; letter-spacing: 0; }
+html[lang="ar"] .profile-name { font-family: var(--f-ar); font-size: 18px; letter-spacing: 0; }
 
 .profile-meta {
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--c-slate);
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   flex-wrap: wrap;
+  line-height: 1.3;
 }
 
-html[lang="ar"] .profile-meta { font-family: var(--f-ar); font-size: 12.5px; }
+html[lang="ar"] .profile-meta { font-family: var(--f-ar); font-size: 13px; }
 
 .profile-meta-divider {
-  width: 3px;
-  height: 3px;
+  width: 3px; height: 3px;
   border-radius: 50%;
   background: var(--c-border);
+  flex-shrink: 0;
 }
 
 /* SECTIONS */
@@ -286,8 +319,7 @@ html[lang="ar"] .section-title {
 
 .section-title::before {
   content: '';
-  width: 3px;
-  height: 12px;
+  width: 3px; height: 12px;
   background: var(--g-brand);
   border-radius: var(--r-pill);
 }
@@ -312,11 +344,13 @@ html[lang="ar"] .section-title {
 }
 
 .setting-row.clickable { cursor: pointer; }
-.setting-row.clickable:hover { background: rgba(14, 124, 123, 0.03); }
-.setting-row.clickable:active { background: rgba(14, 124, 123, 0.06); }
+.setting-row.clickable:hover { background: rgba(14, 148, 135, 0.03); }
+.setting-row.clickable:active { background: rgba(14, 148, 135, 0.06); }
 
 .setting-icon {
   width: 34px; height: 34px;
+  min-width: 34px;    /* ✅ */
+  min-height: 34px;   /* ✅ */
   border-radius: 10px;
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0;
@@ -325,17 +359,17 @@ html[lang="ar"] .section-title {
 }
 
 .setting-icon::before { content: ''; position: absolute; inset: 0; z-index: 1; }
-.setting-icon.user::before       { background: linear-gradient(135deg, #0E7C7B, #4DB6AC); }
-.setting-icon.globe::before      { background: linear-gradient(135deg, #5B9BD5, #9B7EDE); }
-.setting-icon.bell::before       { background: linear-gradient(135deg, #FF9800, #FFB74D); }
-.setting-icon.calendar::before   { background: linear-gradient(135deg, #9B7EDE, #5B9BD5); }
-.setting-icon.clock::before      { background: linear-gradient(135deg, #4DB6AC, #0E7C7B); }
-.setting-icon.timer::before      { background: linear-gradient(135deg, #E8A0BF, #9B7EDE); }
-.setting-icon.refresh::before    { background: linear-gradient(135deg, #5B9BD5, #4DB6AC); }
+.setting-icon.user::before       { background: linear-gradient(135deg, #0E9487, #2EC4B6); }
+.setting-icon.globe::before      { background: linear-gradient(135deg, #3B82F6, #8B5CF6); }
+.setting-icon.bell::before       { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
+.setting-icon.calendar::before   { background: linear-gradient(135deg, #8B5CF6, #3B82F6); }
+.setting-icon.clock::before      { background: linear-gradient(135deg, #2EC4B6, #0E9487); }
+.setting-icon.timer::before      { background: linear-gradient(135deg, #EC4899, #8B5CF6); }
+.setting-icon.refresh::before    { background: linear-gradient(135deg, #3B82F6, #2EC4B6); }
 .setting-icon.trash::before      { background: var(--g-danger); }
-.setting-icon.logout::before     { background: linear-gradient(135deg, #E57373, #EF5350); }
-.setting-icon.voice::before      { background: linear-gradient(135deg, #9B7EDE, #E8A0BF); }
-.setting-icon.font::before       { background: linear-gradient(135deg, #5B9BD5, #4DB6AC); }
+.setting-icon.logout::before     { background: linear-gradient(135deg, #EF4444, #F87171); }
+.setting-icon.voice::before      { background: linear-gradient(135deg, #8B5CF6, #EC4899); }
+.setting-icon.font::before       { background: linear-gradient(135deg, #3B82F6, #2EC4B6); }
 
 .setting-icon svg {
   width: 16px; height: 16px;
@@ -393,8 +427,9 @@ html[dir="rtl"] .setting-arrow { transform: scaleX(-1); }
 .toggle {
   position: relative;
   width: 44px; height: 26px;
+  min-width: 44px;   /* ✅ */
   border-radius: var(--r-pill);
-  background: rgba(14, 124, 123, 0.15);
+  background: rgba(14, 148, 135, 0.15);
   transition: background 0.3s ease;
   flex-shrink: 0;
   cursor: pointer;
@@ -409,27 +444,19 @@ html[dir="rtl"] .setting-arrow { transform: scaleX(-1); }
   height: 20px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 2px 6px rgba(15, 44, 76, 0.2);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.toggle.on {
-  background: var(--g-brand);
-}
-
-.toggle.on::after {
-  transform: translateX(18px);
-}
-
-html[dir="rtl"] .toggle.on::after {
-  transform: translateX(-18px);
-}
+.toggle.on { background: var(--g-brand); }
+.toggle.on::after { transform: translateX(18px); }
+html[dir="rtl"] .toggle.on::after { transform: translateX(-18px); }
 
 /* LANGUAGE PILLS */
 .lang-pills {
   display: flex;
   gap: 6px;
-  background: rgba(14, 124, 123, 0.08);
+  background: rgba(14, 148, 135, 0.08);
   border-radius: var(--r-pill);
   padding: 3px;
   flex-shrink: 0;
@@ -450,18 +477,16 @@ html[dir="rtl"] .toggle.on::after {
 .lang-pill.active {
   background: #fff;
   color: var(--c-primary);
-  box-shadow: 0 2px 8px rgba(15, 44, 76, 0.1);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
 }
 
-.lang-pill:hover:not(.active) {
-  color: var(--c-primary);
-}
+.lang-pill:hover:not(.active) { color: var(--c-primary); }
 
 /* Font size pills */
 .font-pills {
   display: flex;
   gap: 6px;
-  background: rgba(14, 124, 123, 0.08);
+  background: rgba(14, 148, 135, 0.08);
   border-radius: var(--r-pill);
   padding: 3px;
   flex-shrink: 0;
@@ -485,34 +510,12 @@ html[dir="rtl"] .toggle.on::after {
 .font-pill.active {
   background: #fff;
   color: var(--c-primary);
-  box-shadow: 0 2px 8px rgba(15, 44, 76, 0.1);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
 }
 
-.font-pill:hover:not(.active) {
-  color: var(--c-primary);
-}
+.font-pill:hover:not(.active) { color: var(--c-primary); }
 
-/* EDIT INPUT (for editing) */
-.edit-input {
-  width: 100%;
-  padding: 8px 12px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--c-navy);
-  background: rgba(14, 124, 123, 0.04);
-  border: 1.5px solid var(--c-border);
-  border-radius: var(--r-md);
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.edit-input:focus {
-  border-color: var(--c-primary);
-  box-shadow: 0 0 0 3px rgba(14, 124, 123, 0.1);
-  background: #fff;
-}
-
-/* Days chips (readonly) */
+/* Days chips */
 .days-chips {
   display: flex;
   gap: 4px;
@@ -523,7 +526,7 @@ html[dir="rtl"] .toggle.on::after {
 
 .day-chip-mini {
   padding: 3px 7px;
-  background: rgba(14, 124, 123, 0.1);
+  background: rgba(14, 148, 135, 0.1);
   color: var(--c-primary);
   font-size: 9.5px;
   font-weight: 700;
@@ -534,19 +537,14 @@ html[dir="rtl"] .toggle.on::after {
 html[lang="ar"] .day-chip-mini { font-family: var(--f-ar); font-size: 10.5px; }
 
 /* DANGER ZONE */
-.danger-zone .setting-row {
-  background: rgba(229, 115, 115, 0.03);
-}
-
-.danger-zone .setting-label {
-  color: var(--c-error);
-}
+.danger-zone .setting-row { background: rgba(239, 68, 68, 0.03); }
+.danger-zone .setting-label { color: var(--c-error); }
 
 /* MODAL */
 .modal-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(15, 44, 76, 0.4);
+  background: rgba(15, 23, 42, 0.4);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   display: none;
@@ -558,7 +556,6 @@ html[lang="ar"] .day-chip-mini { font-family: var(--f-ar); font-size: 10.5px; }
 }
 
 .modal-overlay.show { display: flex; }
-
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .modal {
@@ -587,7 +584,7 @@ html[lang="ar"] .day-chip-mini { font-family: var(--f-ar); font-size: 10.5px; }
   background: var(--g-danger);
   display: inline-flex; align-items: center; justify-content: center;
   margin: 0 auto;
-  box-shadow: 0 8px 20px rgba(229, 115, 115, 0.35);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35);
 }
 
 .modal-icon svg {
@@ -631,21 +628,21 @@ html[lang="ar"] .modal-text { font-family: var(--f-ar); font-size: 13.5px; }
 }
 
 .modal-btn.cancel {
-  background: rgba(14, 124, 123, 0.08);
+  background: rgba(14, 148, 135, 0.08);
   color: var(--c-navy);
 }
 
-.modal-btn.cancel:hover { background: rgba(14, 124, 123, 0.15); }
+.modal-btn.cancel:hover { background: rgba(14, 148, 135, 0.15); }
 
 .modal-btn.confirm {
   background: var(--g-danger);
   color: #fff;
-  box-shadow: 0 6px 16px rgba(229, 115, 115, 0.35);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
 }
 
 .modal-btn.confirm:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(229, 115, 115, 0.45);
+  box-shadow: 0 10px 22px rgba(239, 68, 68, 0.45);
 }
 
 html[lang="ar"] .modal-btn { font-family: var(--f-ar); font-size: 14px; }
@@ -663,7 +660,7 @@ html[lang="ar"] .modal-btn { font-family: var(--f-ar); font-size: 14px; }
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.2px;
-  box-shadow: 0 12px 30px rgba(15, 44, 76, 0.35);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.35);
   z-index: 300;
   opacity: 0;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -779,9 +776,9 @@ html[lang="ar"] .toast { font-family: var(--f-ar); font-size: 13.5px; }
           </div>
         </div>
 
-        <!-- ⭐ Voice & Accessibility Section -->
+        <!-- Voice & Accessibility Section -->
         <div class="section">
-          <div class="section-title" id="titleAccessibility">Voice & Accessibility</div>
+          <div class="section-title" id="titleAccessibility">Voice &amp; Accessibility</div>
           <div class="card-group">
 
             <div class="setting-row">
@@ -1072,7 +1069,6 @@ const I18N = {
     accountChild: 'Child',
 
     notSet: 'Not set',
-    daysSelected: 'days selected',
     minPerDay: 'min / day',
 
     timeMorning: 'Morning',
@@ -1080,7 +1076,6 @@ const I18N = {
     timeEvening: 'Evening',
 
     dayNames: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-    dayNamesFull: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
 
     logoutTitle: 'Log out?',
     logoutText: 'You can sign back in anytime.',
@@ -1099,7 +1094,6 @@ const I18N = {
     retakeConfirm: 'Start',
 
     cancel: 'Cancel',
-    confirm: 'Confirm',
     saved: 'Saved successfully',
     languageChanged: 'Language changed'
   },
@@ -1147,7 +1141,6 @@ const I18N = {
     accountChild: 'طفل',
 
     notSet: 'غير محدد',
-    daysSelected: 'أيام محددة',
     minPerDay: 'دقيقة / يوم',
 
     timeMorning: 'صباحًا',
@@ -1155,7 +1148,6 @@ const I18N = {
     timeEvening: 'مساءً',
 
     dayNames: ['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'],
-    dayNamesFull: ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],
 
     logoutTitle: 'تسجيل الخروج؟',
     logoutText: 'يمكنك الدخول مرة أخرى في أي وقت.',
@@ -1174,7 +1166,6 @@ const I18N = {
     retakeConfirm: 'ابدأ',
 
     cancel: 'إلغاء',
-    confirm: 'تأكيد',
     saved: 'تم الحفظ',
     languageChanged: 'تم تغيير اللغة'
   }
@@ -1183,7 +1174,7 @@ const I18N = {
 /* ============================================
    STATE
 ============================================ */
-const STORAGE_KEY = 'memento_lang';
+const STORAGE_KEY = 'omega_lang';
 let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
 const htmlEl = document.documentElement;
 
@@ -1193,21 +1184,21 @@ const htmlEl = document.documentElement;
 function loadUserData() {
   let notifications;
   try {
-    notifications = JSON.parse(localStorage.getItem('memento_notifications') || '{"daily":true,"weekly":true,"streak":false}');
+    notifications = JSON.parse(localStorage.getItem('omega_notifications') || '{"daily":true,"weekly":true,"streak":false}');
   } catch (e) {
     notifications = { daily: true, weekly: true, streak: false };
   }
 
   return {
-    name: localStorage.getItem('memento_user_name') || 'User',
-    age: parseInt(localStorage.getItem('memento_age') || '24'),
-    accountType: localStorage.getItem('memento_account_type') || 'myself',
-    days: JSON.parse(localStorage.getItem('memento_days') || '[]'),
-    time: localStorage.getItem('memento_time') || '',
-    duration: parseInt(localStorage.getItem('memento_duration') || '0'),
+    name: localStorage.getItem('omega_user_name') || 'User',
+    age: parseInt(localStorage.getItem('omega_age') || '24'),
+    accountType: localStorage.getItem('omega_account_type') || 'myself',
+    days: JSON.parse(localStorage.getItem('omega_days') || '[]'),
+    time: localStorage.getItem('omega_time') || '',
+    duration: parseInt(localStorage.getItem('omega_duration') || '0'),
     notifications,
-    voiceMode: localStorage.getItem('memento_voice_mode') === 'true',
-    fontSize: localStorage.getItem('memento_font_size') || 'medium'
+    voiceMode: localStorage.getItem('omega_voice_mode') === 'true',
+    fontSize: localStorage.getItem('omega_font_size') || 'medium'
   };
 }
 
@@ -1216,7 +1207,7 @@ function loadUserData() {
 ============================================ */
 function applyFontSize(size) {
   document.documentElement.setAttribute('data-font-size', size);
-  localStorage.setItem('memento_font_size', size);
+  localStorage.setItem('omega_font_size', size);
 }
 
 /* ============================================
@@ -1363,11 +1354,11 @@ document.querySelectorAll('.toggle').forEach(toggle => {
     const isOn = toggle.classList.contains('on');
 
     if (key === 'voice') {
-      localStorage.setItem('memento_voice_mode', String(isOn));
+      localStorage.setItem('omega_voice_mode', String(isOn));
     } else {
       const user = loadUserData();
       user.notifications[key] = isOn;
-      localStorage.setItem('memento_notifications', JSON.stringify(user.notifications));
+      localStorage.setItem('omega_notifications', JSON.stringify(user.notifications));
     }
 
     showToast(I18N[currentLang].saved);
@@ -1382,7 +1373,7 @@ document.getElementById('editNameRow').addEventListener('click', () => {
   const t = I18N[currentLang];
   const newName = prompt(t.labelName + ':', user.name);
   if (newName && newName.trim().length > 0) {
-    localStorage.setItem('memento_user_name', newName.trim());
+    localStorage.setItem('omega_user_name', newName.trim());
     renderAll();
     showToast(t.saved);
   }
@@ -1397,7 +1388,7 @@ document.getElementById('editAgeRow').addEventListener('click', () => {
   const newAge = prompt(t.labelAge + ':', user.age);
   const ageNum = parseInt(newAge);
   if (!isNaN(ageNum) && ageNum >= 6 && ageNum <= 120) {
-    localStorage.setItem('memento_age', String(ageNum));
+    localStorage.setItem('omega_age', String(ageNum));
     renderAll();
     showToast(t.saved);
   }
@@ -1409,11 +1400,9 @@ document.getElementById('editAgeRow').addEventListener('click', () => {
 document.getElementById('editDaysRow').addEventListener('click', () => {
   window.location.href = 'profile-setup.html';
 });
-
 document.getElementById('editTimeRow').addEventListener('click', () => {
   window.location.href = 'profile-setup.html';
 });
-
 document.getElementById('editDurationRow').addEventListener('click', () => {
   window.location.href = 'profile-setup.html';
 });
@@ -1459,21 +1448,21 @@ modalConfirm.addEventListener('click', () => {
 document.getElementById('logoutRow').addEventListener('click', () => {
   const t = I18N[currentLang];
   showModal(t.logoutTitle, t.logoutText, t.logoutConfirm, () => {
-    localStorage.removeItem('memento_user_name');
-    localStorage.removeItem('memento_age');
-    localStorage.removeItem('memento_account_type');
-    localStorage.removeItem('memento_days');
-    localStorage.removeItem('memento_time');
-    localStorage.removeItem('memento_duration');
-    localStorage.removeItem('memento_workout_queue');
-    localStorage.removeItem('memento_workout_date');
-    localStorage.removeItem('memento_current_exercise');
-    localStorage.removeItem('memento_personalized_plan');
-    localStorage.removeItem('memento_streak');
-    localStorage.removeItem('memento_total_sessions');
-    localStorage.removeItem('memento_last_session_date');
+    localStorage.removeItem('omega_user_name');
+    localStorage.removeItem('omega_age');
+    localStorage.removeItem('omega_account_type');
+    localStorage.removeItem('omega_days');
+    localStorage.removeItem('omega_time');
+    localStorage.removeItem('omega_duration');
+    localStorage.removeItem('omega_workout_queue');
+    localStorage.removeItem('omega_workout_date');
+    localStorage.removeItem('omega_current_exercise');
+    localStorage.removeItem('omega_personalized_plan');
+    localStorage.removeItem('omega_streak');
+    localStorage.removeItem('omega_total_sessions');
+    localStorage.removeItem('omega_last_session_date');
 
-    window.location.href = 'login.html';
+    window.location.href = 'signup.html';
   });
 });
 
@@ -1482,14 +1471,14 @@ document.getElementById('resetProgressRow').addEventListener('click', () => {
   const t = I18N[currentLang];
   showModal(t.resetTitle, t.resetText, t.resetConfirm, () => {
     const keepKeys = [
-      'memento_user_name', 'memento_age', 'memento_account_type',
-      'memento_days', 'memento_time', 'memento_duration',
-      'memento_lang', 'memento_notifications',
-      'memento_voice_mode', 'memento_font_size'
+      'omega_user_name', 'omega_age', 'omega_account_type',
+      'omega_days', 'omega_time', 'omega_duration',
+      'omega_lang', 'omega_notifications',
+      'omega_voice_mode', 'omega_font_size'
     ];
     const allKeys = Object.keys(localStorage);
     allKeys.forEach(key => {
-      if (key.startsWith('memento_') && !keepKeys.includes(key)) {
+      if (key.startsWith('omega_') && !keepKeys.includes(key)) {
         localStorage.removeItem(key);
       }
     });
@@ -1503,9 +1492,9 @@ document.getElementById('deleteAccountRow').addEventListener('click', () => {
   showModal(t.deleteTitle, t.deleteText, t.deleteConfirm, () => {
     const allKeys = Object.keys(localStorage);
     allKeys.forEach(key => {
-      if (key.startsWith('memento_')) localStorage.removeItem(key);
+      if (key.startsWith('omega_')) localStorage.removeItem(key);
     });
-    window.location.href = 'splash.html';
+    window.location.href = 'index.html';
   });
 });
 
@@ -1513,7 +1502,7 @@ document.getElementById('deleteAccountRow').addEventListener('click', () => {
 document.getElementById('retakeAssessmentRow').addEventListener('click', () => {
   const t = I18N[currentLang];
   showModal(t.retakeTitle, t.retakeText, t.retakeConfirm, () => {
-    localStorage.setItem('memento_reassess_mode', 'true');
+    localStorage.setItem('omega_reassess_mode', 'true');
     window.location.href = 'assessment-intro.html';
   });
 });
@@ -1544,7 +1533,7 @@ document.getElementById('backBtn').addEventListener('click', () => {
 /* ============================================
    INIT
 ============================================ */
-applyFontSize(localStorage.getItem('memento_font_size') || 'medium');
+applyFontSize(localStorage.getItem('omega_font_size') || 'medium');
 applyLanguage(currentLang);
 </script>
 
