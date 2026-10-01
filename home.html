@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8" />
@@ -2772,7 +2772,7 @@ function renderMemory() {
   document.getElementById('memoryManageBtn').addEventListener('click', () => {
     window.location.href = 'personal-memory-bank.html';
   });
-  // ✅ Train goes directly to Personal Memory Play
+  // ✅ Train → Voice Call AI page
   document.getElementById('memoryTrainBtn').addEventListener('click', () => {
     window.location.href = 'personal-memory-play.html';
   });
@@ -2923,7 +2923,11 @@ document.querySelectorAll('#checkinSheet .cq-options').forEach(group => {
   });
 });
 
+/* ✅ FIX: نسجل التاريخ لحظة الفتح (قبل أي تفاعل) */
 function openCheckinSheet() {
+  // ✅ Mark as shown IMMEDIATELY — يمنع ظهورها مرة تانية حتى لو المستخدم قفل بدون تفاعل
+  localStorage.setItem(CHECKIN_KEY, new Date().toISOString().split('T')[0]);
+
   document.getElementById('checkinOverlay').classList.add('show');
   setTimeout(() => {
     document.getElementById('checkinSheet').classList.add('show');
@@ -2940,13 +2944,12 @@ document.getElementById('sheetClose').addEventListener('click', closeCheckinShee
 
 document.getElementById('checkinContinue').addEventListener('click', () => {
   localStorage.setItem('omega_daily_context', JSON.stringify(checkinState));
-  localStorage.setItem(CHECKIN_KEY, new Date().toISOString().split('T')[0]);
+  // التاريخ اتسجل بالفعل عند الفتح
   closeCheckinSheet();
 });
 
 document.getElementById('checkinSkip').addEventListener('click', () => {
-  // نحفظ إنه اتسأل النهاردة عشان ميتسألش تاني
-  localStorage.setItem(CHECKIN_KEY, new Date().toISOString().split('T')[0]);
+  // التاريخ اتسجل بالفعل عند الفتح
   closeCheckinSheet();
 });
 
