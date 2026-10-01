@@ -267,9 +267,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 .wordmark {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0;
   font-family: var(--f-en);
   font-size: 48px;
   font-weight: 800;
@@ -281,31 +278,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   -webkit-text-fill-color: transparent;
 }
 
-/* The Ω symbol replacing the "O" */
-.wordmark .omega-o {
-  display: inline-block;
-  font-weight: 800;
-  font-size: 52px;
-  margin-inline-end: -3px;
-  position: relative;
-  top: 1px;
-  /* Slight tweak so Ω visually matches the rest */
-  transform: scaleY(0.98);
-}
-
-.wordmark .word-rest {
-  font-weight: 700;
-  letter-spacing: -1.5px;
-}
-
 html[lang="ar"] .wordmark {
   font-family: var(--f-ar);
   letter-spacing: 0;
   font-size: 44px;
 }
-
-html[lang="ar"] .wordmark .omega-o { font-size: 48px; margin-inline-end: 0; }
-html[lang="ar"] .wordmark .word-rest { letter-spacing: 0; }
 
 /* ============ TAGLINE ============ */
 .tagline {
@@ -448,20 +425,13 @@ html[lang="ar"] .loading-text {
                 <stop offset="0%"   stop-color="#2EC4B6"/>
                 <stop offset="100%" stop-color="#076B5F"/>
               </linearGradient>
-
-              <!-- Soft inner shadow effect for omega depth -->
-              <radialGradient id="innerShade" cx="50%" cy="30%" r="60%">
-                <stop offset="0%"   stop-color="#fff" stop-opacity="0.15"/>
-                <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-              </radialGradient>
             </defs>
 
             <!-- ============================================
                  THE OMEGA (Ω) SHAPE
-                 Modern smooth horseshoe with curled feet
             ============================================ -->
             <g>
-              <!-- Main omega body: thick curved horseshoe -->
+              <!-- Main omega body -->
               <path d="M 60 142
                        C 44 122 36 98 44 74
                        C 54 44 76 28 100 28
@@ -473,7 +443,7 @@ html[lang="ar"] .loading-text {
                     stroke-linecap="round"
                     stroke-linejoin="round"/>
 
-              <!-- Left foot: small curled end -->
+              <!-- Left foot -->
               <path d="M 60 142
                        Q 52 150 42 152"
                     fill="none"
@@ -481,7 +451,7 @@ html[lang="ar"] .loading-text {
                     stroke-width="21"
                     stroke-linecap="round"/>
 
-              <!-- Right foot: small curled end -->
+              <!-- Right foot -->
               <path d="M 140 142
                        Q 148 150 158 152"
                     fill="none"
@@ -500,8 +470,7 @@ html[lang="ar"] .loading-text {
             </g>
 
             <!-- ============================================
-                 THE SPROUT — 2 leaves + small stem
-                 (represents cognitive growth)
+                 THE SPROUT — Growth inside the mind
             ============================================ -->
             <g class="sprout">
               <!-- Stem -->
@@ -517,7 +486,7 @@ html[lang="ar"] .loading-text {
                        Z"
                     fill="url(#sproutGrad)"/>
 
-              <!-- Right leaf (slightly higher) -->
+              <!-- Right leaf -->
               <path d="M 100 100
                        Q 116 96 124 78
                        Q 108 76 100 92
@@ -525,9 +494,7 @@ html[lang="ar"] .loading-text {
                     fill="url(#sproutGrad)"/>
             </g>
 
-            <!-- ============================================
-                 ACCENT SPARKLE (top right)
-            ============================================ -->
+            <!-- Sparkle (top right) -->
             <g class="sparkle" style="transform-origin: 162px 42px;">
               <path d="M 162 30
                        L 164.5 39
@@ -542,20 +509,16 @@ html[lang="ar"] .loading-text {
                     opacity="0.85"/>
             </g>
 
-            <!-- ============================================
-                 SOFT BASE ACCENT (small dot, bottom left)
-            ============================================ -->
+            <!-- Small dot accent -->
             <circle cx="38" cy="70" r="3.5"
                     fill="#2EC4B6"
                     opacity="0.55"/>
           </svg>
         </div>
 
-        <!-- ============ WORDMARK: Ωmega ============ -->
+        <!-- ============ WORDMARK: Omega ============ -->
         <div class="wordmark-wrap">
-          <h1 class="wordmark">
-            <span class="omega-o">Ω</span><span class="word-rest">mega</span>
-          </h1>
+          <h1 class="wordmark">Omega</h1>
           <p class="tagline" id="taglineText">Train Your Mind. Support Your Memories.</p>
         </div>
 
