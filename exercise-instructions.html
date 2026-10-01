@@ -3,25 +3,45 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#FAF8F3" />
-<title>Memento AI — Exercise Instructions</title>
+<meta name="theme-color" content="#F8FAFC" />
+<title>Omega — Exercise Instructions</title>
 
+<!-- ✅ الخطوط الأصلية: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+/* ============================================
+   DESIGN TOKENS — Omega Design System
+============================================ */
 :root {
-  --c-primary: #0E7C7B; --c-primary-light: #4DB6AC; --c-secondary: #9B7EDE;
-  --c-blue: #5B9BD5; --c-navy: #0F2C4C; --c-slate: #5A6C7D;
-  --c-bg: #FAF8F3; --c-card: #FFFFFF; --c-border: #EAE6DE;
-  --c-error: #E57373; --c-success: #4CAF50; --c-warning: #FF9800;
+  --c-primary:       #0E9487;
+  --c-primary-light: #2EC4B6;
+  --c-primary-dark:  #076B5F;
+  --c-blue:          #3B82F6;
+  --c-purple:        #8B5CF6;
 
-  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
-  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+  --c-success: #22C55E;
+  --c-warning: #FBBF24;
+  --c-error:   #EF4444;
 
-  --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
-  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+  --c-navy:   #0F172A;
+  --c-slate:  #64748B;
+  --c-bg:     #F8FAFC;
+  --c-card:   #FFFFFF;
+  --c-border: #E2E8F0;
+
+  --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
+
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
 
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
@@ -36,21 +56,22 @@ html, body {
   height: 100%;
   font-family: var(--f-en);
   -webkit-font-smoothing: antialiased;
-  background: #E8E4DC;
+  background: #E2E8F0;
   overflow: hidden;
 }
 
 html[lang="ar"] body { font-family: var(--f-ar); }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
+/* PHONE FRAME */
 .stage {
   width: 100vw; height: 100vh;
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   background:
-    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
-    #E8E4DC;
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 148, 135, 0.10), transparent 50%),
+    #E2E8F0;
 }
 
 .phone {
@@ -95,12 +116,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
-    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+    radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 148, 135, 0.05), transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
 
+/* TOP BAR */
 .topbar {
   position: relative;
   z-index: 10;
@@ -116,12 +138,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 124, 123, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.15);
   transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
-.back-btn:hover { background: #fff; border-color: rgba(14, 124, 123, 0.35); transform: translateX(-2px); }
+.back-btn:hover { background: #fff; border-color: rgba(14, 148, 135, 0.35); transform: translateX(-2px); }
 html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
 
 .back-btn svg { width: 16px; height: 16px; stroke: var(--c-primary); stroke-width: 2.4; fill: none; }
@@ -130,14 +152,14 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 .queue-dots { display: flex; align-items: center; gap: 6px; }
 .queue-dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(14, 124, 123, 0.15);
+  background: rgba(14, 148, 135, 0.15);
   transition: all 0.3s ease;
 }
-.queue-dot.done { background: var(--c-success); box-shadow: 0 0 8px rgba(76, 175, 80, 0.4); }
+.queue-dot.done { background: var(--c-success); box-shadow: 0 0 8px rgba(34, 197, 94, 0.4); }
 .queue-dot.active {
   width: 22px; border-radius: var(--r-pill);
   background: var(--g-brand);
-  box-shadow: 0 0 10px rgba(14, 124, 123, 0.4);
+  box-shadow: 0 0 10px rgba(14, 148, 135, 0.4);
 }
 
 .content {
@@ -164,8 +186,8 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 .exercise-badge {
   display: inline-flex; align-items: center; gap: 7px;
   padding: 6px 14px;
-  background: linear-gradient(135deg, rgba(14, 124, 123, 0.12), rgba(91, 155, 213, 0.12));
-  border: 1px solid rgba(14, 124, 123, 0.25);
+  background: linear-gradient(135deg, rgba(14, 148, 135, 0.12), rgba(59, 130, 246, 0.12));
+  border: 1px solid rgba(14, 148, 135, 0.25);
   border-radius: var(--r-pill);
   font-size: 10.5px; font-weight: 700;
   color: var(--c-primary);
@@ -188,7 +210,7 @@ html[lang="ar"] .exercise-badge {
   position: absolute;
   inset: -8px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(14, 124, 123, 0.18) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(14, 148, 135, 0.18) 0%, transparent 65%);
   filter: blur(24px);
   z-index: -1;
   animation: pulseGlow 2.8s ease-in-out infinite;
@@ -228,11 +250,11 @@ html[lang="ar"] .exercise-sub { font-family: var(--f-ar); font-size: 14.5px; }
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   transition: all 0.25s ease;
 }
-.meta-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 44, 76, 0.06); }
+.meta-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06); }
 .meta-icon {
   width: 26px; height: 26px;
   border-radius: 8px;
-  background: rgba(14, 124, 123, 0.08);
+  background: rgba(14, 148, 135, 0.08);
   display: inline-flex; align-items: center; justify-content: center;
 }
 .meta-icon svg {
@@ -259,10 +281,10 @@ html[lang="ar"] .meta-label { font-family: var(--f-ar); text-transform: none; le
 .diff-left { display: flex; align-items: center; gap: 10px; }
 .diff-icon {
   width: 30px; height: 30px; border-radius: 9px;
-  background: linear-gradient(135deg, #FF9800, #FFB74D);
+  background: linear-gradient(135deg, #FBBF24, #F59E0B);
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.28);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.28);
 }
 .diff-icon svg {
   width: 16px; height: 16px;
@@ -280,12 +302,12 @@ html[lang="ar"] .diff-level { font-family: var(--f-ar); font-size: 15px; }
 .diff-dots { display: flex; gap: 5px; }
 .diff-dot {
   width: 10px; height: 10px; border-radius: 50%;
-  background: rgba(255, 152, 0, 0.15);
+  background: rgba(251, 191, 36, 0.15);
   transition: all 0.3s ease;
 }
 .diff-dot.filled {
-  background: linear-gradient(135deg, #FF9800, #FFB74D);
-  box-shadow: 0 0 8px rgba(255, 152, 0, 0.5);
+  background: linear-gradient(135deg, #FBBF24, #F59E0B);
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
 }
 
 .section-head {
@@ -326,9 +348,9 @@ html[lang="ar"] .section-title { font-family: var(--f-ar); font-size: 14.5px; le
 .step-item:nth-child(3) { animation-delay: 0.71s; }
 @keyframes stepIn { to { opacity: 1; transform: translateY(0); } }
 .step-item:hover {
-  border-color: rgba(14, 124, 123, 0.3);
+  border-color: rgba(14, 148, 135, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(15, 44, 76, 0.06);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
 }
 .step-num {
   width: 32px; height: 32px; border-radius: 10px;
@@ -336,7 +358,7 @@ html[lang="ar"] .section-title { font-family: var(--f-ar); font-size: 14.5px; le
   color: #fff; font-size: 14px; font-weight: 800;
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 6px 14px rgba(14, 124, 123, 0.28);
+  box-shadow: 0 6px 14px rgba(14, 148, 135, 0.28);
   position: relative;
   overflow: hidden;
 }
@@ -353,8 +375,8 @@ html[lang="ar"] .step-hint { font-family: var(--f-ar); font-size: 12.5px; }
 .tip-card {
   display: flex; align-items: flex-start; gap: 12px;
   padding: 14px 16px;
-  background: linear-gradient(135deg, rgba(155, 126, 222, 0.08), rgba(91, 155, 213, 0.06));
-  border: 1.5px solid rgba(155, 126, 222, 0.22);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.06));
+  border: 1.5px solid rgba(139, 92, 246, 0.22);
   border-radius: var(--r-lg);
   position: relative;
   overflow: hidden;
@@ -363,10 +385,10 @@ html[lang="ar"] .step-hint { font-family: var(--f-ar); font-size: 12.5px; }
 }
 .tip-icon {
   width: 30px; height: 30px; border-radius: 9px;
-  background: linear-gradient(135deg, #9B7EDE, #5B9BD5);
+  background: linear-gradient(135deg, #8B5CF6, #3B82F6);
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(155, 126, 222, 0.3);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
 }
 .tip-icon svg {
   width: 15px; height: 15px;
@@ -375,7 +397,7 @@ html[lang="ar"] .step-hint { font-family: var(--f-ar); font-size: 12.5px; }
 }
 .tip-body { flex: 1; display: flex; flex-direction: column; gap: 2px; }
 .tip-label {
-  font-size: 10.5px; font-weight: 700; color: var(--c-secondary);
+  font-size: 10.5px; font-weight: 700; color: var(--c-purple);
   letter-spacing: 0.5px; text-transform: uppercase;
 }
 html[lang="ar"] .tip-label { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 11.5px; }
@@ -400,7 +422,7 @@ html[lang="ar"] .tip-text { font-family: var(--f-ar); font-size: 13px; }
   letter-spacing: 0.4px;
   border-radius: var(--r-md);
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.32);
+  box-shadow: 0 12px 28px rgba(14, 148, 135, 0.32);
   transition: transform 0.2s ease, box-shadow 0.25s ease;
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   opacity: 0; transform: translateY(20px);
@@ -415,7 +437,7 @@ html[lang="ar"] .tip-text { font-family: var(--f-ar); font-size: 13px; }
   transition: left 0.7s ease;
 }
 .btn-primary:hover::before { left: 100%; }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(14, 124, 123, 0.4); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(14, 148, 135, 0.4); }
 .btn-primary:active { transform: scale(0.97); }
 .btn-primary .arrow {
   width: 16px; height: 16px;
@@ -436,7 +458,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16.5px; }
 }
 .loading-spinner {
   width: 48px; height: 48px;
-  border: 3px solid rgba(14, 124, 123, 0.15);
+  border: 3px solid rgba(14, 148, 135, 0.15);
   border-top-color: var(--c-primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -779,17 +801,17 @@ const I18N = {
 };
 
 /* ============================================
-   ILLUSTRATIONS
+   ILLUSTRATIONS — بألوان أوميجا
 ============================================ */
 const ILLUSTRATIONS = {
   memory: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="m1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="100%" stop-color="#4DB6AC"/></linearGradient>
-      <linearGradient id="m2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5B9BD5"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
-      <linearGradient id="m3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF9800"/><stop offset="100%" stop-color="#FFB74D"/></linearGradient>
+      <linearGradient id="m1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E9487"/><stop offset="100%" stop-color="#2EC4B6"/></linearGradient>
+      <linearGradient id="m2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
+      <linearGradient id="m3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient>
     </defs>
-    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
-    <circle cx="100" cy="100" r="60" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.25"/>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.15"/>
+    <circle cx="100" cy="100" r="60" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.25"/>
     <g style="animation: f1 3s ease-in-out infinite; transform-origin: 70px 90px;">
       <rect x="55" y="75" width="32" height="32" rx="8" fill="url(#m1)"/>
       <text x="71" y="97" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="18" font-weight="800">1</text>
@@ -810,10 +832,10 @@ const ILLUSTRATIONS = {
   </svg>`,
   attention: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="a1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E53935"/><stop offset="100%" stop-color="#E57373"/></linearGradient>
-      <linearGradient id="a2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5B9BD5"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
+      <linearGradient id="a1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EF4444"/><stop offset="100%" stop-color="#F87171"/></linearGradient>
+      <linearGradient id="a2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
     </defs>
-    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.15"/>
     <circle cx="100" cy="100" r="42" fill="none" stroke="url(#a1)" stroke-width="3" opacity="0.3"/>
     <circle cx="100" cy="100" r="28" fill="none" stroke="url(#a1)" stroke-width="3" opacity="0.5"/>
     <circle cx="100" cy="100" r="14" fill="url(#a1)"/>
@@ -822,7 +844,7 @@ const ILLUSTRATIONS = {
       <rect x="42" y="62" width="16" height="16" rx="3" fill="url(#a2)" opacity="0.85"/>
     </g>
     <g style="animation: f2 4s ease-in-out infinite 0.3s; transform-origin: 150px 130px;">
-      <circle cx="150" cy="130" r="9" fill="#4DB6AC" opacity="0.8"/>
+      <circle cx="150" cy="130" r="9" fill="#2EC4B6" opacity="0.8"/>
     </g>
     <style>
       @keyframes f1 { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-10px) rotate(8deg)} }
@@ -831,10 +853,10 @@ const ILLUSTRATIONS = {
   </svg>`,
   speed: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="s1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
-      <linearGradient id="s2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF9800"/><stop offset="100%" stop-color="#FFC107"/></linearGradient>
+      <linearGradient id="s1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E9487"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
+      <linearGradient id="s2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient>
     </defs>
-    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.15"/>
     <path d="M 55 130 A 55 55 0 1 1 145 130" fill="none" stroke="url(#s1)" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
     <g style="animation: needle 2.4s ease-in-out infinite; transform-origin: 100px 100px;">
       <line x1="100" y1="100" x2="100" y2="58" stroke="url(#s1)" stroke-width="5" stroke-linecap="round"/>
@@ -851,11 +873,11 @@ const ILLUSTRATIONS = {
   </svg>`,
   problem: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="p1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="100%" stop-color="#4DB6AC"/></linearGradient>
-      <linearGradient id="p2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5B9BD5"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
-      <linearGradient id="p3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9B7EDE"/><stop offset="100%" stop-color="#E8A0BF"/></linearGradient>
+      <linearGradient id="p1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E9487"/><stop offset="100%" stop-color="#2EC4B6"/></linearGradient>
+      <linearGradient id="p2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
+      <linearGradient id="p3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#EC4899"/></linearGradient>
     </defs>
-    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.15"/>
     <g style="animation: f1 3s ease-in-out infinite; transform-origin: 78px 78px;">
       <path d="M 60 60 L 96 60 L 96 78 C 90 78, 88 82, 88 86 C 88 90, 90 94, 96 94 L 96 112 L 60 112 Z" fill="url(#p1)"/>
     </g>
@@ -873,9 +895,9 @@ const ILLUSTRATIONS = {
   </svg>`,
   visual: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="v1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="50%" stop-color="#5B9BD5"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
+      <linearGradient id="v1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E9487"/><stop offset="50%" stop-color="#2EC4B6"/><stop offset="100%" stop-color="#3B82F6"/></linearGradient>
     </defs>
-    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.15"/>
     <path d="M 40 100 Q 100 50 160 100 Q 100 150 40 100 Z" fill="none" stroke="url(#v1)" stroke-width="3" stroke-linejoin="round"/>
     <g style="animation: eye 3s ease-in-out infinite; transform-origin: 100px 100px;">
       <circle cx="100" cy="100" r="22" fill="url(#v1)" opacity="0.95"/>
@@ -888,11 +910,11 @@ const ILLUSTRATIONS = {
   </svg>`,
   language: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="l1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF9800"/><stop offset="100%" stop-color="#FFB74D"/></linearGradient>
-      <linearGradient id="l2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="100%" stop-color="#4DB6AC"/></linearGradient>
-      <linearGradient id="l3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9B7EDE"/><stop offset="100%" stop-color="#5B9BD5"/></linearGradient>
+      <linearGradient id="l1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient>
+      <linearGradient id="l2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E9487"/><stop offset="100%" stop-color="#2EC4B6"/></linearGradient>
+      <linearGradient id="l3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#3B82F6"/></linearGradient>
     </defs>
-    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.15"/>
     <g style="animation: book 3s ease-in-out infinite; transform-origin: 100px 110px;">
       <path d="M 60 70 L 100 80 L 100 140 L 60 130 Z" fill="url(#l1)"/>
       <path d="M 100 80 L 140 70 L 140 130 L 100 140 Z" fill="url(#l2)"/>
@@ -915,12 +937,12 @@ const ILLUSTRATIONS = {
   </svg>`,
   numerical: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E7C7B"/><stop offset="100%" stop-color="#4DB6AC"/></linearGradient>
-      <linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5B9BD5"/><stop offset="100%" stop-color="#9B7EDE"/></linearGradient>
-      <linearGradient id="n3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9B7EDE"/><stop offset="100%" stop-color="#E8A0BF"/></linearGradient>
-      <linearGradient id="n4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF9800"/><stop offset="100%" stop-color="#FFB74D"/></linearGradient>
+      <linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E9487"/><stop offset="100%" stop-color="#2EC4B6"/></linearGradient>
+      <linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
+      <linearGradient id="n3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#EC4899"/></linearGradient>
+      <linearGradient id="n4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient>
     </defs>
-    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.15"/>
     <g style="animation: f1 3.5s ease-in-out infinite; transform-origin: 65px 65px;">
       <circle cx="65" cy="65" r="22" fill="url(#n1)"/>
       <text x="65" y="72" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="20" font-weight="800">7</text>
@@ -938,7 +960,7 @@ const ILLUSTRATIONS = {
       <text x="145" y="137" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="17" font-weight="800">+</text>
     </g>
     <g style="animation: bulb 2.5s ease-in-out infinite; transform-origin: 100px 100px;">
-      <circle cx="100" cy="100" r="14" fill="#0F2C4C"/>
+      <circle cx="100" cy="100" r="14" fill="#0F172A"/>
       <text x="100" y="106" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="14" font-weight="800">?</text>
     </g>
     <style>
@@ -952,7 +974,7 @@ const ILLUSTRATIONS = {
 /* ============================================
    LANGUAGE
 ============================================ */
-const STORAGE_KEY = 'memento_lang';
+const STORAGE_KEY = 'omega_lang';
 let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
 const htmlEl = document.documentElement;
 
@@ -962,7 +984,7 @@ const htmlEl = document.documentElement;
 function buildFreshQueue() {
   let plan = [];
   try {
-    plan = JSON.parse(localStorage.getItem('memento_personalized_plan') || '[]');
+    plan = JSON.parse(localStorage.getItem('omega_personalized_plan') || '[]');
   } catch (e) { plan = []; }
 
   if (!plan || plan.length === 0) {
@@ -988,19 +1010,19 @@ function buildFreshQueue() {
     });
   }
 
-  localStorage.setItem('memento_workout_queue', JSON.stringify(todaySessions));
-  localStorage.setItem('memento_workout_date', new Date().toISOString().split('T')[0]);
+  localStorage.setItem('omega_workout_queue', JSON.stringify(todaySessions));
+  localStorage.setItem('omega_workout_date', new Date().toISOString().split('T')[0]);
 
   return todaySessions;
 }
 
 function getQueue() {
   const today = new Date().toISOString().split('T')[0];
-  const queueDate = localStorage.getItem('memento_workout_date');
+  const queueDate = localStorage.getItem('omega_workout_date');
 
   let queue = [];
   try {
-    queue = JSON.parse(localStorage.getItem('memento_workout_queue') || '[]');
+    queue = JSON.parse(localStorage.getItem('omega_workout_queue') || '[]');
   } catch (e) { queue = []; }
 
   if (queue && queue.length > 0 && queueDate === today) {
@@ -1031,7 +1053,7 @@ function render() {
     }
   }
 
-  // ✅ All done? → go to session-complete
+  /* All done → go to session-complete */
   if (currentIdx === -1) {
     document.getElementById('mainContent').style.display = 'none';
     document.getElementById('bottomBar').style.display = 'none';
@@ -1046,16 +1068,15 @@ function render() {
 
   currentExercise = currentQueue[currentIdx];
 
-  localStorage.setItem('memento_current_exercise_idx', String(currentIdx));
-  localStorage.setItem('memento_current_exercise', JSON.stringify(currentExercise));
-  localStorage.setItem('memento_workout_queue', JSON.stringify(currentQueue));
-  localStorage.setItem('memento_workout_date', new Date().toISOString().split('T')[0]);
+  localStorage.setItem('omega_current_exercise_idx', String(currentIdx));
+  localStorage.setItem('omega_current_exercise', JSON.stringify(currentExercise));
+  localStorage.setItem('omega_workout_queue', JSON.stringify(currentQueue));
+  localStorage.setItem('omega_workout_date', new Date().toISOString().split('T')[0]);
 
   const t = I18N[currentLang];
   const c = t.content[currentExercise.key];
 
   if (!c) {
-    // Fallback
     console.warn('Unknown exercise key:', currentExercise.key);
     document.getElementById('mainContent').style.display = 'none';
     document.getElementById('bottomBar').style.display = 'none';
@@ -1065,6 +1086,10 @@ function render() {
     }, 1400);
     return;
   }
+
+  document.getElementById('mainContent').style.display = 'flex';
+  document.getElementById('bottomBar').style.display = 'flex';
+  document.getElementById('loadingContent').style.display = 'none';
 
   document.getElementById('badgeText').textContent = c.badge;
   document.getElementById('illusCircle').innerHTML = ILLUSTRATIONS[currentExercise.key];
