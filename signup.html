@@ -3,33 +3,37 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#FAF8F3" />
-<title>Memento AI — Sign Up</title>
+<meta name="theme-color" content="#F8FAFC" />
+<title>Omega — Sign Up</title>
 
+<!-- ✅ الخطوط الأصلية: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================
-   DESIGN TOKENS
+   DESIGN TOKENS — Omega Design System
 ============================================ */
 :root {
-  --c-primary: #0E7C7B;
-  --c-primary-light: #4DB6AC;
-  --c-secondary: #9B7EDE;
-  --c-blue: #5B9BD5;
-  --c-navy: #0F2C4C;
-  --c-slate: #5A6C7D;
-  --c-bg: #FAF8F3;
-  --c-card: #FFFFFF;
-  --c-border: #EAE6DE;
-  --c-error: #E57373;
-  --c-success: #4CAF50;
-  --c-warning: #FF9800;
+  --c-primary:       #0E9487;
+  --c-primary-light: #2EC4B6;
+  --c-primary-dark:  #076B5F;
+  --c-blue:          #3B82F6;
+  --c-purple:        #8B5CF6;
 
-  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
-  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+  --c-success: #22C55E;
+  --c-warning: #FBBF24;
+  --c-error:   #EF4444;
+
+  --c-navy:   #0F172A;
+  --c-slate:  #64748B;
+  --c-bg:     #F8FAFC;
+  --c-card:   #FFFFFF;
+  --c-border: #E2E8F0;
+
+  --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
 
   --r-sm: 10px;
   --r-md: 14px;
@@ -37,10 +41,11 @@
   --r-xl: 24px;
   --r-pill: 999px;
 
-  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
-  --sh-glow: 0 20px 60px rgba(14, 124, 123, 0.18);
-  --sh-focus: 0 0 0 4px rgba(14, 124, 123, 0.12);
+  --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
+  --sh-glow: 0 20px 60px rgba(14, 148, 135, 0.18);
+  --sh-focus: 0 0 0 4px rgba(14, 148, 135, 0.12);
 
+  /* ✅ الخطوط الأصلية */
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
 
@@ -54,7 +59,7 @@ html, body {
   height: 100%;
   font-family: var(--f-en);
   -webkit-font-smoothing: antialiased;
-  background: #E8E4DC;
+  background: #E2E8F0;
   overflow: hidden;
 }
 
@@ -74,9 +79,9 @@ input { font-family: inherit; }
   justify-content: center;
   padding: 20px;
   background:
-    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
-    #E8E4DC;
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 148, 135, 0.10), transparent 50%),
+    #E2E8F0;
 }
 
 .phone {
@@ -138,8 +143,8 @@ input { font-family: inherit; }
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 15% 10%, rgba(155, 126, 222, 0.10), transparent 45%),
-    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+    radial-gradient(circle at 15% 10%, rgba(139, 92, 246, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 148, 135, 0.05), transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -166,14 +171,14 @@ input { font-family: inherit; }
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 124, 123, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.15);
   transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
 .back-btn:hover {
   background: #fff;
-  border-color: rgba(14, 124, 123, 0.35);
+  border-color: rgba(14, 148, 135, 0.35);
   transform: translateX(-2px);
 }
 
@@ -196,19 +201,19 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 124, 123, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.15);
   border-radius: var(--r-pill);
   font-size: 12px;
   font-weight: 600;
   color: var(--c-navy);
   letter-spacing: 0.3px;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
 .lang-toggle:hover {
   background: #fff;
-  border-color: rgba(14, 124, 123, 0.35);
+  border-color: rgba(14, 148, 135, 0.35);
   transform: translateY(-1px);
 }
 
@@ -230,27 +235,54 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
   position: relative;
   z-index: 5;
   flex: 1;
-  padding: 24px 28px 40px;
+  padding: 20px 28px 40px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
 }
 
-/* Logo mini */
+/* ============================================
+   ✅ LOGO MINI — Ω + Sprout (نفس Splash بس مصغّر)
+============================================ */
 .logo-mini {
-  width: 52px; height: 52px;
+  width: 62px;
+  height: 62px;
   align-self: center;
-  margin-top: 8px;
+  margin-top: 4px;
   opacity: 0;
   transform: scale(0.8);
   animation: logoMiniIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+  position: relative;
+}
+
+.logo-mini::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(14, 148, 135, 0.20) 0%, transparent 60%);
+  filter: blur(12px);
+  z-index: -1;
 }
 
 @keyframes logoMiniIn {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* Heading */
+/* Sprout sway inside mini logo */
+.logo-mini .sprout {
+  transform-origin: 100px 118px;
+  animation: sproutSwayMini 4s ease-in-out infinite;
+}
+
+@keyframes sproutSwayMini {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(3deg); }
+}
+
+/* ============================================
+   HEADING
+============================================ */
 .heading-wrap {
   text-align: center;
   display: flex;
@@ -289,7 +321,7 @@ html[lang="ar"] .subheading { font-family: var(--f-ar); font-size: 14px; }
 .tabs {
   position: relative;
   display: flex;
-  background: rgba(14, 124, 123, 0.06);
+  background: rgba(14, 148, 135, 0.06);
   border-radius: var(--r-pill);
   padding: 4px;
   opacity: 0;
@@ -324,7 +356,7 @@ html[lang="ar"] .tab { font-family: var(--f-ar); font-size: 14px; }
   border-radius: var(--r-pill);
   z-index: 1;
   transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
-  box-shadow: 0 6px 16px rgba(14, 124, 123, 0.3);
+  box-shadow: 0 6px 16px rgba(14, 148, 135, 0.3);
 }
 
 html[dir="rtl"] .tab-indicator { left: auto; right: 4px; }
@@ -497,6 +529,7 @@ html[lang="ar"] .err-msg { font-family: var(--f-ar); font-size: 12.5px; }
   transition: background 0.3s ease;
 }
 
+/* ✅ ألوان جديدة */
 .strength-bar.active-weak   { background: var(--c-error); }
 .strength-bar.active-medium { background: var(--c-warning); }
 .strength-bar.active-strong { background: var(--c-success); }
@@ -535,7 +568,7 @@ html[lang="ar"] .forgot { font-family: var(--f-ar); font-size: 13px; }
   letter-spacing: 0.4px;
   border-radius: var(--r-md);
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.28);
+  box-shadow: 0 12px 28px rgba(14, 148, 135, 0.28);
   transition: transform 0.2s ease, box-shadow 0.25s ease;
   display: inline-flex;
   align-items: center;
@@ -557,7 +590,7 @@ html[lang="ar"] .forgot { font-family: var(--f-ar); font-size: 13px; }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(14, 124, 123, 0.35);
+  box-shadow: 0 16px 34px rgba(14, 148, 135, 0.35);
 }
 
 .btn-primary:active { transform: scale(0.97); }
@@ -652,7 +685,7 @@ html[lang="ar"] .divider-line {
 .social-btn:hover {
   border-color: var(--c-primary);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(15, 44, 76, 0.08);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
 .social-btn:active { transform: scale(0.97); }
@@ -726,52 +759,57 @@ html[lang="ar"] .footer { font-family: var(--f-ar); font-size: 13px; }
       <!-- Content -->
       <div class="content">
 
-        <!-- Mini Logo -->
+        <!-- ✅ Logo Mini — Ω + Sprout -->
         <svg class="logo-mini" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="brandGradSm" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#0E7C7B"/>
-              <stop offset="50%" stop-color="#5B9BD5"/>
-              <stop offset="100%" stop-color="#9B7EDE"/>
+            <linearGradient id="omegaGradSm" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   stop-color="#0E9487"/>
+              <stop offset="55%"  stop-color="#2EC4B6"/>
+              <stop offset="100%" stop-color="#3B82F6"/>
             </linearGradient>
-            <linearGradient id="brainGradSm" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#0E7C7B"/>
-              <stop offset="100%" stop-color="#4DB6AC"/>
-            </linearGradient>
-            <linearGradient id="faceGradSm" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#5B9BD5"/>
-              <stop offset="100%" stop-color="#9B7EDE"/>
+            <linearGradient id="sproutGradSm" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%"   stop-color="#2EC4B6"/>
+              <stop offset="100%" stop-color="#076B5F"/>
             </linearGradient>
           </defs>
 
-          <path d="M 105 175 C 100 160, 96 148, 94 138 C 91 124, 90 112, 92 102
-                   C 94 88, 100 76, 110 70 C 118 65, 128 64, 136 68
-                   C 143 72, 146 79, 145 86 C 144 92, 141 96, 141 100
-                   C 141 104, 143 107, 146 108 C 149 110, 150 112, 148 114
-                   C 146 116, 143 117, 142 120 C 141 123, 143 125, 146 126
-                   C 148 127, 148 129, 146 130 C 143 131, 140 133, 138 137
-                   C 135 142, 134 150, 135 162 C 136 170, 138 175, 138 175 Z"
-                fill="url(#faceGradSm)" opacity="0.95"/>
+          <!-- Omega shape -->
+          <path d="M 60 142
+                   C 44 122 36 98 44 74
+                   C 54 44 76 28 100 28
+                   C 124 28 146 44 156 74
+                   C 164 98 156 122 140 142"
+                fill="none"
+                stroke="url(#omegaGradSm)"
+                stroke-width="22"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
 
-          <path d="M 118 98 Q 124 104 130 98"
-                fill="none" stroke="#0F2C4C" stroke-width="1.8"
-                stroke-linecap="round" opacity="0.7"/>
+          <!-- Left foot -->
+          <path d="M 60 142 Q 52 150 42 152"
+                fill="none"
+                stroke="url(#omegaGradSm)"
+                stroke-width="22"
+                stroke-linecap="round"/>
 
-          <path d="M 68 78 C 58 78, 52 70, 54 62 C 48 58, 48 48, 56 44
-                   C 56 34, 66 28, 76 32 C 80 24, 92 22, 100 28
-                   C 108 22, 120 26, 124 34 C 134 32, 142 40, 140 50
-                   C 146 54, 146 64, 138 68 C 138 74, 132 80, 124 78
-                   C 120 84, 110 86, 104 82 C 100 88, 90 90, 84 86
-                   C 78 90, 70 86, 68 78 Z"
-                fill="url(#brainGradSm)" opacity="0.92"/>
+          <!-- Right foot -->
+          <path d="M 140 142 Q 148 150 158 152"
+                fill="none"
+                stroke="url(#omegaGradSm)"
+                stroke-width="22"
+                stroke-linecap="round"/>
 
-          <path d="M 40 100 C 45 130, 60 155, 90 165 C 70 150, 58 125, 56 100
-                   C 54 78, 60 60, 76 46"
-                fill="none" stroke="url(#brandGradSm)" stroke-width="3.2"
-                stroke-linecap="round" opacity="0.85"/>
-
-          <path d="M 148 26 L 151 35 L 160 38 L 151 41 L 148 50 L 145 41 L 136 38 L 145 35 Z"
-                fill="url(#brandGradSm)"/>
+          <!-- Sprout inside -->
+          <g class="sprout">
+            <path d="M 100 78 L 100 118"
+                  stroke="url(#sproutGradSm)"
+                  stroke-width="5"
+                  stroke-linecap="round"/>
+            <path d="M 100 108 Q 84 104 76 86 Q 92 84 100 100 Z"
+                  fill="url(#sproutGradSm)"/>
+            <path d="M 100 100 Q 116 96 124 78 Q 108 76 100 92 Z"
+                  fill="url(#sproutGradSm)"/>
+          </g>
         </svg>
 
         <!-- Heading -->
@@ -798,7 +836,7 @@ html[lang="ar"] .footer { font-family: var(--f-ar); font-size: 13px; }
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
-              <input type="text" class="input-field" id="nameInput" placeholder="Lamia Ahmed" autocomplete="name">
+              <input type="text" class="input-field" id="nameInput" placeholder="lamiaa elsheikh" autocomplete="name">
             </div>
             <div class="err-msg" id="errName"></div>
           </div>
@@ -832,7 +870,6 @@ html[lang="ar"] .footer { font-family: var(--f-ar); font-size: 13px; }
                 </svg>
               </button>
             </div>
-            <!-- Strength (Sign Up only) -->
             <div class="strength" id="strength">
               <span class="strength-bar"></span>
               <span class="strength-bar"></span>
@@ -907,7 +944,7 @@ const I18N = {
     labelName: 'Full Name',
     labelEmail: 'Email',
     labelPassword: 'Password',
-    phName: 'Lamia Ahmed',
+    phName: 'lamiaa elsheikh',
     phEmail: 'you@example.com',
     phPassword: '••••••••',
 
@@ -939,7 +976,7 @@ const I18N = {
     labelName: 'الاسم بالكامل',
     labelEmail: 'البريد الإلكتروني',
     labelPassword: 'كلمة المرور',
-    phName: 'لمياء أحمد',
+    phName: 'لمياء الشيخ',
     phEmail: 'you@example.com',
     phPassword: '••••••••',
 
@@ -964,7 +1001,7 @@ const I18N = {
 /* ============================================
    LANGUAGE
 ============================================ */
-const STORAGE_KEY = 'memento_lang';
+const STORAGE_KEY = 'omega_lang';
 let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
 
 const htmlEl      = document.documentElement;
@@ -972,7 +1009,7 @@ const langCurrEl  = document.getElementById('langCurrent');
 const langOtherEl = document.getElementById('langOther');
 const langToggle  = document.getElementById('langToggle');
 
-let mode = 'signup'; // 'signup' | 'login'
+let mode = 'signup';
 
 function applyLanguage(lang) {
   currentLang = lang;
@@ -983,15 +1020,12 @@ function applyLanguage(lang) {
   langCurrEl.textContent  = lang === 'en' ? 'EN' : 'ع';
   langOtherEl.textContent = lang === 'en' ? 'ع'  : 'EN';
 
-  // Heading & sub
   document.getElementById('heading').textContent    = mode === 'signup' ? I18N[lang].headingSignup : I18N[lang].headingLogin;
   document.getElementById('subheading').textContent = mode === 'signup' ? I18N[lang].subSignup    : I18N[lang].subLogin;
 
-  // Tabs
   document.getElementById('tabSignup').textContent = I18N[lang].tabSignup;
   document.getElementById('tabLogin').textContent  = I18N[lang].tabLogin;
 
-  // Labels & placeholders
   document.getElementById('labelName').textContent       = I18N[lang].labelName;
   document.getElementById('labelEmail').textContent      = I18N[lang].labelEmail;
   document.getElementById('labelPassword').textContent   = I18N[lang].labelPassword;
@@ -1000,20 +1034,15 @@ function applyLanguage(lang) {
   document.getElementById('emailInput').placeholder    = I18N[lang].phEmail;
   document.getElementById('passwordInput').placeholder = I18N[lang].phPassword;
 
-  // Forgot
   document.getElementById('forgotLink').textContent = I18N[lang].forgot;
 
-  // Submit button
   document.getElementById('submitLabel').textContent = mode === 'signup' ? I18N[lang].btnSignup : I18N[lang].btnLogin;
 
-  // Divider
   document.getElementById('orText').textContent = I18N[lang].orText;
 
-  // Footer
   document.getElementById('footerText').textContent = mode === 'signup' ? I18N[lang].footerSignup : I18N[lang].footerLogin;
   document.getElementById('footerLink').textContent = mode === 'signup' ? I18N[lang].footerLinkSignup : I18N[lang].footerLinkLogin;
 
-  // Error messages
   refreshErrors();
 }
 
@@ -1153,21 +1182,18 @@ function validate() {
   clearErrors();
 
   if (mode === 'signup') {
-    // Name
     if (!fields.name.value.trim() || fields.name.value.trim().length < 2) {
       showError('name', 'errName');
       valid = false;
     }
   }
 
-  // Email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(fields.email.value.trim())) {
     showError('email', 'errEmail');
     valid = false;
   }
 
-  // Password
   if (fields.password.value.length < 6) {
     showError('password', 'errPassword');
     valid = false;
@@ -1176,7 +1202,6 @@ function validate() {
   return valid;
 }
 
-/* Clear error on input */
 Object.keys(fields).forEach(field => {
   fields[field].addEventListener('input', () => {
     if (fieldWraps[field].classList.contains('has-error')) {
@@ -1201,10 +1226,10 @@ authForm.addEventListener('submit', (e) => {
     submitBtn.classList.remove('loading');
 
     if (mode === 'signup') {
-      localStorage.setItem('memento_user_name', fields.name.value.trim());
+      localStorage.setItem('omega_user_name', fields.name.value.trim());
       window.location.href = 'account-type.html';
     } else {
-      localStorage.setItem('memento_user_name', 'User');
+      localStorage.setItem('omega_user_name', 'User');
       window.location.href = 'home.html';
     }
   }, 1400);
