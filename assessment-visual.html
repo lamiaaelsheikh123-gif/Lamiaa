@@ -3,32 +3,40 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#FAF8F3" />
-<title>Memento AI — Visual Assessment</title>
+<meta name="theme-color" content="#F8FAFC" />
+<title>Omega — Visual Assessment</title>
 
+<!-- ✅ الخطوط الأصلية: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+/* ============================================
+   DESIGN TOKENS — Omega Design System
+============================================ */
 :root {
-  --c-primary: #0E7C7B;
-  --c-primary-light: #4DB6AC;
-  --c-secondary: #9B7EDE;
-  --c-blue: #5B9BD5;
-  --c-navy: #0F2C4C;
-  --c-slate: #5A6C7D;
-  --c-bg: #FAF8F3;
-  --c-card: #FFFFFF;
-  --c-border: #EAE6DE;
-  --c-error: #E57373;
-  --c-success: #4CAF50;
+  --c-primary:       #0E9487;
+  --c-primary-light: #2EC4B6;
+  --c-primary-dark:  #076B5F;
+  --c-blue:          #3B82F6;
+  --c-purple:        #8B5CF6;
 
-  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
-  --g-text: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 50%, #9B7EDE 100%);
+  --c-success: #22C55E;
+  --c-warning: #FBBF24;
+  --c-error:   #EF4444;
+
+  --c-navy:   #0F172A;
+  --c-slate:  #64748B;
+  --c-bg:     #F8FAFC;
+  --c-card:   #FFFFFF;
+  --c-border: #E2E8F0;
+
+  --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
 
   --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
-  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
+  --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
 
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
@@ -43,7 +51,7 @@ html, body {
   height: 100%;
   font-family: var(--f-en);
   -webkit-font-smoothing: antialiased;
-  background: #E8E4DC;
+  background: #E2E8F0;
   overflow: hidden;
 }
 
@@ -55,9 +63,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   background:
-    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
-    #E8E4DC;
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 148, 135, 0.10), transparent 50%),
+    #E2E8F0;
 }
 
 .phone {
@@ -103,8 +111,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 10%, rgba(155, 126, 222, 0.08), transparent 45%),
-    radial-gradient(circle at 85% 90%, rgba(14, 124, 123, 0.08), transparent 50%);
+    radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 148, 135, 0.05), transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -129,14 +137,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 124, 123, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.15);
   transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
 .exit-btn:hover {
   background: #fff;
-  border-color: rgba(229, 115, 115, 0.4);
+  border-color: rgba(239, 68, 68, 0.4);
   transform: scale(1.05);
 }
 
@@ -158,19 +166,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 124, 123, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.15);
   border-radius: var(--r-pill);
   font-size: 12px;
   font-weight: 600;
   color: var(--c-navy);
   letter-spacing: 0.3px;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
 .lang-toggle:hover {
   background: #fff;
-  border-color: rgba(14, 124, 123, 0.35);
+  border-color: rgba(14, 148, 135, 0.35);
   transform: translateY(-1px);
 }
 
@@ -211,7 +219,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .progress-bar {
   flex: 1;
   height: 4px;
-  background: rgba(14, 124, 123, 0.10);
+  background: rgba(14, 148, 135, 0.10);
   border-radius: var(--r-pill);
   overflow: hidden;
   position: relative;
@@ -224,7 +232,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   width: 71.42%;
   background: var(--g-brand);
   border-radius: var(--r-pill);
-  box-shadow: 0 0 10px rgba(14, 124, 123, 0.3);
+  box-shadow: 0 0 10px rgba(14, 148, 135, 0.3);
   transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
@@ -289,7 +297,7 @@ html[lang="ar"] .progress-text { font-family: var(--f-ar); letter-spacing: 0; fo
   position: absolute;
   inset: -10px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(91, 155, 213, 0.18) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 65%);
   filter: blur(24px);
   z-index: -1;
   animation: pulseGlow 2.8s ease-in-out infinite;
@@ -346,7 +354,7 @@ html[lang="ar"] .ready-desc { font-family: var(--f-ar); font-size: 15px; }
   font-size: 11.5px;
   font-weight: 600;
   color: var(--c-navy);
-  box-shadow: 0 4px 12px rgba(15, 44, 76, 0.04);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
 .meta-pill svg {
@@ -411,9 +419,9 @@ html[lang="ar"] .hud-label {
   justify-content: center;
   gap: 6px;
   padding: 10px 14px;
-  background: rgba(91, 155, 213, 0.08);
+  background: rgba(59, 130, 246, 0.08);
   border-radius: var(--r-md);
-  border: 1px solid rgba(91, 155, 213, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.2);
   font-size: 12px;
   font-weight: 600;
   color: var(--c-blue);
@@ -435,7 +443,7 @@ html[lang="ar"] .instr { font-family: var(--f-ar); font-size: 13px; }
 .target-label {
   font-size: 10.5px;
   font-weight: 700;
-  color: var(--c-secondary);
+  color: var(--c-purple);
   letter-spacing: 0.5px;
   text-transform: uppercase;
   text-align: center;
@@ -450,15 +458,15 @@ html[lang="ar"] .target-label {
 
 .target-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(155, 126, 222, 0.08), rgba(91, 155, 213, 0.08));
-  border: 1.5px solid rgba(155, 126, 222, 0.25);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.08));
+  border: 1.5px solid rgba(139, 92, 246, 0.25);
   border-radius: var(--r-xl);
   padding: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   aspect-ratio: 2 / 1;
-  box-shadow: 0 8px 24px rgba(155, 126, 222, 0.08);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.08);
   animation: phaseIn 0.4s ease;
 }
 
@@ -528,25 +536,25 @@ html[lang="ar"] .target-label {
 }
 
 .opt-card:hover:not(.locked) {
-  border-color: rgba(14, 124, 123, 0.35);
+  border-color: rgba(14, 148, 135, 0.35);
   transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(15, 44, 76, 0.08);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
 }
 
 .opt-card:active:not(.locked) { transform: scale(0.96); }
 
 .opt-card.correct {
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(102, 187, 106, 0.05));
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.10), rgba(34, 197, 94, 0.05));
   border-color: var(--c-success);
   border-width: 2.5px;
-  box-shadow: 0 12px 30px rgba(76, 175, 80, 0.25);
+  box-shadow: 0 12px 30px rgba(34, 197, 94, 0.25);
   transform: translateY(-3px);
 }
 
 .opt-card.correct::after { opacity: 1; animation: optPop 0.5s ease; }
 
 .opt-card.wrong {
-  background: linear-gradient(135deg, rgba(229, 115, 115, 0.1), rgba(239, 83, 80, 0.05));
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.10), rgba(239, 68, 68, 0.05));
   border-color: var(--c-error);
   border-width: 2.5px;
   animation: wrongShake 0.4s ease;
@@ -575,7 +583,7 @@ html[lang="ar"] .target-label {
   display: none;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
+  box-shadow: 0 4px 10px rgba(34, 197, 94, 0.4);
   animation: badgePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -635,7 +643,7 @@ html[dir="rtl"] .opt-card .check-badge { right: auto; left: 8px; }
 
 .result-track {
   fill: none;
-  stroke: rgba(14, 124, 123, 0.08);
+  stroke: rgba(14, 148, 135, 0.08);
   stroke-width: 10;
 }
 
@@ -785,7 +793,7 @@ html[lang="ar"] .stat-label {
   letter-spacing: 0.4px;
   border-radius: var(--r-md);
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(14, 124, 123, 0.28);
+  box-shadow: 0 12px 28px rgba(14, 148, 135, 0.28);
   transition: transform 0.2s ease, box-shadow 0.25s ease;
   display: inline-flex;
   align-items: center;
@@ -806,7 +814,7 @@ html[lang="ar"] .stat-label {
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(14, 124, 123, 0.35);
+  box-shadow: 0 16px 34px rgba(14, 148, 135, 0.35);
 }
 
 .btn-primary:active { transform: scale(0.97); }
@@ -832,7 +840,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(250, 248, 243, 0.92);
+  background: rgba(248, 250, 252, 0.92);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 50;
@@ -874,9 +882,9 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <linearGradient id="resultGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0E7C7B"/>
-      <stop offset="50%" stop-color="#5B9BD5"/>
-      <stop offset="100%" stop-color="#9B7EDE"/>
+      <stop offset="0%" stop-color="#0E9487"/>
+      <stop offset="50%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
     </linearGradient>
   </defs>
 </svg>
@@ -920,14 +928,14 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
               <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="eyeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#0E7C7B"/>
-                    <stop offset="50%" stop-color="#5B9BD5"/>
-                    <stop offset="100%" stop-color="#9B7EDE"/>
+                    <stop offset="0%" stop-color="#0E9487"/>
+                    <stop offset="50%" stop-color="#2EC4B6"/>
+                    <stop offset="100%" stop-color="#3B82F6"/>
                   </linearGradient>
                 </defs>
 
-                <circle cx="100" cy="100" r="78" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.15"/>
-                <circle cx="100" cy="100" r="60" fill="none" stroke="#0E7C7B" stroke-width="0.8" opacity="0.25"/>
+                <circle cx="100" cy="100" r="78" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.15"/>
+                <circle cx="100" cy="100" r="60" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.25"/>
 
                 <path d="M 40 100 Q 100 50 160 100 Q 100 150 40 100 Z"
                       fill="none" stroke="url(#eyeGrad)" stroke-width="3" stroke-linejoin="round"/>
@@ -938,8 +946,8 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
                   <circle cx="95" cy="95" r="3" fill="#fff"/>
                 </g>
 
-                <path d="M 150 55 L 152 62 L 158 64 L 152 66 L 150 72 L 148 66 L 142 64 L 148 62 Z" fill="#9B7EDE"/>
-                <path d="M 45 140 L 47 145 L 52 146.5 L 47 148 L 45 153 L 43 148 L 38 146.5 L 43 145 Z" fill="#0E7C7B"/>
+                <path d="M 150 55 L 152 62 L 158 64 L 152 66 L 150 72 L 148 66 L 142 64 L 148 62 Z" fill="#8B5CF6"/>
+                <path d="M 45 140 L 47 145 L 52 146.5 L 47 148 L 45 153 L 43 148 L 38 146.5 L 43 145 Z" fill="#0E9487"/>
 
                 <style>
                   @keyframes eyeLook {
@@ -1134,7 +1142,7 @@ const I18N = {
 /* ============================================
    LANGUAGE
 ============================================ */
-const STORAGE_KEY = 'memento_lang';
+const STORAGE_KEY = 'omega_lang';
 let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
 const htmlEl = document.documentElement;
 
@@ -1205,15 +1213,15 @@ function getInstrText(type) {
 }
 
 /* ============================================
-   SHAPE POOLS
+   SHAPE POOLS — بألوان الباليت الجديد
 ============================================ */
 const PALETTE = [
-  { main: '#0E7C7B', light: '#4DB6AC' }, // Teal
-  { main: '#5B9BD5', light: '#7FB2E0' }, // Blue
-  { main: '#9B7EDE', light: '#B9A3E8' }, // Purple
-  { main: '#FF9800', light: '#FFB74D' }, // Orange
-  { main: '#E8A0BF', light: '#F0BDD3' }, // Pink
-  { main: '#4CAF50', light: '#7BC67F' }  // Green
+  { main: '#0E9487', light: '#2EC4B6' },   // Teal
+  { main: '#3B82F6', light: '#60A5FA' },   // Blue
+  { main: '#8B5CF6', light: '#A78BFA' },   // Purple
+  { main: '#F59E0B', light: '#FBBF24' },   // Orange/Amber
+  { main: '#EC4899', light: '#F472B6' },   // Pink
+  { main: '#22C55E', light: '#4ADE80' }    // Green
 ];
 
 /* SVG Wrapper */
@@ -1228,7 +1236,7 @@ function shapeHouse({ color, roofColor, rotated = 0, mirrored = false }) {
     <g transform="${t}">
       <rect x="28" y="48" width="44" height="38" rx="3" fill="${color.main}"/>
       <path d="M 22 48 L 50 20 L 78 48 Z" fill="${roofColor.main}"/>
-      <rect x="44" y="62" width="12" height="24" rx="2" fill="#FAF8F3"/>
+      <rect x="44" y="62" width="12" height="24" rx="2" fill="#F8FAFC"/>
       <circle cx="54" cy="74" r="1.5" fill="${color.main}"/>
     </g>
   `);
@@ -1291,8 +1299,6 @@ function shapeTriangle({ color, rotated = 0, innerOffset = 0 }) {
 /* ============================================
    PUZZLE GENERATORS
 ============================================ */
-
-/* Puzzle 1: Match — same shape, different wrong variations */
 function genMatch() {
   const color = PALETTE[rnd(0, PALETTE.length - 1)];
   const roofColor = PALETTE[rnd(0, PALETTE.length - 1)];
@@ -1301,35 +1307,30 @@ function genMatch() {
   let target, correct, wrong1, wrong2, wrong3;
 
   if (variant === 0) {
-    // House — roof color variation
     target = shapeHouse({ color, roofColor });
     correct = shapeHouse({ color, roofColor });
     wrong1 = shapeHouse({ color, roofColor: PALETTE[(PALETTE.indexOf(roofColor) + 2) % PALETTE.length] });
     wrong2 = shapeHouse({ color: PALETTE[(PALETTE.indexOf(color) + 2) % PALETTE.length], roofColor });
     wrong3 = shapeHouse({ color, roofColor, mirrored: true });
   } else if (variant === 1) {
-    // Star — points variation
     target = shapeStar({ color, points: 5 });
     correct = shapeStar({ color, points: 5 });
     wrong1 = shapeStar({ color, points: 6 });
     wrong2 = shapeStar({ color: PALETTE[(PALETTE.indexOf(color) + 2) % PALETTE.length], points: 5 });
     wrong3 = shapeStar({ color, points: 6 });
   } else if (variant === 2) {
-    // Diamond — split variation
     target = shapeDiamond({ color, split: true });
     correct = shapeDiamond({ color, split: true });
     wrong1 = shapeDiamond({ color, split: false });
     wrong2 = shapeDiamond({ color, split: true, rotated: 90 });
     wrong3 = shapeDiamond({ color: PALETTE[(PALETTE.indexOf(color) + 2) % PALETTE.length], split: false });
   } else if (variant === 3) {
-    // Heart — mirrored variation
     target = shapeHeart({ color });
     correct = shapeHeart({ color });
     wrong1 = shapeHeart({ color, mirrored: true });
     wrong2 = shapeHeart({ color: PALETTE[(PALETTE.indexOf(color) + 2) % PALETTE.length] });
     wrong3 = shapeHeart({ color, rotated: 180 });
   } else {
-    // Triangle — inner circle offset
     target = shapeTriangle({ color, innerOffset: 0 });
     correct = shapeTriangle({ color, innerOffset: 0 });
     wrong1 = shapeTriangle({ color, innerOffset: -15 });
@@ -1337,15 +1338,9 @@ function genMatch() {
     wrong3 = shapeTriangle({ color: PALETTE[(PALETTE.indexOf(color) + 2) % PALETTE.length], innerOffset: 0 });
   }
 
-  return {
-    type: 'match',
-    target,
-    correct,
-    wrongs: [wrong1, wrong2, wrong3]
-  };
+  return { type: 'match', target, correct, wrongs: [wrong1, wrong2, wrong3] };
 }
 
-/* Puzzle 2: Rotation — arrow or shape, rotated correct answer */
 function genRotation() {
   const color = PALETTE[rnd(0, PALETTE.length - 1)];
   const variant = rnd(0, 1);
@@ -1353,7 +1348,6 @@ function genRotation() {
   let target, correct, wrong1, wrong2, wrong3;
 
   if (variant === 0) {
-    // Arrow — same direction is correct
     const dir = [0, 90, 180, 270][rnd(0, 3)];
     target = shapeArrow({ color, rotated: dir });
     correct = shapeArrow({ color, rotated: dir });
@@ -1361,7 +1355,6 @@ function genRotation() {
     wrong2 = shapeArrow({ color, rotated: (dir + 180) % 360 });
     wrong3 = shapeArrow({ color, rotated: (dir + 270) % 360 });
   } else {
-    // House — same orientation
     const rot = [0, 90, 180, 270][rnd(0, 3)];
     const roofColor = PALETTE[rnd(0, PALETTE.length - 1)];
     target = shapeHouse({ color, roofColor, rotated: rot });
@@ -1371,15 +1364,9 @@ function genRotation() {
     wrong3 = shapeHouse({ color, roofColor, rotated: (rot + 270) % 360 });
   }
 
-  return {
-    type: 'rotation',
-    target,
-    correct,
-    wrongs: [wrong1, wrong2, wrong3]
-  };
+  return { type: 'rotation', target, correct, wrongs: [wrong1, wrong2, wrong3] };
 }
 
-/* Puzzle 3: Mirror — correct answer is the original, wrong is mirrored */
 function genMirror() {
   const color = PALETTE[rnd(0, PALETTE.length - 1)];
   const roofColor = PALETTE[rnd(0, PALETTE.length - 1)];
@@ -1388,14 +1375,12 @@ function genMirror() {
   let target, correct, wrong1, wrong2, wrong3;
 
   if (variant === 0) {
-    // Heart
     target = shapeHeart({ color });
     correct = shapeHeart({ color });
     wrong1 = shapeHeart({ color, mirrored: true });
     wrong2 = shapeHeart({ color, rotated: 180 });
     wrong3 = shapeHeart({ color: PALETTE[(PALETTE.indexOf(color) + 2) % PALETTE.length] });
   } else {
-    // House
     target = shapeHouse({ color, roofColor });
     correct = shapeHouse({ color, roofColor });
     wrong1 = shapeHouse({ color, roofColor, mirrored: true });
@@ -1403,15 +1388,9 @@ function genMirror() {
     wrong3 = shapeHouse({ color: PALETTE[(PALETTE.indexOf(color) + 2) % PALETTE.length], roofColor });
   }
 
-  return {
-    type: 'mirror',
-    target,
-    correct,
-    wrongs: [wrong1, wrong2, wrong3]
-  };
+  return { type: 'mirror', target, correct, wrongs: [wrong1, wrong2, wrong3] };
 }
 
-/* Generate 3 puzzles */
 function generatePuzzles() {
   return [genMatch(), genRotation(), genMirror()];
 }
@@ -1568,7 +1547,7 @@ function endGame() {
     accuracy,
     avgResponseTime: parseFloat(avgTime.toFixed(2))
   };
-  localStorage.setItem('memento_visual_result', JSON.stringify(result));
+  localStorage.setItem('omega_visual_result', JSON.stringify(result));
 
   setTimeout(() => showFeedback(result), 400);
 }
