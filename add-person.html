@@ -3,43 +3,47 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#FAF8F3" />
-<title>Memento AI — Add Item</title>
+<meta name="theme-color" content="#F8FAFC" />
+<title>Omega — Add Item</title>
 
+<!-- ✅ الخطوط الأصلية: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+/* ============================================
+   DESIGN TOKENS — Omega
+============================================ */
 :root {
-  --c-primary: #0E7C7B;
-  --c-primary-light: #4DB6AC;
-  --c-secondary: #9B7EDE;
-  --c-blue: #5B9BD5;
-  --c-navy: #0F2C4C;
-  --c-slate: #5A6C7D;
-  --c-bg: #FAF8F3;
-  --c-card: #FFFFFF;
-  --c-border: #EAE6DE;
-  --c-error: #E57373;
-  --c-success: #4CAF50;
+  --c-primary:       #0E9487;
+  --c-primary-light: #2EC4B6;
+  --c-primary-dark:  #076B5F;
+  --c-blue:          #3B82F6;
+  --c-purple:        #8B5CF6;
 
-  --g-brand: linear-gradient(135deg, #0E7C7B 0%, #5B9BD5 55%, #9B7EDE 100%);
-  --g-care: linear-gradient(135deg, #9B7EDE 0%, #5B9BD5 100%);
-  --g-people: linear-gradient(135deg, #E8A0BF, #9B7EDE);
-  --g-places: linear-gradient(135deg, #0E7C7B, #4DB6AC);
-  --g-events: linear-gradient(135deg, #FF9800, #FFB74D);
-  --g-things: linear-gradient(135deg, #5B9BD5, #4DB6AC);
-  --g-dates: linear-gradient(135deg, #9B7EDE, #5B9BD5);
+  --c-success: #22C55E;
+  --c-warning: #FBBF24;
+  --c-error:   #EF4444;
 
-  --r-sm: 10px;
-  --r-md: 14px;
-  --r-lg: 18px;
-  --r-xl: 24px;
-  --r-pill: 999px;
+  --c-navy:   #0F172A;
+  --c-slate:  #64748B;
+  --c-bg:     #F8FAFC;
+  --c-card:   #FFFFFF;
+  --c-border: #E2E8F0;
 
-  --sh-soft: 0 8px 30px rgba(15, 44, 76, 0.06);
-  --sh-focus: 0 0 0 4px rgba(155, 126, 222, 0.15);
+  --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-care:  linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+  --g-people: linear-gradient(135deg, #EC4899, #8B5CF6);
+  --g-places: linear-gradient(135deg, #0E9487, #2EC4B6);
+  --g-events: linear-gradient(135deg, #FBBF24, #F59E0B);
+  --g-things: linear-gradient(135deg, #3B82F6, #2EC4B6);
+  --g-dates:  linear-gradient(135deg, #8B5CF6, #3B82F6);
+
+  --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
+
+  --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
+  --sh-focus: 0 0 0 4px rgba(139, 92, 246, 0.15);
 
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
@@ -54,7 +58,7 @@ html, body {
   height: 100%;
   font-family: var(--f-en);
   -webkit-font-smoothing: antialiased;
-  background: #E8E4DC;
+  background: #E2E8F0;
   overflow: hidden;
 }
 
@@ -68,24 +72,20 @@ input, textarea, select { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   background:
-    radial-gradient(circle at 20% 20%, rgba(155, 126, 222, 0.12), transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(14, 124, 123, 0.10), transparent 50%),
-    #E8E4DC;
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 148, 135, 0.10), transparent 50%),
+    #E2E8F0;
 }
 
 .phone {
   position: relative;
-  width: var(--phone-w);
-  height: var(--phone-h);
+  width: var(--phone-w); height: var(--phone-h);
   max-height: calc(100vh - 40px);
   background: var(--c-bg);
   border-radius: 44px;
   overflow: hidden;
-  box-shadow:
-    0 0 0 10px #1a1a1a,
-    0 0 0 12px #2a2a2a,
-    0 40px 80px rgba(0, 0, 0, 0.35),
-    0 20px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a,
+    0 40px 80px rgba(0, 0, 0, 0.35), 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .phone::before {
@@ -110,8 +110,7 @@ input, textarea, select { font-family: inherit; }
 .screen {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
   background: var(--c-bg);
   overflow: hidden;
 }
@@ -121,8 +120,8 @@ input, textarea, select { font-family: inherit; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 15%, rgba(155, 126, 222, 0.10), transparent 45%),
-    radial-gradient(circle at 80% 85%, rgba(91, 155, 213, 0.08), transparent 50%);
+    radial-gradient(circle at 20% 15%, rgba(139, 92, 246, 0.08), transparent 45%),
+    radial-gradient(circle at 80% 85%, rgba(14, 148, 135, 0.06), transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -131,9 +130,7 @@ input, textarea, select { font-family: inherit; }
 .topbar {
   position: relative;
   z-index: 10;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex; justify-content: space-between; align-items: center;
   padding: 52px 22px 0;
   flex-shrink: 0;
 }
@@ -143,42 +140,42 @@ input, textarea, select { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
   background: rgba(255,255,255,0.7);
-  border: 1px solid rgba(155,126,222,0.2);
-  box-shadow: 0 4px 14px rgba(15,44,76,0.05);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
   transition: all 0.25s ease;
 }
 
 .back-btn:hover {
   background: #fff;
-  border-color: rgba(155,126,222,0.5);
+  border-color: rgba(139, 92, 246, 0.5);
   transform: translateX(-2px);
 }
 
 html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
 
-.back-btn svg { width: 16px; height: 16px; stroke: var(--c-secondary); stroke-width: 2.4; fill: none; }
+.back-btn svg { width: 16px; height: 16px; stroke: var(--c-purple); stroke-width: 2.4; fill: none; }
 html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 
 .lang-toggle {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 7px 12px;
   background: rgba(255,255,255,0.7);
-  border: 1px solid rgba(155,126,222,0.2);
+  border: 1px solid rgba(139, 92, 246, 0.2);
   border-radius: var(--r-pill);
   font-size: 12px; font-weight: 600;
   color: var(--c-navy);
-  box-shadow: 0 4px 14px rgba(15,44,76,0.05);
+  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
   transition: all 0.25s ease;
 }
 
 .lang-toggle:hover {
   background: #fff;
-  border-color: rgba(155,126,222,0.5);
+  border-color: rgba(139, 92, 246, 0.5);
   transform: translateY(-1px);
 }
 
-.lang-toggle .lang-globe { width: 14px; height: 14px; stroke: var(--c-secondary); stroke-width: 2.2; fill: none; }
-.lang-toggle .lang-label { color: var(--c-secondary); }
+.lang-toggle .lang-globe { width: 14px; height: 14px; stroke: var(--c-purple); stroke-width: 2.2; fill: none; }
+.lang-toggle .lang-label { color: var(--c-purple); }
 .lang-toggle .divider { color: var(--c-border); }
 .lang-toggle .lang-inactive { color: var(--c-slate); }
 
@@ -188,9 +185,7 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
   z-index: 5;
   flex: 1;
   padding: 20px 24px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  display: flex; flex-direction: column; gap: 18px;
   overflow-y: auto;
   scrollbar-width: none;
   min-height: 0;
@@ -200,27 +195,21 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 
 /* HEADER */
 .header {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  opacity: 0;
-  transform: translateY(10px);
+  display: flex; flex-direction: column; gap: 10px;
+  opacity: 0; transform: translateY(10px);
   animation: fadeUp 0.5s ease 0.1s forwards;
 }
 
 .header-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
+  display: inline-flex; align-items: center; gap: 7px;
   padding: 6px 14px;
   border-radius: var(--r-pill);
-  font-size: 10.5px;
-  font-weight: 700;
+  font-size: 10.5px; font-weight: 700;
   color: #fff;
   letter-spacing: 0.6px;
   text-transform: uppercase;
   align-self: flex-start;
-  box-shadow: 0 6px 16px rgba(155, 126, 222, 0.3);
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.3);
 }
 
 .header-badge.people { background: var(--g-people); }
@@ -231,11 +220,8 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 
 .header-badge svg {
   width: 13px; height: 13px;
-  stroke: #fff;
-  stroke-width: 2.4;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke: #fff; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
 }
 
 html[lang="ar"] .header-badge {
@@ -246,11 +232,9 @@ html[lang="ar"] .header-badge {
 }
 
 .header-title {
-  font-size: 24px;
-  font-weight: 800;
+  font-size: 24px; font-weight: 800;
   color: var(--c-navy);
-  letter-spacing: -0.4px;
-  line-height: 1.25;
+  letter-spacing: -0.4px; line-height: 1.25;
 }
 
 html[lang="ar"] .header-title { font-family: var(--f-ar); font-size: 23px; letter-spacing: 0; }
@@ -269,25 +253,18 @@ html[lang="ar"] .header-sub { font-family: var(--f-ar); font-size: 14px; }
 
 /* PHOTO UPLOAD */
 .photo-upload {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: flex; flex-direction: column; align-items: center;
   gap: 12px;
-  opacity: 0;
-  transform: translateY(12px);
+  opacity: 0; transform: translateY(12px);
   animation: fadeUp 0.5s ease 0.2s forwards;
 }
 
 .photo-btn {
-  width: 110px;
-  height: 110px;
+  width: 110px; height: 110px;
   border-radius: 50%;
-  background: rgba(155, 126, 222, 0.08);
-  border: 2px dashed rgba(155, 126, 222, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  background: rgba(139, 92, 246, 0.08);
+  border: 2px dashed rgba(139, 92, 246, 0.4);
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
   gap: 6px;
   transition: all 0.3s ease;
   position: relative;
@@ -295,8 +272,8 @@ html[lang="ar"] .header-sub { font-family: var(--f-ar); font-size: 14px; }
 }
 
 .photo-btn:hover {
-  background: rgba(155, 126, 222, 0.15);
-  border-color: rgba(155, 126, 222, 0.7);
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.7);
   transform: scale(1.03);
 }
 
@@ -304,17 +281,13 @@ html[lang="ar"] .header-sub { font-family: var(--f-ar); font-size: 14px; }
 
 .photo-btn svg {
   width: 26px; height: 26px;
-  stroke: var(--c-secondary);
-  stroke-width: 2.2;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke: var(--c-purple); stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
 }
 
 .photo-btn .photo-text {
-  font-size: 10.5px;
-  font-weight: 700;
-  color: var(--c-secondary);
+  font-size: 10.5px; font-weight: 700;
+  color: var(--c-purple);
   letter-spacing: 0.3px;
   text-align: center;
   padding: 0 8px;
@@ -329,8 +302,7 @@ html[lang="ar"] .photo-btn .photo-text { font-family: var(--f-ar); font-size: 11
 }
 
 .photo-btn.has-photo img {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   object-fit: cover;
 }
 
@@ -343,13 +315,13 @@ html[lang="ar"] .photo-btn .photo-text { font-family: var(--f-ar); font-size: 11
   font-weight: 600;
   padding: 4px 10px;
   border-radius: var(--r-pill);
-  background: rgba(229, 115, 115, 0.1);
+  background: rgba(239, 68, 68, 0.1);
   transition: all 0.2s ease;
   display: none;
 }
 
 .photo-clear.show { display: inline-block; }
-.photo-clear:hover { background: rgba(229, 115, 115, 0.2); }
+.photo-clear:hover { background: rgba(239, 68, 68, 0.2); }
 
 html[lang="ar"] .photo-clear { font-family: var(--f-ar); font-size: 12.5px; }
 
@@ -363,18 +335,11 @@ html[lang="ar"] .photo-clear { font-family: var(--f-ar); font-size: 12.5px; }
 html[lang="ar"] .photo-hint { font-family: var(--f-ar); font-size: 12px; }
 
 /* FORM */
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+.form { display: flex; flex-direction: column; gap: 14px; }
 
 .field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  opacity: 0;
-  transform: translateY(12px);
+  display: flex; flex-direction: column; gap: 6px;
+  opacity: 0; transform: translateY(12px);
   animation: fadeUp 0.4s ease forwards;
 }
 
@@ -384,33 +349,20 @@ html[lang="ar"] .photo-hint { font-family: var(--f-ar); font-size: 12px; }
 .field:nth-child(4) { animation-delay: 0.51s; }
 
 .field-label {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 12px; font-weight: 600;
   color: var(--c-navy);
   letter-spacing: 0.2px;
   padding-inline-start: 4px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  display: flex; align-items: center; gap: 4px;
 }
 
-.field-label .required {
-  color: var(--c-error);
-  font-weight: 800;
-}
-
-.field-label .optional {
-  color: var(--c-slate);
-  font-weight: 500;
-  font-size: 10.5px;
-  font-style: italic;
-}
+.field-label .required { color: var(--c-error); font-weight: 800; }
+.field-label .optional { color: var(--c-slate); font-weight: 500; font-size: 10.5px; font-style: italic; }
 
 html[lang="ar"] .field-label { font-family: var(--f-ar); font-size: 13px; }
 
 .text-input-wrap {
-  display: flex;
-  align-items: center;
+  display: flex; align-items: center;
   background: #fff;
   border: 1.5px solid var(--c-border);
   border-radius: var(--r-md);
@@ -419,7 +371,7 @@ html[lang="ar"] .field-label { font-family: var(--f-ar); font-size: 13px; }
 }
 
 .text-input-wrap:focus-within {
-  border-color: var(--c-secondary);
+  border-color: var(--c-purple);
   box-shadow: var(--sh-focus);
 }
 
@@ -437,37 +389,25 @@ html[lang="ar"] .field-label { font-family: var(--f-ar); font-size: 13px; }
 .text-input-wrap .input-icon {
   width: 18px; height: 18px;
   margin-inline-start: 14px;
-  stroke: var(--c-slate);
-  stroke-width: 2;
-  fill: none;
+  stroke: var(--c-slate); stroke-width: 2; fill: none;
   flex-shrink: 0;
   transition: stroke 0.25s ease;
 }
 
-.text-input-wrap:focus-within .input-icon { stroke: var(--c-secondary); }
+.text-input-wrap:focus-within .input-icon { stroke: var(--c-purple); }
 
 .text-input {
   flex: 1;
   padding: 14px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 14px; font-weight: 500;
   color: var(--c-navy);
-  border: none;
-  outline: none;
-  background: transparent;
+  border: none; outline: none; background: transparent;
   letter-spacing: 0.1px;
 }
 
-.text-input::placeholder {
-  color: #B0B8C1;
-  font-weight: 400;
-}
+.text-input::placeholder { color: #B0B8C1; font-weight: 400; }
 
-html[lang="ar"] .text-input {
-  font-family: var(--f-ar);
-  font-size: 15px;
-  letter-spacing: 0;
-}
+html[lang="ar"] .text-input { font-family: var(--f-ar); font-size: 15px; letter-spacing: 0; }
 
 /* TEXTAREA */
 .textarea-wrap {
@@ -479,42 +419,31 @@ html[lang="ar"] .text-input {
 }
 
 .textarea-wrap:focus-within {
-  border-color: var(--c-secondary);
+  border-color: var(--c-purple);
   box-shadow: var(--sh-focus);
 }
 
 .textarea-input {
   width: 100%;
   padding: 14px;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 13px; font-weight: 500;
   color: var(--c-navy);
-  border: none;
-  outline: none;
-  background: transparent;
+  border: none; outline: none; background: transparent;
   resize: none;
   min-height: 70px;
   letter-spacing: 0.1px;
   line-height: 1.5;
 }
 
-.textarea-input::placeholder {
-  color: #B0B8C1;
-  font-weight: 400;
-}
+.textarea-input::placeholder { color: #B0B8C1; font-weight: 400; }
 
-html[lang="ar"] .textarea-input {
-  font-family: var(--f-ar);
-  font-size: 14px;
-  letter-spacing: 0;
-}
+html[lang="ar"] .textarea-input { font-family: var(--f-ar); font-size: 14px; letter-spacing: 0; }
 
 /* DATE INPUT */
 .date-input {
   width: 100%;
   padding: 14px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 14px; font-weight: 500;
   color: var(--c-navy);
   background: #fff;
   border: 1.5px solid var(--c-border);
@@ -527,7 +456,7 @@ html[lang="ar"] .textarea-input {
 }
 
 .date-input:focus {
-  border-color: var(--c-secondary);
+  border-color: var(--c-purple);
   box-shadow: var(--sh-focus);
 }
 
@@ -535,9 +464,7 @@ html[lang="ar"] .date-input { font-family: var(--f-ar); font-size: 15px; }
 
 /* RELATIONSHIP CHIPS */
 .rel-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: flex; flex-wrap: wrap; gap: 8px;
 }
 
 .rel-chip {
@@ -545,8 +472,7 @@ html[lang="ar"] .date-input { font-family: var(--f-ar); font-size: 15px; }
   background: #fff;
   border: 1.5px solid var(--c-border);
   border-radius: var(--r-pill);
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 12.5px; font-weight: 600;
   color: var(--c-navy);
   transition: all 0.28s cubic-bezier(0.65, 0, 0.35, 1);
   position: relative;
@@ -557,7 +483,7 @@ html[lang="ar"] .date-input { font-family: var(--f-ar); font-size: 15px; }
 html[lang="ar"] .rel-chip { font-family: var(--f-ar); font-size: 13.5px; letter-spacing: 0; }
 
 .rel-chip:hover {
-  border-color: rgba(155, 126, 222, 0.4);
+  border-color: rgba(139, 92, 246, 0.4);
   transform: translateY(-2px);
 }
 
@@ -565,7 +491,7 @@ html[lang="ar"] .rel-chip { font-family: var(--f-ar); font-size: 13.5px; letter-
   background: var(--g-care);
   color: #fff;
   border-color: transparent;
-  box-shadow: 0 8px 20px rgba(155, 126, 222, 0.35);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.35);
   transform: translateY(-2px);
 }
 
@@ -608,9 +534,7 @@ html[lang="ar"] .err-msg { font-family: var(--f-ar); font-size: 12.5px; }
   position: relative;
   z-index: 10;
   padding: 20px 24px 44px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: flex; flex-direction: column; gap: 10px;
   flex-shrink: 0;
 }
 
@@ -620,17 +544,13 @@ html[lang="ar"] .err-msg { font-family: var(--f-ar); font-size: 12.5px; }
   padding: 17px 24px;
   background: var(--g-care);
   color: #fff;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 15px; font-weight: 600;
   letter-spacing: 0.4px;
   border-radius: var(--r-md);
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(155, 126, 222, 0.3);
-  transition: transform 0.2s ease, box-shadow 0.25s ease, opacity 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  box-shadow: 0 12px 28px rgba(139, 92, 246, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
 }
 
 .btn-primary::before {
@@ -646,7 +566,7 @@ html[lang="ar"] .err-msg { font-family: var(--f-ar); font-size: 12.5px; }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(155, 126, 222, 0.4);
+  box-shadow: 0 16px 34px rgba(139, 92, 246, 0.4);
 }
 
 .btn-primary:active:not(:disabled) { transform: scale(0.97); }
@@ -658,15 +578,10 @@ html[lang="ar"] .err-msg { font-family: var(--f-ar); font-size: 12.5px; }
 
 .btn-primary svg {
   width: 16px; height: 16px;
-  stroke: #fff;
-  stroke-width: 2.4;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke: #fff; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
 }
 
-.btn-primary .check-icon { display: none; }
-.btn-primary .arrow-icon { display: block; }
 .btn-primary .arrow-icon.rtl { transform: scaleX(-1); }
 
 html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
@@ -675,16 +590,15 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
   width: 100%;
   padding: 12px;
   color: var(--c-slate);
-  font-size: 13.5px;
-  font-weight: 500;
+  font-size: 13.5px; font-weight: 500;
   border-radius: var(--r-md);
   transition: all 0.25s ease;
   text-align: center;
 }
 
 .btn-cancel:hover {
-  color: var(--c-secondary);
-  background: rgba(155, 126, 222, 0.06);
+  color: var(--c-purple);
+  background: rgba(139, 92, 246, 0.06);
 }
 
 html[lang="ar"] .btn-cancel { font-family: var(--f-ar); font-size: 14.5px; }
@@ -692,7 +606,43 @@ html[lang="ar"] .btn-cancel { font-family: var(--f-ar); font-size: 14.5px; }
 /* HIDDEN FILE INPUT */
 .file-input { display: none; }
 
-/* REDUCED MOTION */
+/* TOAST */
+.toast {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--c-navy);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--r-pill);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.35);
+  z-index: 300;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast svg {
+  width: 14px; height: 14px;
+  stroke: var(--c-success); stroke-width: 3; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+html[lang="ar"] .toast { font-family: var(--f-ar); font-size: 13.5px; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -825,7 +775,7 @@ html[lang="ar"] .btn-cancel { font-family: var(--f-ar); font-size: 14.5px; }
 
       <!-- Bottom -->
       <div class="bottom">
-        <button class="btn-primary" id="saveBtn" type="submit">
+        <button class="btn-primary" id="saveBtn" type="button">
           <span id="saveLabel">Save</span>
           <svg class="arrow-icon" id="saveIcon" viewBox="0 0 24 24">
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -835,18 +785,24 @@ html[lang="ar"] .btn-cancel { font-family: var(--f-ar); font-size: 14.5px; }
         <button class="btn-cancel" id="cancelBtn">Cancel</button>
       </div>
 
+      <!-- Toast -->
+      <div class="toast" id="toast">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span id="toastText">Saved successfully</span>
+      </div>
+
     </div>
   </div>
 </div>
 
 <script>
 /* ============================================
-   TYPES CONFIG
+   TYPES CONFIG — المفاتيح الصح (omega_bank_*)
 ============================================ */
 const TYPES = {
   person: {
     categoryKey: 'people',
-    storageKey: 'memento_bank_people',
+    storageKey: 'omega_bank_people',   // ✅ المفتاح الصح
     badgeClass: 'people',
     icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>`,
     namePlaceholder: 'e.g. Sara',
@@ -857,7 +813,7 @@ const TYPES = {
   },
   place: {
     categoryKey: 'places',
-    storageKey: 'memento_bank_places',
+    storageKey: 'omega_bank_places',
     badgeClass: 'places',
     icon: `<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>`,
     namePlaceholder: 'e.g. Home, The Park',
@@ -868,7 +824,7 @@ const TYPES = {
   },
   event: {
     categoryKey: 'events',
-    storageKey: 'memento_bank_events',
+    storageKey: 'omega_bank_events',
     badgeClass: 'events',
     icon: `<path d="M12 2 L15 9 L22 9 L16 14 L18 21 L12 17 L6 21 L8 14 L2 9 L9 9 Z"></path>`,
     namePlaceholder: 'e.g. Wedding Anniversary',
@@ -879,7 +835,7 @@ const TYPES = {
   },
   thing: {
     categoryKey: 'things',
-    storageKey: 'memento_bank_things',
+    storageKey: 'omega_bank_things',
     badgeClass: 'things',
     icon: `<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>`,
     namePlaceholder: 'e.g. Favorite song, Tea',
@@ -890,7 +846,7 @@ const TYPES = {
   },
   date: {
     categoryKey: 'dates',
-    storageKey: 'memento_bank_dates',
+    storageKey: 'omega_bank_dates',
     badgeClass: 'dates',
     icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>`,
     namePlaceholder: 'e.g. Birthday, Wedding Day',
@@ -906,32 +862,26 @@ const TYPES = {
 ============================================ */
 const I18N = {
   en: {
-    // Person
     badgePerson: 'Add Person',
     titlePerson: 'New Person',
     subPerson: 'Add someone important to their memory bank.',
 
-    // Place
     badgePlace: 'Add Place',
     titlePlace: 'New Place',
     subPlace: 'Add an important place they know and love.',
 
-    // Event
     badgeEvent: 'Add Event',
     titleEvent: 'New Event',
     subEvent: 'Add a meaningful moment in their life.',
 
-    // Thing
     badgeThing: 'Add Favorite',
     titleThing: 'New Favorite',
     subThing: 'Add something they love or enjoy.',
 
-    // Date
     badgeDate: 'Add Date',
     titleDate: 'New Date',
     subDate: 'Add an important date to remember.',
 
-    // Common
     photoText: 'Add Photo',
     photoHint: 'Optional — a photo makes it memorable',
     removePhoto: 'Remove photo',
@@ -953,6 +903,7 @@ const I18N = {
 
     save: 'Save',
     cancel: 'Cancel',
+    saved: 'Saved successfully!',
 
     errName: 'Please enter a name',
     errRelationship: 'Please select a relationship'
@@ -999,6 +950,7 @@ const I18N = {
 
     save: 'حفظ',
     cancel: 'إلغاء',
+    saved: 'تم الحفظ بنجاح!',
 
     errName: 'الرجاء إدخال الاسم',
     errRelationship: 'الرجاء اختيار العلاقة'
@@ -1016,7 +968,7 @@ let selectedRelationship = null;
 /* ============================================
    LANGUAGE
 ============================================ */
-const STORAGE_KEY = 'memento_lang';
+const STORAGE_KEY = 'omega_lang';
 let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
 const htmlEl = document.documentElement;
 
@@ -1029,7 +981,6 @@ function applyLanguage(lang) {
   document.getElementById('langCurrent').textContent = lang === 'en' ? 'EN' : 'ع';
   document.getElementById('langOther').textContent = lang === 'en' ? 'ع' : 'EN';
 
-  // Rotate arrow in RTL
   const arrow = document.getElementById('saveIcon');
   if (lang === 'ar') {
     arrow.style.transform = 'scaleX(-1)';
@@ -1051,25 +1002,20 @@ function renderText() {
   const t = I18N[currentLang];
   const typeKey = currentType.charAt(0).toUpperCase() + currentType.slice(1);
 
-  // Badge + Title + Sub
   document.getElementById('badgeText').textContent = t['badge' + typeKey];
   document.getElementById('headerTitle').textContent = t['title' + typeKey];
   document.getElementById('headerSub').textContent = t['sub' + typeKey];
 
-  // Badge icon
   document.getElementById('badgeIcon').innerHTML = currentConfig.icon;
   document.getElementById('headerBadge').className = 'header-badge ' + currentConfig.badgeClass;
 
-  // Photo
   document.getElementById('photoText').textContent = t.photoText;
   document.getElementById('photoHint').textContent = t.photoHint;
   document.getElementById('photoClear').textContent = t.removePhoto;
 
-  // Name
   document.getElementById('labelName').textContent = t.labelName;
   document.getElementById('nameInput').placeholder = currentConfig.namePlaceholder;
 
-  // Relationship (if Person)
   if (currentConfig.hasRelationship) {
     document.getElementById('labelRelationship').textContent = t.labelRelationship;
     document.getElementById('relParent').textContent = t.relParent;
@@ -1081,24 +1027,21 @@ function renderText() {
     document.getElementById('relOther').textContent = t.relOther;
   }
 
-  // Date
   if (currentConfig.hasDate) {
     document.getElementById('labelDate').textContent = t.labelDate;
     document.getElementById('dateOptional').textContent = t.optional;
   }
 
-  // Description
   if (currentConfig.hasDescription) {
     document.getElementById('labelDescription').textContent = t.labelDescription;
     document.getElementById('descOptional').textContent = t.optional;
     document.getElementById('descInput').placeholder = currentConfig.descPlaceholder;
   }
 
-  // Save / Cancel
   document.getElementById('saveLabel').textContent = t.save;
   document.getElementById('cancelBtn').textContent = t.cancel;
+  document.getElementById('toastText').textContent = t.saved;
 
-  // Errors
   if (document.querySelector('[data-field="name"]').classList.contains('has-error')) {
     document.getElementById('errName').textContent = t.errName;
   }
@@ -1111,7 +1054,7 @@ function renderText() {
    LOAD TYPE
 ============================================ */
 function loadType() {
-  const savedType = localStorage.getItem('memento_add_type') || 'person';
+  const savedType = localStorage.getItem('omega_add_type') || 'person';
 
   if (TYPES[savedType]) {
     currentType = savedType;
@@ -1122,8 +1065,8 @@ function loadType() {
   }
 
   console.log('🎯 Add type:', currentType);
+  console.log('💾 Storage key:', currentConfig.storageKey);
 
-  // Show/hide conditional fields
   document.getElementById('fieldRelationship').style.display =
     currentConfig.hasRelationship ? 'flex' : 'none';
   document.getElementById('fieldDate').style.display =
@@ -1131,7 +1074,6 @@ function loadType() {
   document.getElementById('fieldDescription').style.display =
     currentConfig.hasDescription ? 'flex' : 'none';
 
-  // Date field default value = today
   if (currentConfig.hasDate) {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('dateInput').value = today;
@@ -1225,15 +1167,26 @@ function clearError(field) {
   }
 }
 
-/* Clear error on input */
 document.getElementById('nameInput').addEventListener('input', () => {
   clearError('name');
 });
 
 /* ============================================
+   TOAST
+============================================ */
+function showToast() {
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 1500);
+}
+
+/* ============================================
    SAVE
 ============================================ */
 document.getElementById('saveBtn').addEventListener('click', saveItem);
+
 document.getElementById('itemForm').addEventListener('submit', (e) => {
   e.preventDefault();
   saveItem();
@@ -1243,22 +1196,24 @@ function saveItem() {
   const t = I18N[currentLang];
   const name = document.getElementById('nameInput').value.trim();
 
-  // Validate name
+  // ✅ Validate name
   if (name.length < 1) {
     showError('name', 'errName');
     return;
   }
 
-  // Validate relationship if required
+  // ✅ Validate relationship if required
   if (currentConfig.hasRelationship && !selectedRelationship) {
     showError('relationship', 'errRelationship');
     return;
   }
 
-  // Build item
+  // ✅ Build item
   const item = {
     name,
-    photo: photoData || null
+    photo: photoData || null,
+    meta: '',
+    timestamp: Date.now()
   };
 
   // Add relationship (Person)
@@ -1282,37 +1237,59 @@ function saveItem() {
     const desc = document.getElementById('descInput').value.trim();
     if (desc) {
       item.description = desc;
-      // If no meta yet, use description as meta
       if (!item.meta) item.meta = desc;
     }
   }
 
-  // Load existing items
+  // ✅ Load existing items (بنفس المفتاح الصح)
   let items = [];
   try {
-    items = JSON.parse(localStorage.getItem(currentConfig.storageKey) || '[]');
+    const raw = localStorage.getItem(currentConfig.storageKey);
+    console.log('📥 Existing raw:', raw);
+    items = JSON.parse(raw || '[]');
     if (!Array.isArray(items)) items = [];
-  } catch (e) { items = []; }
+  } catch (e) {
+    console.error('❌ Parse error:', e);
+    items = [];
+  }
 
-  // Add new item
+  // ✅ Add new item
   items.push(item);
-  localStorage.setItem(currentConfig.storageKey, JSON.stringify(items));
 
-  console.log('✅ Saved:', item);
+  // ✅ Save
+  try {
+    localStorage.setItem(currentConfig.storageKey, JSON.stringify(items));
+    console.log('✅ Saved to:', currentConfig.storageKey);
+    console.log('📦 Total items now:', items.length);
+    console.log('🎁 New item:', item);
+  } catch (e) {
+    console.error('❌ Save error:', e);
+    alert('Error saving: ' + e.message);
+    return;
+  }
 
-  // Animate save button
+  // ✅ Show toast
+  showToast();
+
+  // ✅ Disable button to prevent double-tap
   const saveBtn = document.getElementById('saveBtn');
-  const saveLabel = document.getElementById('saveLabel');
-  const saveIcon = document.getElementById('saveIcon');
+  saveBtn.disabled = true;
 
-  saveLabel.textContent = currentLang === 'en' ? 'Saved!' : 'تم الحفظ!';
-  saveIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
-  saveBtn.style.background = 'linear-gradient(135deg, #4CAF50, #66BB6A)';
-
-  // Redirect back after delay
+  // ✅ Animate success + redirect
   setTimeout(() => {
-    window.location.href = 'personal-memory-bank.html';
-  }, 800);
+    const returnTo = localStorage.getItem('omega_add_return');
+
+    // امسح flags
+    localStorage.removeItem('omega_add_type');
+    localStorage.removeItem('omega_add_return');
+
+    if (returnTo === 'bank') {
+      window.location.href = 'personal-memory-bank.html';
+    } else {
+      // من الـ home
+      window.location.href = 'home.html';
+    }
+  }, 900);
 }
 
 /* ============================================
@@ -1331,18 +1308,23 @@ function formatDate(dateStr) {
 }
 
 /* ============================================
-   CANCEL
+   CANCEL & BACK
 ============================================ */
-document.getElementById('cancelBtn').addEventListener('click', () => {
-  window.location.href = 'personal-memory-bank.html';
-});
+function goBack() {
+  const returnTo = localStorage.getItem('omega_add_return');
 
-/* ============================================
-   BACK
-============================================ */
-document.getElementById('backBtn').addEventListener('click', () => {
-  window.location.href = 'personal-memory-bank.html';
-});
+  localStorage.removeItem('omega_add_type');
+  localStorage.removeItem('omega_add_return');
+
+  if (returnTo === 'bank') {
+    window.location.href = 'personal-memory-bank.html';
+  } else {
+    window.location.href = 'personal-memory-bank.html';
+  }
+}
+
+document.getElementById('cancelBtn').addEventListener('click', goBack);
+document.getElementById('backBtn').addEventListener('click', goBack);
 
 /* ============================================
    INIT
