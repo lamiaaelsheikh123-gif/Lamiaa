@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8" />
@@ -42,10 +42,8 @@
   --r-pill: 999px;
 
   --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
-  --sh-glow: 0 20px 60px rgba(14, 148, 135, 0.18);
   --sh-focus: 0 0 0 4px rgba(14, 148, 135, 0.12);
 
-  /* ✅ الخطوط الأصلية */
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
 
@@ -241,7 +239,6 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
   gap: 26px;
 }
 
-/* Progress */
 .progress-wrap {
   display: flex;
   align-items: center;
@@ -283,7 +280,6 @@ html[dir="rtl"] .progress-fill { left: auto; right: 0; }
 
 html[lang="ar"] .progress-text { font-family: var(--f-ar); letter-spacing: 0; font-size: 12.5px; }
 
-/* Heading */
 .heading-wrap {
   display: flex;
   flex-direction: column;
@@ -316,7 +312,7 @@ html[lang="ar"] .subheading { font-family: var(--f-ar); font-size: 14.5px; }
 }
 
 /* ============================================
-   ✅ SECTION — العمر بس (مبسط)
+   SECTION — العمر بس
 ============================================ */
 .section {
   display: flex;
@@ -352,9 +348,7 @@ html[lang="ar"] .subheading { font-family: var(--f-ar); font-size: 14.5px; }
 
 html[lang="ar"] .section-title { font-family: var(--f-ar); font-size: 14px; letter-spacing: 0; }
 
-/* ============================================
-   AGE STEPPER
-============================================ */
+/* AGE STEPPER */
 .age-wrap {
   display: flex;
   align-items: center;
@@ -455,9 +449,7 @@ html[lang="ar"] .age-unit { font-family: var(--f-ar); font-size: 14px; }
 
 html[lang="ar"] .err-msg { font-family: var(--f-ar); font-size: 12.5px; }
 
-/* ============================================
-   ✅ INFO NOTE (نضيف ملاحظة بسيطة)
-============================================ */
+/* INFO NOTE */
 .info-note {
   display: flex;
   align-items: flex-start;
@@ -490,9 +482,7 @@ html[lang="ar"] .err-msg { font-family: var(--f-ar); font-size: 12.5px; }
 
 html[lang="ar"] .info-text { font-family: var(--f-ar); font-size: 13px; }
 
-/* ============================================
-   BOTTOM
-============================================ */
+/* BOTTOM */
 .bottom {
   position: relative;
   z-index: 10;
@@ -560,9 +550,6 @@ html[dir="rtl"] .btn-primary:hover:not(:disabled) .arrow { transform: scaleX(-1)
 
 html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 
-/* ============================================
-   REDUCED MOTION
-============================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -602,7 +589,6 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
       <!-- Content -->
       <div class="content">
 
-        <!-- Progress -->
         <div class="progress-wrap">
           <div class="progress-bar">
             <div class="progress-fill"></div>
@@ -610,13 +596,11 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
           <div class="progress-text" id="progressText">Step 2 of 3</div>
         </div>
 
-        <!-- Heading -->
         <div class="heading-wrap">
           <h1 class="heading" id="heading">Let's build your profile</h1>
           <p class="subheading" id="subheading">Just one detail to shape your personalized training plan.</p>
         </div>
 
-        <!-- ✅ Section: Age Only -->
         <div class="section" id="sectionAge">
           <div class="section-title">
             <span class="num">1</span>
@@ -635,7 +619,6 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
           <div class="err-msg" id="errAge"></div>
         </div>
 
-        <!-- Info Note -->
         <div class="info-note">
           <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
@@ -649,7 +632,6 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 
       </div>
 
-      <!-- Bottom -->
       <div class="bottom">
         <button class="btn-primary" id="continueBtn" disabled>
           <span id="continueLabel">Continue</span>
@@ -673,28 +655,20 @@ const I18N = {
     progress: 'Step 2 of 3',
     heading: "Let's build your profile",
     subheading: 'Just one detail to shape your personalized training plan.',
-
     titleAge: 'Your Age',
     ageUnit: 'years',
-
     infoText: 'We use your age to personalize exercise difficulty. Your data stays private and secure.',
-
     continue: 'Continue',
-
     errAge: 'Age must be between 6 and 120'
   },
   ar: {
     progress: 'الخطوة 2 من 3',
     heading: 'هيا نبني ملفك',
     subheading: 'تفصيلة واحدة فقط لتشكيل خطة التدريب المخصصة لك.',
-
     titleAge: 'عمرك',
     ageUnit: 'سنة',
-
     infoText: 'نستخدم عمرك لتخصيص صعوبة التمارين. بياناتك محفوظة بشكل خاص وآمن.',
-
     continue: 'متابعة',
-
     errAge: 'العمر يجب أن يكون بين 6 و 120'
   }
 };
@@ -728,7 +702,7 @@ function applyLanguage(lang) {
   document.getElementById('titleAge').textContent = t.titleAge;
   document.getElementById('ageUnit').textContent  = t.ageUnit;
 
-  document.getElementById('infoText').textContent     = t.infoText;
+  document.getElementById('infoText').textContent      = t.infoText;
   document.getElementById('continueLabel').textContent = t.continue;
 
   refreshErrors();
@@ -741,9 +715,7 @@ langToggle.addEventListener('click', () => {
 /* ============================================
    STATE
 ============================================ */
-const state = {
-  age: 24
-};
+const state = { age: 24 };
 
 /* ============================================
    AGE INPUT
@@ -788,17 +760,9 @@ function checkComplete() {
   document.getElementById('continueBtn').disabled = !ageOk;
 }
 
-const errEls = {
-  age: document.getElementById('errAge')
-};
-
-const sections = {
-  age: sectionAge
-};
-
-const errKeys = {
-  age: 'errAge'
-};
+const errEls = { age: document.getElementById('errAge') };
+const sections = { age: sectionAge };
+const errKeys = { age: 'errAge' };
 
 function showError(field, key) {
   sections[field].classList.add('has-error');
@@ -821,20 +785,18 @@ function refreshErrors() {
 }
 
 /* ============================================
-   CONTINUE
+   CONTINUE — ✅ يروح على assessment-intro.html
 ============================================ */
 document.getElementById('continueBtn').addEventListener('click', () => {
-  // Save age only (بقية البيانات للـ Child Mode)
   localStorage.setItem('omega_age', state.age);
   localStorage.setItem('omega_user_age', state.age);
 
-  // Animation
   const btn = document.getElementById('continueBtn');
   btn.style.transform = 'scale(0.96)';
   setTimeout(() => { btn.style.transform = ''; }, 150);
 
   setTimeout(() => {
-    window.location.href = 'daily-context.html';
+    window.location.href = 'assessment-intro.html';
   }, 250);
 });
 
