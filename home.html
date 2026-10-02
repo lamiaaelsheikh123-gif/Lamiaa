@@ -2347,12 +2347,21 @@ const I18N = {
     quickSchedule: 'Schedule',
     quickScheduleSub: 'See your week',
 
+    // ✅ Check-in (Myself Mode)
     sheetTitle: 'How are you feeling today?',
     sheetSub: 'A quick check-in helps us understand your performance context.',
     sheetOptional: 'Optional',
     cqSleep: 'Sleep Quality', cqsSleep: 'How did you sleep last night?',
     cqStress: 'Stress Level', cqsStress: 'How stressed do you feel right now?',
     cqEnergy: 'Energy Level', cqsEnergy: 'How energetic do you feel?',
+
+    // ✅ Check-in (Caregiver Mode)
+    sheetTitleChild: 'How is {name} feeling today?',
+    sheetSubChild: 'A quick check-in helps us understand {name}\'s context.',
+    cqSleepChild: '{name}\'s Sleep Quality', cqsSleepChild: 'How did {name} sleep last night?',
+    cqStressChild: '{name}\'s Stress Level', cqsStressChild: 'How stressed is {name} right now?',
+    cqEnergyChild: '{name}\'s Energy Level', cqsEnergyChild: 'How energetic is {name} feeling?',
+
     sleepLow: 'Poor', sleepMid: 'Okay', sleepHigh: 'Good',
     stressLow: 'Low', stressMid: 'Medium', stressHigh: 'High',
     energyLow: 'Low', energyMid: 'Medium', energyHigh: 'High',
@@ -2429,12 +2438,21 @@ const I18N = {
     quickSchedule: 'الجدول',
     quickScheduleSub: 'شاهد أسبوعك',
 
+    // ✅ Check-in (Myself Mode)
     sheetTitle: 'كيف تشعر اليوم؟',
     sheetSub: 'فحص سريع يساعدنا على فهم سياق أدائك.',
     sheetOptional: 'اختياري',
     cqSleep: 'جودة النوم', cqsSleep: 'كيف نمت الليلة الماضية؟',
     cqStress: 'مستوى التوتر', cqsStress: 'ما مستوى التوتر لديك الآن؟',
     cqEnergy: 'مستوى الطاقة', cqsEnergy: 'ما مستوى طاقتك الآن؟',
+
+    // ✅ Check-in (Caregiver Mode)
+    sheetTitleChild: 'كيف يشعر {name} اليوم؟',
+    sheetSubChild: 'فحص سريع يساعدنا على فهم حالة {name}.',
+    cqSleepChild: 'جودة نوم {name}', cqsSleepChild: 'كيف نام {name} الليلة الماضية؟',
+    cqStressChild: 'مستوى توتر {name}', cqsStressChild: 'ما مستوى التوتر لدى {name} الآن؟',
+    cqEnergyChild: 'مستوى طاقة {name}', cqsEnergyChild: 'ما مستوى طاقة {name} الآن؟',
+
     sleepLow: 'ضعيف', sleepMid: 'متوسط', sleepHigh: 'جيد',
     stressLow: 'منخفض', stressMid: 'متوسط', stressHigh: 'مرتفع',
     energyLow: 'منخفض', energyMid: 'متوسط', energyHigh: 'مرتفع',
@@ -2502,6 +2520,9 @@ function getBankItems(category) {
   } catch (e) { return []; }
 }
 
+/* ============================================
+   ✅ APPLY LANGUAGE + CHECK-IN TEXT (you / child)
+============================================ */
 function applyLanguage(lang) {
   currentLang = lang;
   localStorage.setItem(STORAGE_KEY, lang);
@@ -2534,15 +2555,11 @@ function applyLanguage(lang) {
   document.getElementById('quickSchedule').textContent = t.quickSchedule;
   document.getElementById('quickScheduleSub').textContent = t.quickScheduleSub;
 
-  document.getElementById('sheetTitle').textContent = t.sheetTitle;
-  document.getElementById('sheetSub').textContent = t.sheetSub;
+  // ✅ Daily Check-in text — depends on account type
+  applyCheckinLanguage(lang, t);
+
+  // Buttons / labels
   document.getElementById('sheetOptional').textContent = t.sheetOptional;
-  document.getElementById('cqSleep').textContent = t.cqSleep;
-  document.getElementById('cqsSleep').textContent = t.cqsSleep;
-  document.getElementById('cqStress').textContent = t.cqStress;
-  document.getElementById('cqsStress').textContent = t.cqsStress;
-  document.getElementById('cqEnergy').textContent = t.cqEnergy;
-  document.getElementById('cqsEnergy').textContent = t.cqsEnergy;
   document.getElementById('sleepLow').textContent = t.sleepLow;
   document.getElementById('sleepMid').textContent = t.sleepMid;
   document.getElementById('sleepHigh').textContent = t.sleepHigh;
@@ -2574,6 +2591,45 @@ function applyLanguage(lang) {
   renderAIAnalysis();
   renderSkillBars();
   renderChart();
+}
+
+/* ============================================
+   ✅ Apply Check-in Language (Myself / Caregiver)
+============================================ */
+function applyCheckinLanguage(lang, t) {
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const userName = localStorage.getItem('omega_user_name') || '';
+
+  const sheetTitle = document.getElementById('sheetTitle');
+  const sheetSub = document.getElementById('sheetSub');
+  const cqSleep = document.getElementById('cqSleep');
+  const cqsSleep = document.getElementById('cqsSleep');
+  const cqStress = document.getElementById('cqStress');
+  const cqsStress = document.getElementById('cqsStress');
+  const cqEnergy = document.getElementById('cqEnergy');
+  const cqsEnergy = document.getElementById('cqsEnergy');
+
+  if (accountType === 'caregiver' && userName) {
+    // ✅ Caregiver Mode — اسأل عن الشخص اللي بترعاه
+    sheetTitle.textContent = t.sheetTitleChild.replace('{name}', userName);
+    sheetSub.textContent = t.sheetSubChild.replace('{name}', userName);
+    cqSleep.textContent = t.cqSleepChild.replace('{name}', userName);
+    cqsSleep.textContent = t.cqsSleepChild.replace('{name}', userName);
+    cqStress.textContent = t.cqStressChild.replace('{name}', userName);
+    cqsStress.textContent = t.cqsStressChild.replace('{name}', userName);
+    cqEnergy.textContent = t.cqEnergyChild.replace('{name}', userName);
+    cqsEnergy.textContent = t.cqsEnergyChild.replace('{name}', userName);
+  } else {
+    // ✅ Myself Mode — اسأل عن المستخدم نفسه
+    sheetTitle.textContent = t.sheetTitle;
+    sheetSub.textContent = t.sheetSub;
+    cqSleep.textContent = t.cqSleep;
+    cqsSleep.textContent = t.cqsSleep;
+    cqStress.textContent = t.cqStress;
+    cqsStress.textContent = t.cqsStress;
+    cqEnergy.textContent = t.cqEnergy;
+    cqsEnergy.textContent = t.cqsEnergy;
+  }
 }
 
 function loadName() {
@@ -2772,7 +2828,6 @@ function renderMemory() {
   document.getElementById('memoryManageBtn').addEventListener('click', () => {
     window.location.href = 'personal-memory-bank.html';
   });
-  // ✅ Train → Voice Call AI page
   document.getElementById('memoryTrainBtn').addEventListener('click', () => {
     window.location.href = 'personal-memory-play.html';
   });
@@ -2905,7 +2960,7 @@ function updateStats() {
 }
 
 /* ============================================
-   ✅ DAILY CHECK-IN (مرة واحدة في اليوم)
+   ✅ DAILY CHECK-IN — مرة واحدة بس في اليوم
 ============================================ */
 const checkinState = { sleep: null, stress: null, energy: null };
 
@@ -2923,9 +2978,8 @@ document.querySelectorAll('#checkinSheet .cq-options').forEach(group => {
   });
 });
 
-/* ✅ FIX: نسجل التاريخ لحظة الفتح (قبل أي تفاعل) */
 function openCheckinSheet() {
-  // ✅ Mark as shown IMMEDIATELY — يمنع ظهورها مرة تانية حتى لو المستخدم قفل بدون تفاعل
+  // ✅ نسجل التاريخ فورًا لحظة الفتح — يمنع ظهورها تاني حتى لو المستخدم قفل بدون تفاعل
   localStorage.setItem(CHECKIN_KEY, new Date().toISOString().split('T')[0]);
 
   document.getElementById('checkinOverlay').classList.add('show');
@@ -2944,16 +2998,13 @@ document.getElementById('sheetClose').addEventListener('click', closeCheckinShee
 
 document.getElementById('checkinContinue').addEventListener('click', () => {
   localStorage.setItem('omega_daily_context', JSON.stringify(checkinState));
-  // التاريخ اتسجل بالفعل عند الفتح
   closeCheckinSheet();
 });
 
 document.getElementById('checkinSkip').addEventListener('click', () => {
-  // التاريخ اتسجل بالفعل عند الفتح
   closeCheckinSheet();
 });
 
-/* ✅ الـ Check-in يظهر مرة واحدة بس في اليوم */
 function shouldShowCheckin() {
   const lastCheckin = localStorage.getItem(CHECKIN_KEY);
   const today = new Date().toISOString().split('T')[0];
@@ -3030,7 +3081,6 @@ loadName();
 updateStats();
 applyLanguage(currentLang);
 
-/* ✅ عرض الـ Check-in مرة واحدة في اليوم فقط */
 if (shouldShowCheckin()) {
   setTimeout(() => {
     openCheckinSheet();
