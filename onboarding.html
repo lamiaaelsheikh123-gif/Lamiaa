@@ -16,7 +16,6 @@
    DESIGN TOKENS — Omega Design System
 ============================================ */
 :root {
-  /* ✅ ألوان جديدة */
   --c-primary:       #0E9487;
   --c-primary-light: #2EC4B6;
   --c-primary-dark:  #076B5F;
@@ -44,7 +43,6 @@
 
   --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
 
-  /* ✅ الخطوط الأصلية */
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
 
@@ -131,7 +129,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   overflow: hidden;
 }
 
-/* ⚠️ خلفية ناعمة — بدون z-index سالب لتجنب أي مشاكل */
 .screen::before {
   content: '';
   position: absolute;
@@ -155,6 +152,40 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   padding: 52px 22px 0;
   flex-shrink: 0;
 }
+
+/* ✅ Back Button جديد */
+.back-btn {
+  width: 38px; height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 148, 135, 0.15);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+.back-btn:hover {
+  background: #fff;
+  border-color: rgba(14, 148, 135, 0.35);
+  transform: translateX(-2px);
+}
+
+html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
+
+.back-btn svg {
+  width: 16px; height: 16px;
+  stroke: var(--c-primary);
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 
 .skip-btn {
   font-size: 13px;
@@ -454,7 +485,13 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 
       <!-- Top Bar -->
       <div class="topbar">
-        <button class="skip-btn" id="skipBtn">Skip</button>
+        <!-- ✅ Back Button جديد -->
+        <button class="back-btn" id="backBtn" aria-label="Back">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
         <button class="lang-toggle" id="langToggle" aria-label="Switch language">
           <svg class="lang-globe" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
@@ -688,7 +725,6 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 ============================================ */
 const I18N = {
   en: {
-    skip: 'Skip',
     next: 'Next',
     getStarted: 'Get Started',
     s1_title: 'Assess Your Cognitive Skills',
@@ -701,7 +737,6 @@ const I18N = {
     s4_desc: 'Reassess over time and see how your cognitive performance improves week by week.'
   },
   ar: {
-    skip: 'تخطي',
     next: 'التالي',
     getStarted: 'هيا نبدأ',
     s1_title: 'قيّم مهاراتك الذهنية',
@@ -725,7 +760,6 @@ const htmlEl      = document.documentElement;
 const langCurrEl  = document.getElementById('langCurrent');
 const langOtherEl = document.getElementById('langOther');
 const langToggle  = document.getElementById('langToggle');
-const skipBtn     = document.getElementById('skipBtn');
 const nextLabel   = document.getElementById('nextLabel');
 
 function applyLanguage(lang) {
@@ -734,7 +768,6 @@ function applyLanguage(lang) {
   htmlEl.lang = lang;
   htmlEl.dir  = lang === 'ar' ? 'rtl' : 'ltr';
 
-  skipBtn.textContent = I18N[lang].skip;
   langCurrEl.textContent  = lang === 'en' ? 'EN' : 'ع';
   langOtherEl.textContent = lang === 'en' ? 'ع'  : 'EN';
 
@@ -794,8 +827,17 @@ dots.forEach(dot => {
   dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.index)));
 });
 
-skipBtn.addEventListener('click', () => {
-  window.location.href = 'signup.html';
+/* ============================================
+   ✅ BACK BUTTON — يقفل التطبيق / يروح للـ Index
+============================================ */
+document.getElementById('backBtn').addEventListener('click', () => {
+  // لو المستخدم فتح الصفحة من داخل التطبيق (في history)
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    // Fallback: يروح للـ Splash/Index
+    window.location.href = 'index.html';
+  }
 });
 
 /* ============================================
