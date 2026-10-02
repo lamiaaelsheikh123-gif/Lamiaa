@@ -32,18 +32,19 @@
   --c-card:   #FFFFFF;
   --c-border: #E2E8F0;
 
+  /* ✅ الكل بقى brand gradient */
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
-  --g-care:  linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
-  --g-people: linear-gradient(135deg, #EC4899, #8B5CF6);
-  --g-places: linear-gradient(135deg, #0E9487, #2EC4B6);
-  --g-events: linear-gradient(135deg, #FBBF24, #F59E0B);
-  --g-things: linear-gradient(135deg, #3B82F6, #2EC4B6);
-  --g-dates:  linear-gradient(135deg, #8B5CF6, #3B82F6);
+  --g-care:  linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-people: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-places: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-events: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-things: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-dates:  linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
 
   --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
 
   --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
-  --sh-focus: 0 0 0 4px rgba(139, 92, 246, 0.15);
+  --sh-focus: 0 0 0 4px rgba(14, 148, 135, 0.15);
 
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
@@ -120,8 +121,8 @@ input, textarea, select { font-family: inherit; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 15%, rgba(139, 92, 246, 0.08), transparent 45%),
-    radial-gradient(circle at 80% 85%, rgba(14, 148, 135, 0.06), transparent 50%);
+    radial-gradient(circle at 20% 15%, rgba(14, 148, 135, 0.06), transparent 45%),
+    radial-gradient(circle at 80% 85%, rgba(59, 130, 246, 0.05), transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -135,47 +136,49 @@ input, textarea, select { font-family: inherit; }
   flex-shrink: 0;
 }
 
+/* ✅ Back Button — Teal بدل Purple */
 .back-btn {
   width: 38px; height: 38px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
   background: rgba(255,255,255,0.7);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  border: 1px solid rgba(14, 148, 135, 0.2);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
   transition: all 0.25s ease;
 }
 
 .back-btn:hover {
   background: #fff;
-  border-color: rgba(139, 92, 246, 0.5);
+  border-color: rgba(14, 148, 135, 0.5);
   transform: translateX(-2px);
 }
 
 html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
 
-.back-btn svg { width: 16px; height: 16px; stroke: var(--c-purple); stroke-width: 2.4; fill: none; }
+.back-btn svg { width: 16px; height: 16px; stroke: var(--c-primary); stroke-width: 2.4; fill: none; }
 html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 
+/* ✅ Lang Toggle — Teal */
 .lang-toggle {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 7px 12px;
   background: rgba(255,255,255,0.7);
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(14, 148, 135, 0.2);
   border-radius: var(--r-pill);
   font-size: 12px; font-weight: 600;
   color: var(--c-navy);
-  box-shadow: 0 4px 14px rgba(15, 44, 76, 0.05);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
   transition: all 0.25s ease;
 }
 
 .lang-toggle:hover {
   background: #fff;
-  border-color: rgba(139, 92, 246, 0.5);
+  border-color: rgba(14, 148, 135, 0.5);
   transform: translateY(-1px);
 }
 
-.lang-toggle .lang-globe { width: 14px; height: 14px; stroke: var(--c-purple); stroke-width: 2.2; fill: none; }
-.lang-toggle .lang-label { color: var(--c-purple); }
+.lang-toggle .lang-globe { width: 14px; height: 14px; stroke: var(--c-primary); stroke-width: 2.2; fill: none; }
+.lang-toggle .lang-label { color: var(--c-primary); }
 .lang-toggle .divider { color: var(--c-border); }
 .lang-toggle .lang-inactive { color: var(--c-slate); }
 
@@ -200,6 +203,7 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
   animation: fadeUp 0.5s ease 0.1s forwards;
 }
 
+/* ✅ Header Badge — brand gradient */
 .header-badge {
   display: inline-flex; align-items: center; gap: 7px;
   padding: 6px 14px;
@@ -209,14 +213,17 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
   letter-spacing: 0.6px;
   text-transform: uppercase;
   align-self: flex-start;
-  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 6px 16px rgba(14, 148, 135, 0.3);
+  background: var(--g-brand);
 }
 
-.header-badge.people { background: var(--g-people); }
-.header-badge.places { background: var(--g-places); }
-.header-badge.events { background: var(--g-events); }
-.header-badge.things { background: var(--g-things); }
-.header-badge.dates  { background: var(--g-dates); }
+.header-badge.people,
+.header-badge.places,
+.header-badge.events,
+.header-badge.things,
+.header-badge.dates {
+  background: var(--g-brand);
+}
 
 .header-badge svg {
   width: 13px; height: 13px;
@@ -259,11 +266,12 @@ html[lang="ar"] .header-sub { font-family: var(--f-ar); font-size: 14px; }
   animation: fadeUp 0.5s ease 0.2s forwards;
 }
 
+/* ✅ Photo Button — Teal بدل Purple */
 .photo-btn {
   width: 110px; height: 110px;
   border-radius: 50%;
-  background: rgba(139, 92, 246, 0.08);
-  border: 2px dashed rgba(139, 92, 246, 0.4);
+  background: rgba(14, 148, 135, 0.08);
+  border: 2px dashed rgba(14, 148, 135, 0.4);
   display: flex; align-items: center; justify-content: center; flex-direction: column;
   gap: 6px;
   transition: all 0.3s ease;
@@ -272,8 +280,8 @@ html[lang="ar"] .header-sub { font-family: var(--f-ar); font-size: 14px; }
 }
 
 .photo-btn:hover {
-  background: rgba(139, 92, 246, 0.15);
-  border-color: rgba(139, 92, 246, 0.7);
+  background: rgba(14, 148, 135, 0.15);
+  border-color: rgba(14, 148, 135, 0.7);
   transform: scale(1.03);
 }
 
@@ -281,13 +289,13 @@ html[lang="ar"] .header-sub { font-family: var(--f-ar); font-size: 14px; }
 
 .photo-btn svg {
   width: 26px; height: 26px;
-  stroke: var(--c-purple); stroke-width: 2.2; fill: none;
+  stroke: var(--c-primary); stroke-width: 2.2; fill: none;
   stroke-linecap: round; stroke-linejoin: round;
 }
 
 .photo-btn .photo-text {
   font-size: 10.5px; font-weight: 700;
-  color: var(--c-purple);
+  color: var(--c-primary);
   letter-spacing: 0.3px;
   text-align: center;
   padding: 0 8px;
@@ -370,8 +378,9 @@ html[lang="ar"] .field-label { font-family: var(--f-ar); font-size: 13px; }
   overflow: hidden;
 }
 
+/* ✅ Focus Teal بدل Purple */
 .text-input-wrap:focus-within {
-  border-color: var(--c-purple);
+  border-color: var(--c-primary);
   box-shadow: var(--sh-focus);
 }
 
@@ -394,7 +403,7 @@ html[lang="ar"] .field-label { font-family: var(--f-ar); font-size: 13px; }
   transition: stroke 0.25s ease;
 }
 
-.text-input-wrap:focus-within .input-icon { stroke: var(--c-purple); }
+.text-input-wrap:focus-within .input-icon { stroke: var(--c-primary); }
 
 .text-input {
   flex: 1;
@@ -419,7 +428,7 @@ html[lang="ar"] .text-input { font-family: var(--f-ar); font-size: 15px; letter-
 }
 
 .textarea-wrap:focus-within {
-  border-color: var(--c-purple);
+  border-color: var(--c-primary);
   box-shadow: var(--sh-focus);
 }
 
@@ -456,7 +465,7 @@ html[lang="ar"] .textarea-input { font-family: var(--f-ar); font-size: 14px; let
 }
 
 .date-input:focus {
-  border-color: var(--c-purple);
+  border-color: var(--c-primary);
   box-shadow: var(--sh-focus);
 }
 
@@ -483,15 +492,16 @@ html[lang="ar"] .date-input { font-family: var(--f-ar); font-size: 15px; }
 html[lang="ar"] .rel-chip { font-family: var(--f-ar); font-size: 13.5px; letter-spacing: 0; }
 
 .rel-chip:hover {
-  border-color: rgba(139, 92, 246, 0.4);
+  border-color: rgba(14, 148, 135, 0.4);
   transform: translateY(-2px);
 }
 
+/* ✅ Active Chip — brand gradient */
 .rel-chip.active {
-  background: var(--g-care);
+  background: var(--g-brand);
   color: #fff;
   border-color: transparent;
-  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.35);
+  box-shadow: 0 8px 20px rgba(14, 148, 135, 0.35);
   transform: translateY(-2px);
 }
 
@@ -538,17 +548,18 @@ html[lang="ar"] .err-msg { font-family: var(--f-ar); font-size: 12.5px; }
   flex-shrink: 0;
 }
 
+/* ✅ Save Button — brand gradient */
 .btn-primary {
   position: relative;
   width: 100%;
   padding: 17px 24px;
-  background: var(--g-care);
+  background: var(--g-brand);
   color: #fff;
   font-size: 15px; font-weight: 600;
   letter-spacing: 0.4px;
   border-radius: var(--r-md);
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 12px 28px rgba(14, 148, 135, 0.3);
   transition: transform 0.2s ease, box-shadow 0.25s ease;
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
 }
@@ -566,7 +577,7 @@ html[lang="ar"] .err-msg { font-family: var(--f-ar); font-size: 12.5px; }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 16px 34px rgba(14, 148, 135, 0.4);
 }
 
 .btn-primary:active:not(:disabled) { transform: scale(0.97); }
@@ -597,8 +608,8 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 }
 
 .btn-cancel:hover {
-  color: var(--c-purple);
-  background: rgba(139, 92, 246, 0.06);
+  color: var(--c-primary);
+  background: rgba(14, 148, 135, 0.06);
 }
 
 html[lang="ar"] .btn-cancel { font-family: var(--f-ar); font-size: 14.5px; }
@@ -616,8 +627,7 @@ html[lang="ar"] .btn-cancel { font-family: var(--f-ar); font-size: 14.5px; }
   color: #fff;
   padding: 12px 20px;
   border-radius: var(--r-pill);
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 12.5px; font-weight: 600;
   letter-spacing: 0.2px;
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.35);
   z-index: 300;
@@ -797,12 +807,12 @@ html[lang="ar"] .toast { font-family: var(--f-ar); font-size: 13.5px; }
 
 <script>
 /* ============================================
-   TYPES CONFIG — المفاتيح الصح (omega_bank_*)
+   TYPES CONFIG
 ============================================ */
 const TYPES = {
   person: {
     categoryKey: 'people',
-    storageKey: 'omega_bank_people',   // ✅ المفتاح الصح
+    storageKey: 'omega_bank_people',
     badgeClass: 'people',
     icon: `<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>`,
     namePlaceholder: 'e.g. Sara',
@@ -1196,19 +1206,16 @@ function saveItem() {
   const t = I18N[currentLang];
   const name = document.getElementById('nameInput').value.trim();
 
-  // ✅ Validate name
   if (name.length < 1) {
     showError('name', 'errName');
     return;
   }
 
-  // ✅ Validate relationship if required
   if (currentConfig.hasRelationship && !selectedRelationship) {
     showError('relationship', 'errRelationship');
     return;
   }
 
-  // ✅ Build item
   const item = {
     name,
     photo: photoData || null,
@@ -1216,14 +1223,12 @@ function saveItem() {
     timestamp: Date.now()
   };
 
-  // Add relationship (Person)
   if (currentConfig.hasRelationship && selectedRelationship) {
     const relKey = 'rel' + selectedRelationship.charAt(0).toUpperCase() + selectedRelationship.slice(1);
     item.meta = I18N[currentLang][relKey] || selectedRelationship;
     item.relationship = selectedRelationship;
   }
 
-  // Add date (Event / Date)
   if (currentConfig.hasDate) {
     const dateVal = document.getElementById('dateInput').value;
     if (dateVal) {
@@ -1232,7 +1237,6 @@ function saveItem() {
     }
   }
 
-  // Add description (Place / Event / Thing)
   if (currentConfig.hasDescription) {
     const desc = document.getElementById('descInput').value.trim();
     if (desc) {
@@ -1241,7 +1245,6 @@ function saveItem() {
     }
   }
 
-  // ✅ Load existing items (بنفس المفتاح الصح)
   let items = [];
   try {
     const raw = localStorage.getItem(currentConfig.storageKey);
@@ -1253,10 +1256,8 @@ function saveItem() {
     items = [];
   }
 
-  // ✅ Add new item
   items.push(item);
 
-  // ✅ Save
   try {
     localStorage.setItem(currentConfig.storageKey, JSON.stringify(items));
     console.log('✅ Saved to:', currentConfig.storageKey);
@@ -1268,25 +1269,20 @@ function saveItem() {
     return;
   }
 
-  // ✅ Show toast
   showToast();
 
-  // ✅ Disable button to prevent double-tap
   const saveBtn = document.getElementById('saveBtn');
   saveBtn.disabled = true;
 
-  // ✅ Animate success + redirect
   setTimeout(() => {
     const returnTo = localStorage.getItem('omega_add_return');
 
-    // امسح flags
     localStorage.removeItem('omega_add_type');
     localStorage.removeItem('omega_add_return');
 
     if (returnTo === 'bank') {
       window.location.href = 'personal-memory-bank.html';
     } else {
-      // من الـ home
       window.location.href = 'home.html';
     }
   }, 900);
