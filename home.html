@@ -35,6 +35,7 @@
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
   --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
   --g-hero:  linear-gradient(135deg, #0E9487 0%, #2EC4B6 50%, #3B82F6 100%);
+  --g-child: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #0E9487 100%);
   --g-fire:  linear-gradient(135deg, #EF4444, #FBBF24, #F59E0B);
   --g-heart: linear-gradient(135deg, #EC4899, #8B5CF6);
 
@@ -46,6 +47,7 @@
 
   --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
   --sh-hero: 0 20px 40px rgba(14, 148, 135, 0.32);
+  --sh-child: 0 20px 40px rgba(139, 92, 246, 0.35);
 
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
@@ -166,11 +168,19 @@ html[lang="ar"] .header-greet { font-family: var(--f-ar); font-size: 13.5px; }
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
   line-height: 1.15;
+  transition: all 0.3s ease;
+}
+
+/* ✅ في Child Mode الاسم بيتحول بنفسجي */
+.header-name.child {
+  background: var(--g-child);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 html[lang="ar"] .header-name { font-family: var(--f-ar); font-size: 21px; letter-spacing: 0; }
 
-.header-actions { display: flex; gap: 8px; }
+.header-actions { display: flex; gap: 8px; align-items: center; }
 
 .icon-btn {
   position: relative;
@@ -209,6 +219,132 @@ html[lang="ar"] .header-name { font-family: var(--f-ar); font-size: 21px; letter
   font-weight: 700;
   color: var(--c-primary);
   letter-spacing: 0.3px;
+}
+
+/* ✅ View Mode Toggle Button */
+.view-toggle-btn {
+  position: relative;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.15);
+  font-size: 20px;
+  line-height: 1;
+  padding: 0;
+}
+
+.view-toggle-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.25);
+}
+
+.view-toggle-btn:active { transform: scale(0.95); }
+
+.view-toggle-btn.child {
+  background: var(--g-child);
+  border-color: transparent;
+  box-shadow: 0 6px 18px rgba(139, 92, 246, 0.4);
+}
+
+.view-toggle-btn.child::after {
+  content: '';
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--c-warning);
+  border: 2px solid #fff;
+  animation: dotPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.2); opacity: 0.7; }
+}
+
+/* ============================================
+   ✅ VIEW BANNER — Child Mode
+============================================ */
+.view-banner {
+  position: relative;
+  z-index: 5;
+  margin: 0 22px 4px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(59, 130, 246, 0.10));
+  border: 1.5px solid rgba(139, 92, 246, 0.3);
+  border-radius: var(--r-md);
+  display: none;
+  align-items: center;
+  gap: 10px;
+  animation: bannerIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.view-banner.show { display: flex; }
+
+@keyframes bannerIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.view-banner-icon {
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  background: var(--g-child);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
+}
+
+.view-banner-icon svg {
+  width: 15px; height: 15px;
+  stroke: #fff; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+.view-banner-text {
+  flex: 1;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--c-purple);
+  letter-spacing: 0.1px;
+  line-height: 1.4;
+}
+
+.view-banner-text b {
+  font-weight: 800;
+  color: var(--c-navy);
+}
+
+html[lang="ar"] .view-banner-text { font-family: var(--f-ar); font-size: 12.5px; letter-spacing: 0; }
+
+.view-banner-close {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.view-banner-close:hover {
+  background: rgba(139, 92, 246, 0.25);
+  transform: rotate(90deg);
+}
+
+.view-banner-close svg {
+  width: 11px; height: 11px;
+  stroke: var(--c-purple); stroke-width: 2.6; fill: none;
+  stroke-linecap: round;
 }
 
 /* ============================================
@@ -344,6 +480,13 @@ html[lang="ar"] .stat-mini-label {
   gap: 16px;
   overflow: hidden;
   box-shadow: var(--sh-hero);
+  transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* ✅ في Child Mode الـ Hero يتحول بنفسجي */
+.hero-card.child {
+  background: var(--g-child);
+  box-shadow: var(--sh-child);
 }
 
 .hero-card::before {
@@ -600,6 +743,10 @@ html[lang="ar"] .hero-total-label {
   flex-shrink: 0;
 }
 
+.hero-card.child .hero-start-btn {
+  color: var(--c-purple);
+}
+
 .hero-start-btn::before {
   content: '';
   position: absolute;
@@ -658,6 +805,12 @@ html[lang="ar"] .hero-start-btn { font-family: var(--f-ar); font-size: 14.5px; }
   background: var(--g-brand);
   border-radius: var(--r-pill);
   flex-shrink: 0;
+  transition: background 0.4s ease;
+}
+
+/* ✅ في Child Mode الأشرطة بتتحول بنفسجي */
+body[data-view="child"] .section-title::before {
+  background: var(--g-child);
 }
 
 html[lang="ar"] .section-title { font-family: var(--f-ar); font-size: 14.5px; letter-spacing: 0; }
@@ -1018,6 +1171,12 @@ html[lang="ar"] .memory-empty-btn { font-family: var(--f-ar); font-size: 13.5px;
   flex-shrink: 0;
   box-shadow: 0 6px 16px rgba(14, 148, 135, 0.35);
   animation: aiPulse 2.4s ease-in-out infinite;
+  transition: background 0.5s ease;
+}
+
+body[data-view="child"] .ai-icon {
+  background: var(--g-child);
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.35);
 }
 
 @keyframes aiPulse {
@@ -1118,7 +1277,12 @@ html[lang="ar"] .ai-btn { font-family: var(--f-ar); font-size: 12.5px; letter-sp
   box-shadow: 0 6px 16px rgba(14, 148, 135, 0.3);
 }
 
-.ai-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(14, 148, 135, 0.4); }
+body[data-view="child"] .ai-btn.primary {
+  background: var(--g-child);
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.3);
+}
+
+.ai-btn.primary:hover { transform: translateY(-2px); }
 
 .ai-btn.secondary {
   background: rgba(255, 255, 255, 0.7);
@@ -1148,6 +1312,11 @@ html[lang="ar"] .ai-btn { font-family: var(--f-ar); font-size: 12.5px; letter-sp
   top: 0; left: 0;
   width: 100%; height: 4px;
   background: var(--g-brand);
+  transition: background 0.4s ease;
+}
+
+body[data-view="child"] .progress-card::before {
+  background: var(--g-child);
 }
 
 .skill-bars {
@@ -1272,6 +1441,11 @@ html[lang="ar"] .skill-bar-name { font-family: var(--f-ar); font-size: 12.5px; l
   top: 0; left: 0;
   width: 100%; height: 4px;
   background: var(--g-brand);
+  transition: background 0.4s ease;
+}
+
+body[data-view="child"] .chart-card::before {
+  background: var(--g-child);
 }
 
 .chart-svg {
@@ -1886,7 +2060,7 @@ html[dir="rtl"] .add-memory-arrow { transform: scaleX(-1); }
 </style>
 </head>
 
-<body>
+<body data-view="self">
 
 <!-- SVG Gradients -->
 <svg width="0" height="0" style="position:absolute">
@@ -1914,6 +2088,10 @@ html[dir="rtl"] .add-memory-arrow { transform: scaleX(-1); }
           <div class="header-name" id="userName">User</div>
         </div>
         <div class="header-actions">
+          <!-- ✅ View Mode Toggle (يظهر بس في Caregiver Mode) -->
+          <button class="view-toggle-btn" id="viewToggleBtn" aria-label="Switch view" style="display:none;">
+            <span id="viewToggleIcon">👶</span>
+          </button>
           <button class="icon-btn" id="langBtn" aria-label="Language">
             <span class="lang-mini" id="langMini">EN</span>
           </button>
@@ -1924,6 +2102,25 @@ html[dir="rtl"] .add-memory-arrow { transform: scaleX(-1); }
             </svg>
           </button>
         </div>
+      </div>
+
+      <!-- ✅ View Banner (يظهر بس في Child Mode) -->
+      <div class="view-banner" id="viewBanner">
+        <div class="view-banner-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="view-banner-text" id="viewBannerText">
+          Viewing <b>Omar's</b> progress
+        </div>
+        <button class="view-banner-close" id="viewBannerClose" aria-label="Close">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
 
       <!-- Content -->
@@ -1976,7 +2173,7 @@ html[dir="rtl"] .add-memory-arrow { transform: scaleX(-1); }
               <div class="hero-sub" id="heroSub">Ready to train your mind?</div>
             </div>
             <div class="hero-illus">
-              <svg viewBox="0 0 24 24">
+              <svg viewBox="0 0 24 24" id="heroIcon">
                 <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path>
                 <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path>
               </svg>
@@ -1991,7 +2188,7 @@ html[dir="rtl"] .add-memory-arrow { transform: scaleX(-1); }
               <div class="hero-total-value"><span id="heroTotalMin">0</span> <span id="heroTotalUnit">min</span></div>
             </div>
             <button class="hero-start-btn" id="startWorkoutBtn">
-              <svg viewBox="0 0 24 24">
+              <svg viewBox="0 0 24 24" id="heroBtnIcon">
                 <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon>
               </svg>
               <span id="startLabel">Start Workout</span>
@@ -2301,6 +2498,7 @@ const I18N = {
     sessionsLabel: 'Sessions',
     improveLabel: 'Improved',
 
+    // ✅ Hero (Self Mode)
     heroTag: "Today's Workout",
     heroTitle: 'Cognitive Training',
     heroSub: 'Ready to train your mind?',
@@ -2310,6 +2508,15 @@ const I18N = {
     heroTotalUnit: 'min',
     startLabel: 'Start Workout',
     restDayText: 'No sessions today. See you tomorrow!',
+
+    // ✅ Hero (Child Mode)
+    heroTagChild: "{name}'s Today",
+    heroTitleChild: "{name}'s Progress",
+    heroSubChild: 'Monitor their cognitive training.',
+    heroRestTitleChild: 'Rest Day',
+    heroRestSubChild: 'No training scheduled for {name} today.',
+    startLabelChild: 'See Activity',
+    restDayTextChild: 'No sessions for {name} today.',
 
     memorySectionTitle: 'Personal Memory',
     aiSectionTitle: 'AI Analysis',
@@ -2331,6 +2538,7 @@ const I18N = {
     memoryMore: 'more',
     voiceBadge: 'Voice ON',
 
+    // ✅ AI Analysis (Self)
     aiLabel: 'Personalized Insight',
     aiHeadline: 'Your cognitive snapshot',
     aiStartLabel: 'Start Today',
@@ -2340,12 +2548,23 @@ const I18N = {
     aiInsightPlan: "We'll prioritize it in your plan.",
     aiInsightBalanced: "You're doing well across all skills. Keep up the momentum!",
 
+    // ✅ AI Analysis (Child)
+    aiLabelChild: "Parent's Insight",
+    aiHeadlineChild: "{name}'s cognitive snapshot",
+    aiInsightStrongChild: '{name}\'s {strong} is strong at {strongScore}%.',
+    aiInsightWeakChild: 'But {weak} needs work ({weakScore}%).',
+    aiInsightPlanChild: "We'll prioritize it in {name}'s plan.",
+    aiInsightBalancedChild: "{name} is doing well across all skills. Keep up the momentum!",
+
     weekLabel: 'Week',
 
     quickProgress: 'Progress',
     quickProgressSub: 'Track your gains',
     quickSchedule: 'Schedule',
     quickScheduleSub: 'See your week',
+
+    // ✅ View Banner
+    viewBannerText: "Viewing <b>{name}'s</b> progress",
 
     // ✅ Check-in (Myself Mode)
     sheetTitle: 'How are you feeling today?',
@@ -2357,10 +2576,10 @@ const I18N = {
 
     // ✅ Check-in (Caregiver Mode)
     sheetTitleChild: 'How is {name} feeling today?',
-    sheetSubChild: 'A quick check-in helps us understand {name}\'s context.',
-    cqSleepChild: '{name}\'s Sleep Quality', cqsSleepChild: 'How did {name} sleep last night?',
-    cqStressChild: '{name}\'s Stress Level', cqsStressChild: 'How stressed is {name} right now?',
-    cqEnergyChild: '{name}\'s Energy Level', cqsEnergyChild: 'How energetic is {name} feeling?',
+    sheetSubChild: "A quick check-in helps us understand {name}'s context.",
+    cqSleepChild: "{name}'s Sleep Quality", cqsSleepChild: 'How did {name} sleep last night?',
+    cqStressChild: "{name}'s Stress Level", cqsStressChild: 'How stressed is {name} right now?',
+    cqEnergyChild: "{name}'s Energy Level", cqsEnergyChild: 'How energetic is {name} feeling?',
 
     sleepLow: 'Poor', sleepMid: 'Okay', sleepHigh: 'Good',
     stressLow: 'Low', stressMid: 'Medium', stressHigh: 'High',
@@ -2392,6 +2611,7 @@ const I18N = {
     sessionsLabel: 'الجلسات',
     improveLabel: 'التحسن',
 
+    // ✅ Hero (Self Mode)
     heroTag: 'تمرين اليوم',
     heroTitle: 'التدريب الذهني',
     heroSub: 'جاهز لتدريب عقلك؟',
@@ -2402,14 +2622,23 @@ const I18N = {
     startLabel: 'ابدأ التمرين',
     restDayText: 'لا توجد جلسات اليوم. نراك غدًا!',
 
+    // ✅ Hero (Child Mode)
+    heroTagChild: 'يوم {name}',
+    heroTitleChild: 'تقدم {name}',
+    heroSubChild: 'تابع تدريبه الذهني.',
+    heroRestTitleChild: 'يوم راحة',
+    heroRestSubChild: 'لا يوجد تدريب مجدول لـ {name} اليوم.',
+    startLabelChild: 'شاهد النشاط',
+    restDayTextChild: 'لا توجد جلسات لـ {name} اليوم.',
+
     memorySectionTitle: 'الذاكرة الشخصية',
     aiSectionTitle: 'تحليل الذكاء الاصطناعي',
-    progressSectionTitle: 'تقدمك هذا الأسبوع',
+    progressSectionTitle: 'تقدم هذا الأسبوع',
     chartSectionTitle: 'الاتجاه الأسبوعي',
     seeAllText: 'عرض الكل',
 
     memoryTitle: 'الذاكرة الشخصية',
-    memoryEmptyTitle: 'ابنِ بنك ذكرياتك',
+    memoryEmptyTitle: 'ابنِ بنك الذكريات',
     memoryEmptyText: 'أضف أشخاصًا ولحظات مهمة لفتح تدريب الذاكرة المخصص.',
     memoryEmptyBtn: 'أضف أول شخص',
     memoryStatsPeople: 'أشخاص',
@@ -2422,6 +2651,7 @@ const I18N = {
     memoryMore: 'المزيد',
     voiceBadge: 'الصوت مفعّل',
 
+    // ✅ AI Analysis (Self)
     aiLabel: 'رؤية مخصصة',
     aiHeadline: 'لمحة عن حالتك الذهنية',
     aiStartLabel: 'ابدأ اليوم',
@@ -2431,12 +2661,23 @@ const I18N = {
     aiInsightPlan: 'سنمنحه الأولوية في خطتك.',
     aiInsightBalanced: 'أداؤك جيد في جميع المهارات. حافظ على الزخم!',
 
+    // ✅ AI Analysis (Child)
+    aiLabelChild: 'رؤية الوالدين',
+    aiHeadlineChild: 'لمحة عن حالة {name} الذهنية',
+    aiInsightStrongChild: '{strong} عند {name} قوي بنسبة {strongScore}%.',
+    aiInsightWeakChild: 'لكن {weak} يحتاج مزيدًا من العمل ({weakScore}%).',
+    aiInsightPlanChild: 'سنمنحه الأولوية في خطة {name}.',
+    aiInsightBalancedChild: '{name} يؤدي جيدًا في جميع المهارات. حافظ على الزخم!',
+
     weekLabel: 'أسبوع',
 
     quickProgress: 'التقدم',
-    quickProgressSub: 'تابع تطورك',
+    quickProgressSub: 'تابع التطور',
     quickSchedule: 'الجدول',
-    quickScheduleSub: 'شاهد أسبوعك',
+    quickScheduleSub: 'شاهد الأسبوع',
+
+    // ✅ View Banner
+    viewBannerText: 'تشاهد تقدم <b>{name}</b>',
 
     // ✅ Check-in (Myself Mode)
     sheetTitle: 'كيف تشعر اليوم؟',
@@ -2495,9 +2736,11 @@ const SKILL_KEYS = ['memory', 'attention', 'speed', 'problem', 'visual', 'langua
    LANGUAGE
 ============================================ */
 const STORAGE_KEY = 'omega_lang';
+const VIEW_MODE_KEY = 'omega_view_mode';
 const CHECKIN_KEY = 'omega_daily_checkin_date';
 
 let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+let viewMode = localStorage.getItem(VIEW_MODE_KEY) || 'self';
 const htmlEl = document.documentElement;
 
 function getScore(key) {
@@ -2521,7 +2764,68 @@ function getBankItems(category) {
 }
 
 /* ============================================
-   ✅ APPLY LANGUAGE + CHECK-IN TEXT (you / child)
+   ✅ APPLY VIEW MODE (Self / Child)
+============================================ */
+function applyViewMode(mode) {
+  viewMode = mode;
+  localStorage.setItem(VIEW_MODE_KEY, mode);
+
+  document.body.setAttribute('data-view', mode);
+
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const userName = localStorage.getItem('omega_user_name') || 'User';
+
+  const isCaregiver = accountType === 'caregiver';
+  const isChildView = mode === 'child' && isCaregiver;
+
+  // View toggle button
+  const toggleBtn = document.getElementById('viewToggleBtn');
+  const toggleIcon = document.getElementById('viewToggleIcon');
+  const userNameEl = document.getElementById('userName');
+  const banner = document.getElementById('viewBanner');
+
+  if (isCaregiver) {
+    toggleBtn.style.display = 'inline-flex';
+    toggleBtn.classList.toggle('child', isChildView);
+
+    if (isChildView) {
+      toggleIcon.textContent = '👤';
+      toggleBtn.title = 'Back to My View';
+    } else {
+      toggleIcon.textContent = '👶';
+      toggleBtn.title = `View ${userName}'s Progress`;
+    }
+  } else {
+    toggleBtn.style.display = 'none';
+    banner.classList.remove('show');
+  }
+
+  // Banner
+  if (isChildView) {
+    banner.classList.add('show');
+    const t = I18N[currentLang];
+    document.getElementById('viewBannerText').innerHTML =
+      t.viewBannerText.replace('{name}', userName);
+  } else {
+    banner.classList.remove('show');
+  }
+
+  // Header name
+  if (isChildView) {
+    userNameEl.textContent = userName;
+    userNameEl.classList.add('child');
+  } else {
+    userNameEl.textContent = userName;
+    userNameEl.classList.remove('child');
+  }
+
+  // Re-render everything
+  renderHero();
+  renderAIAnalysis();
+}
+
+/* ============================================
+   APPLY LANGUAGE
 ============================================ */
 function applyLanguage(lang) {
   currentLang = lang;
@@ -2541,10 +2845,6 @@ function applyLanguage(lang) {
   document.getElementById('streakLabel').textContent = t.streakLabel;
   document.getElementById('sessionsLabel').textContent = t.sessionsLabel;
   document.getElementById('improveLabel').textContent = t.improveLabel;
-  document.getElementById('heroTag').textContent = t.heroTag;
-  document.getElementById('heroTotalLabel').textContent = t.heroTotalLabel;
-  document.getElementById('heroTotalUnit').textContent = t.heroTotalUnit;
-  document.getElementById('startLabel').textContent = t.startLabel;
   document.getElementById('memorySectionTitle').textContent = t.memorySectionTitle;
   document.getElementById('aiSectionTitle').textContent = t.aiSectionTitle;
   document.getElementById('progressSectionTitle').textContent = t.progressSectionTitle;
@@ -2555,10 +2855,10 @@ function applyLanguage(lang) {
   document.getElementById('quickSchedule').textContent = t.quickSchedule;
   document.getElementById('quickScheduleSub').textContent = t.quickScheduleSub;
 
-  // ✅ Daily Check-in text — depends on account type
+  // Check-in language
   applyCheckinLanguage(lang, t);
 
-  // Buttons / labels
+  // Sheet / buttons
   document.getElementById('sheetOptional').textContent = t.sheetOptional;
   document.getElementById('sleepLow').textContent = t.sleepLow;
   document.getElementById('sleepMid').textContent = t.sleepMid;
@@ -2581,20 +2881,16 @@ function applyLanguage(lang) {
   document.getElementById('addEventTitle').textContent = t.addEventTitle;
   document.getElementById('addEventDesc').textContent = t.addEventDesc;
 
-  document.getElementById('aiLabel').textContent = t.aiLabel;
-  document.getElementById('aiHeadline').textContent = t.aiHeadline;
-  document.getElementById('aiStartLabel').textContent = t.aiStartLabel;
-  document.getElementById('aiProgressLabel').textContent = t.aiProgressLabel;
+  // Re-apply view mode to update the mode-specific texts
+  applyViewMode(viewMode);
 
-  renderHero();
   renderMemory();
-  renderAIAnalysis();
   renderSkillBars();
   renderChart();
 }
 
 /* ============================================
-   ✅ Apply Check-in Language (Myself / Caregiver)
+   ✅ Check-in Language (Myself / Caregiver)
 ============================================ */
 function applyCheckinLanguage(lang, t) {
   const accountType = localStorage.getItem('omega_account_type') || 'myself';
@@ -2610,7 +2906,6 @@ function applyCheckinLanguage(lang, t) {
   const cqsEnergy = document.getElementById('cqsEnergy');
 
   if (accountType === 'caregiver' && userName) {
-    // ✅ Caregiver Mode — اسأل عن الشخص اللي بترعاه
     sheetTitle.textContent = t.sheetTitleChild.replace('{name}', userName);
     sheetSub.textContent = t.sheetSubChild.replace('{name}', userName);
     cqSleep.textContent = t.cqSleepChild.replace('{name}', userName);
@@ -2620,7 +2915,6 @@ function applyCheckinLanguage(lang, t) {
     cqEnergy.textContent = t.cqEnergyChild.replace('{name}', userName);
     cqsEnergy.textContent = t.cqsEnergyChild.replace('{name}', userName);
   } else {
-    // ✅ Myself Mode — اسأل عن المستخدم نفسه
     sheetTitle.textContent = t.sheetTitle;
     sheetSub.textContent = t.sheetSub;
     cqSleep.textContent = t.cqSleep;
@@ -2684,21 +2978,34 @@ function getTodaySessions() {
   return daySessions[todayKey] || [];
 }
 
+/* ============================================
+   RENDER HERO (Self / Child)
+============================================ */
 function renderHero() {
   const t = I18N[currentLang];
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const userName = localStorage.getItem('omega_user_name') || 'User';
+  const isChildView = viewMode === 'child' && accountType === 'caregiver';
+
   const sessions = getTodaySessions();
   const container = document.getElementById('heroSessions');
+  const heroCard = document.getElementById('heroCard');
+  const heroTag = document.getElementById('heroTag');
   const heroTitle = document.getElementById('heroTitle');
   const heroSub = document.getElementById('heroSub');
   const startBtn = document.getElementById('startWorkoutBtn');
+  const startLabel = document.getElementById('startLabel');
+  const heroBtnIcon = document.getElementById('heroBtnIcon');
+
+  heroCard.classList.toggle('child', isChildView);
 
   if (sessions.length === 0) {
-    heroTitle.textContent = t.heroRestTitle;
-    heroSub.textContent = t.heroRestSub;
+    heroTitle.textContent = isChildView ? t.heroRestTitleChild : t.heroRestTitle;
+    heroSub.textContent = isChildView ? t.heroRestSubChild.replace('{name}', userName) : t.heroRestSub;
     container.innerHTML = `
       <div class="hero-empty">
         <span class="hero-empty-icon">😴</span>
-        <div class="hero-empty-text">${t.restDayText}</div>
+        <div class="hero-empty-text">${isChildView ? t.restDayTextChild.replace('{name}', userName) : t.restDayText}</div>
       </div>
     `;
     document.getElementById('heroTotalMin').textContent = 0;
@@ -2706,8 +3013,23 @@ function renderHero() {
     return;
   }
 
-  heroTitle.textContent = t.heroTitle;
-  heroSub.textContent = t.heroSub;
+  // Tag
+  if (isChildView) {
+    heroTag.textContent = t.heroTagChild.replace('{name}', userName);
+    heroTitle.textContent = t.heroTitleChild.replace('{name}', userName);
+    heroSub.textContent = t.heroSubChild;
+    startLabel.textContent = t.startLabelChild;
+    // Eye icon للمراقبة
+    heroBtnIcon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+  } else {
+    heroTag.textContent = t.heroTag;
+    heroTitle.textContent = t.heroTitle;
+    heroSub.textContent = t.heroSub;
+    startLabel.textContent = t.startLabel;
+    // Play icon
+    heroBtnIcon.innerHTML = `<polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon>`;
+  }
+
   startBtn.style.display = '';
 
   const sessionsHtml = sessions.map(s => `
@@ -2724,6 +3046,9 @@ function renderHero() {
   document.getElementById('heroTotalMin').textContent = total;
 }
 
+/* ============================================
+   RENDER MEMORY
+============================================ */
 function renderMemory() {
   const t = I18N[currentLang];
   const card = document.getElementById('memoryCard');
@@ -2833,8 +3158,15 @@ function renderMemory() {
   });
 }
 
+/* ============================================
+   RENDER AI ANALYSIS (Self / Child)
+============================================ */
 function renderAIAnalysis() {
   const t = I18N[currentLang];
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const userName = localStorage.getItem('omega_user_name') || 'User';
+  const isChildView = viewMode === 'child' && accountType === 'caregiver';
+
   const scores = SKILL_KEYS.map(key => ({
     key, name: t.skills[key],
     score: getScore(key) || (50 + Math.floor(Math.random() * 35))
@@ -2844,19 +3176,39 @@ function renderAIAnalysis() {
   const strongest = sorted[0];
   const weakest = sorted[sorted.length - 1];
 
+  // Labels
+  document.getElementById('aiLabel').textContent = isChildView ? t.aiLabelChild : t.aiLabel;
+  document.getElementById('aiHeadline').textContent = isChildView
+    ? t.aiHeadlineChild.replace('{name}', userName)
+    : t.aiHeadline;
+
   let insightHTML = '';
 
   if (strongest.score - weakest.score < 10) {
-    insightHTML = t.aiInsightBalanced;
+    insightHTML = isChildView
+      ? t.aiInsightBalancedChild.replace('{name}', userName)
+      : t.aiInsightBalanced;
   } else {
-    insightHTML = `
-      ${t.aiInsightStrong.replace('{strong}', `<span class="strong">${strongest.name}</span>`).replace('{strongScore}', strongest.score)}
-      ${t.aiInsightWeak.replace('{weak}', `<span class="weak">${weakest.name}</span>`).replace('{weakScore}', weakest.score)}
-      ${t.aiInsightPlan}
-    `;
+    if (isChildView) {
+      insightHTML = `
+        ${t.aiInsightStrongChild.replace('{name}', userName).replace('{strong}', `<span class="strong">${strongest.name}</span>`).replace('{strongScore}', strongest.score)}
+        ${t.aiInsightWeakChild.replace('{weak}', `<span class="weak">${weakest.name}</span>`).replace('{weakScore}', weakest.score)}
+        ${t.aiInsightPlanChild.replace('{name}', userName)}
+      `;
+    } else {
+      insightHTML = `
+        ${t.aiInsightStrong.replace('{strong}', `<span class="strong">${strongest.name}</span>`).replace('{strongScore}', strongest.score)}
+        ${t.aiInsightWeak.replace('{weak}', `<span class="weak">${weakest.name}</span>`).replace('{weakScore}', weakest.score)}
+        ${t.aiInsightPlan}
+      `;
+    }
   }
 
   document.getElementById('aiText').innerHTML = insightHTML;
+
+  // AI action buttons
+  document.getElementById('aiStartLabel').textContent = isChildView ? t.startLabelChild : t.aiStartLabel;
+  document.getElementById('aiProgressLabel').textContent = t.aiProgressLabel;
 }
 
 function renderSkillBars() {
@@ -2960,7 +3312,7 @@ function updateStats() {
 }
 
 /* ============================================
-   ✅ DAILY CHECK-IN — مرة واحدة بس في اليوم
+   DAILY CHECK-IN
 ============================================ */
 const checkinState = { sleep: null, stress: null, energy: null };
 
@@ -2979,9 +3331,7 @@ document.querySelectorAll('#checkinSheet .cq-options').forEach(group => {
 });
 
 function openCheckinSheet() {
-  // ✅ نسجل التاريخ فورًا لحظة الفتح — يمنع ظهورها تاني حتى لو المستخدم قفل بدون تفاعل
   localStorage.setItem(CHECKIN_KEY, new Date().toISOString().split('T')[0]);
-
   document.getElementById('checkinOverlay').classList.add('show');
   setTimeout(() => {
     document.getElementById('checkinSheet').classList.add('show');
@@ -3001,9 +3351,7 @@ document.getElementById('checkinContinue').addEventListener('click', () => {
   closeCheckinSheet();
 });
 
-document.getElementById('checkinSkip').addEventListener('click', () => {
-  closeCheckinSheet();
-});
+document.getElementById('checkinSkip').addEventListener('click', closeCheckinSheet);
 
 function shouldShowCheckin() {
   const lastCheckin = localStorage.getItem(CHECKIN_KEY);
@@ -3049,12 +3397,38 @@ document.getElementById('langBtn').addEventListener('click', () => {
   applyLanguage(currentLang === 'en' ? 'ar' : 'en');
 });
 
-document.getElementById('startWorkoutBtn').addEventListener('click', () => {
-  window.location.href = 'exercise-instructions.html';
+/* ✅ View toggle — يبدل بين self و child */
+document.getElementById('viewToggleBtn').addEventListener('click', () => {
+  const newMode = viewMode === 'self' ? 'child' : 'self';
+  applyViewMode(newMode);
 });
 
+document.getElementById('viewBannerClose').addEventListener('click', () => {
+  applyViewMode('self');
+});
+
+/* ✅ Hero button — يتصرف حسب الـ mode */
+document.getElementById('startWorkoutBtn').addEventListener('click', () => {
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const isChildView = viewMode === 'child' && accountType === 'caregiver';
+
+  if (isChildView) {
+    window.location.href = 'progress.html';
+  } else {
+    window.location.href = 'exercise-instructions.html';
+  }
+});
+
+/* ✅ AI start button — نفس المنطق */
 document.getElementById('aiStartBtn').addEventListener('click', () => {
-  window.location.href = 'exercise-instructions.html';
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const isChildView = viewMode === 'child' && accountType === 'caregiver';
+
+  if (isChildView) {
+    window.location.href = 'progress.html';
+  } else {
+    window.location.href = 'exercise-instructions.html';
+  }
 });
 
 document.getElementById('aiProgressBtn').addEventListener('click', () => {
