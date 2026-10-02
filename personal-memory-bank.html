@@ -32,13 +32,14 @@
   --c-card:   #FFFFFF;
   --c-border: #E2E8F0;
 
+  /* ✅ كل الجرادينت بقى brand */
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
   --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
-  --g-people: linear-gradient(135deg, #EC4899, #8B5CF6);
-  --g-places: linear-gradient(135deg, #0E9487, #2EC4B6);
-  --g-events: linear-gradient(135deg, #FBBF24, #F59E0B);
-  --g-things: linear-gradient(135deg, #3B82F6, #2EC4B6);
-  --g-dates:  linear-gradient(135deg, #8B5CF6, #3B82F6);
+  --g-people: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-places: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-events: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-things: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-dates:  linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
 
   --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
   --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
@@ -117,8 +118,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.06), transparent 45%),
-    radial-gradient(circle at 85% 90%, rgba(14, 148, 135, 0.05), transparent 50%);
+    radial-gradient(circle at 20% 10%, rgba(14, 148, 135, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(59, 130, 246, 0.05), transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -132,6 +133,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   flex-shrink: 0;
 }
 
+/* ✅ Back Button — Teal */
 .back-btn {
   width: 38px; height: 38px;
   display: inline-flex; align-items: center; justify-content: center;
@@ -139,24 +141,25 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 148, 135, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.2);
   transition: all 0.25s ease;
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
-.back-btn:hover { background: #fff; border-color: rgba(14, 148, 135, 0.35); transform: translateX(-2px); }
+.back-btn:hover { background: #fff; border-color: rgba(14, 148, 135, 0.5); transform: translateX(-2px); }
 html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
 
 .back-btn svg { width: 16px; height: 16px; stroke: var(--c-primary); stroke-width: 2.4; fill: none; }
 html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 
+/* ✅ Lang Toggle — Teal */
 .lang-toggle {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 7px 12px;
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(14, 148, 135, 0.15);
+  border: 1px solid rgba(14, 148, 135, 0.2);
   border-radius: var(--r-pill);
   font-size: 12px; font-weight: 600;
   color: var(--c-navy);
@@ -164,8 +167,11 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
-.lang-toggle:hover { background: #fff; border-color: rgba(14, 148, 135, 0.35); transform: translateY(-1px); }
+.lang-toggle:hover { background: #fff; border-color: rgba(14, 148, 135, 0.5); transform: translateY(-1px); }
 .lang-toggle svg { width: 14px; height: 14px; stroke: var(--c-primary); stroke-width: 2.2; fill: none; }
+.lang-toggle .lang-label { color: var(--c-primary); }
+.lang-toggle .divider { color: var(--c-border); }
+.lang-toggle .lang-inactive { color: var(--c-slate); }
 
 /* CONTENT */
 .content {
@@ -188,14 +194,15 @@ html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
   animation: fadeUp 0.6s ease 0.1s forwards;
 }
 
+/* ✅ Header Badge — Teal */
 .header-badge {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 5px 12px;
-  background: rgba(139, 92, 246, 0.12);
-  border: 1px solid rgba(139, 92, 246, 0.25);
+  background: rgba(14, 148, 135, 0.12);
+  border: 1px solid rgba(14, 148, 135, 0.25);
   border-radius: var(--r-pill);
   font-size: 10px; font-weight: 700;
-  color: var(--c-purple);
+  color: var(--c-primary);
   letter-spacing: 0.6px;
   text-transform: uppercase;
   align-self: flex-start;
@@ -267,7 +274,7 @@ html[lang="ar"] .header-sub { font-family: var(--f-ar); font-size: 13.5px; }
 
 .progress-bar-track {
   width: 100%; height: 6px;
-  background: rgba(139, 92, 246, 0.1);
+  background: rgba(14, 148, 135, 0.1);
   border-radius: var(--r-pill);
   overflow: hidden;
 }
@@ -327,11 +334,12 @@ html[lang="ar"] .progress-hint { font-family: var(--f-ar); font-size: 12px; }
   z-index: 2;
 }
 
-.category.people  .category-icon { background: var(--g-people); }
-.category.places  .category-icon { background: var(--g-places); }
-.category.events  .category-icon { background: var(--g-events); }
-.category.things  .category-icon { background: var(--g-things); }
-.category.dates   .category-icon { background: var(--g-dates); }
+/* ✅ All Categories Icons — Brand Gradient */
+.category.people  .category-icon { background: var(--g-brand); }
+.category.places  .category-icon { background: var(--g-brand); }
+.category.events  .category-icon { background: var(--g-brand); }
+.category.things  .category-icon { background: var(--g-brand); }
+.category.dates   .category-icon { background: var(--g-brand); }
 
 .category-info { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 
@@ -373,25 +381,26 @@ html[lang="ar"] .category-count { font-family: var(--f-ar); font-size: 12px; }
 .item-row {
   display: flex; align-items: center; gap: 12px;
   padding: 10px 12px;
-  background: rgba(139, 92, 246, 0.04);
-  border: 1px solid rgba(139, 92, 246, 0.12);
+  background: rgba(14, 148, 135, 0.04);
+  border: 1px solid rgba(14, 148, 135, 0.12);
   border-radius: var(--r-md);
   transition: all 0.25s ease;
 }
 
 .item-row:hover {
-  background: rgba(139, 92, 246, 0.08);
+  background: rgba(14, 148, 135, 0.08);
   transform: translateY(-1px);
 }
 
 .item-photo {
   width: 38px; height: 38px;
   border-radius: 10px;
-  background: linear-gradient(135deg, rgba(236, 72, 153, 0.3), rgba(139, 92, 246, 0.3));
+  background: var(--g-brand);
   display: flex; align-items: center; justify-content: center;
   font-size: 20px; flex-shrink: 0;
   overflow: hidden;
   border: 1.5px solid rgba(255, 255, 255, 0.8);
+  color: #fff;
 }
 
 .item-photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -445,22 +454,22 @@ html[lang="ar"] .item-meta { font-family: var(--f-ar); font-size: 11.5px; }
 .empty-text { font-size: 11.5px; color: var(--c-slate); font-weight: 500; }
 html[lang="ar"] .empty-text { font-family: var(--f-ar); font-size: 12.5px; }
 
-/* ADD BUTTON */
+/* ✅ ADD BUTTON — Teal */
 .add-btn {
   display: flex; align-items: center; justify-content: center; gap: 8px;
   padding: 12px 16px;
-  background: rgba(139, 92, 246, 0.08);
-  border: 1.5px dashed rgba(139, 92, 246, 0.4);
+  background: rgba(14, 148, 135, 0.08);
+  border: 1.5px dashed rgba(14, 148, 135, 0.4);
   border-radius: var(--r-md);
   font-size: 12.5px; font-weight: 700;
-  color: var(--c-purple);
+  color: var(--c-primary);
   width: 100%;
   transition: all 0.25s ease;
 }
 
 .add-btn:hover {
-  background: rgba(139, 92, 246, 0.15);
-  border-color: rgba(139, 92, 246, 0.6);
+  background: rgba(14, 148, 135, 0.15);
+  border-color: rgba(14, 148, 135, 0.6);
   transform: translateY(-1px);
 }
 
@@ -474,9 +483,9 @@ html[lang="ar"] .add-btn { font-family: var(--f-ar); font-size: 13.5px; }
 .info-note {
   display: flex; align-items: flex-start; gap: 10px;
   padding: 12px 14px;
-  background: rgba(139, 92, 246, 0.08);
+  background: rgba(14, 148, 135, 0.08);
   border-radius: var(--r-md);
-  border: 1px solid rgba(139, 92, 246, 0.18);
+  border: 1px solid rgba(14, 148, 135, 0.18);
   flex-shrink: 0;
   opacity: 0; transform: translateY(12px);
   animation: fadeUp 0.6s ease 0.9s forwards;
@@ -484,7 +493,7 @@ html[lang="ar"] .add-btn { font-family: var(--f-ar); font-size: 13.5px; }
 
 .info-note svg {
   width: 15px; height: 15px;
-  stroke: var(--c-purple); stroke-width: 2.2; fill: none;
+  stroke: var(--c-primary); stroke-width: 2.2; fill: none;
   flex-shrink: 0; margin-top: 1px;
   stroke-linecap: round; stroke-linejoin: round;
 }
@@ -501,6 +510,7 @@ html[lang="ar"] .info-text { font-family: var(--f-ar); font-size: 12.5px; }
   flex-shrink: 0;
 }
 
+/* ✅ Continue Button — brand gradient */
 .btn-primary {
   width: 100%;
   padding: 17px 24px;
@@ -794,7 +804,7 @@ const I18N = {
 };
 
 /* ============================================
-   CATEGORIES CONFIG — omega_ keys
+   CATEGORIES CONFIG
 ============================================ */
 const CATEGORIES = {
   people: { storageKey: 'omega_bank_people', listId: 'listPeople', countId: 'countPeople' },
@@ -922,11 +932,11 @@ function getDefaultEmoji(key) {
 }
 
 /* ============================================
-   ADD ITEM → go to add-person.html
+   ADD ITEM
 ============================================ */
 function addItem(type) {
   localStorage.setItem('omega_add_type', type);
-  localStorage.setItem('omega_add_return', 'bank'); // نرجع للـ bank بعد الحفظ
+  localStorage.setItem('omega_add_return', 'bank');
   window.location.href = 'add-person.html';
 }
 
