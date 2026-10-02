@@ -1102,8 +1102,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 .btn-premium:active { transform: scale(0.97); }
 
 .btn-premium svg {
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   stroke: #fff;
   stroke-width: 2.4;
   fill: none;
@@ -1414,7 +1413,6 @@ function applyLanguage(lang) {
 
   const t = I18N[lang];
 
-  /* Paywall */
   document.getElementById('premiumBadge').textContent = t.premiumBadge;
   document.getElementById('paywallTitle').textContent = t.paywallTitle;
   document.getElementById('paywallDesc').textContent = t.paywallDesc;
@@ -1438,7 +1436,6 @@ function applyLanguage(lang) {
     featureList.appendChild(item);
   });
 
-  /* Schedule */
   document.getElementById('unlockedBadge').textContent = t.unlockedBadge;
   document.getElementById('headerTitle').textContent = t.headerTitle;
   document.getElementById('headerSub').textContent = t.headerSub;
@@ -1493,17 +1490,36 @@ document.getElementById('subscribeBtn').addEventListener('click', () => {
 });
 
 /* ============================================
-   SKIP
+   ✅ SKIP → home.html (Fixed!)
 ============================================ */
 document.getElementById('skipBtn').addEventListener('click', () => {
-  window.location.href = 'personalized-plan.html';
+  // ✅ نسجل إن المستخدم تخطى الميزة المميزة
+  localStorage.setItem('omega_weekly_plan_skipped', 'true');
+
+  const btn = document.getElementById('skipBtn');
+  btn.style.transform = 'scale(0.96)';
+  setTimeout(() => { btn.style.transform = ''; }, 150);
+
+  setTimeout(() => {
+    window.location.href = 'home.html';
+  }, 200);
 });
 
 /* ============================================
-   BACK
+   BACK → home.html (لو جاي من الـ Home)
+   أو personalized-plan.html (لو جاي من الـ Onboarding)
 ============================================ */
 document.getElementById('backBtn').addEventListener('click', () => {
-  window.location.href = 'personalized-plan.html';
+  // لو اتبعت من personalized-plan → يرجع له
+  // لو جاي من Home → يرجع للـ Home
+  const referrer = document.referrer || '';
+  const cameFromPlan = referrer.includes('personalized-plan.html');
+
+  if (cameFromPlan) {
+    window.location.href = 'personalized-plan.html';
+  } else {
+    window.location.href = 'home.html';
+  }
 });
 
 /* ============================================
