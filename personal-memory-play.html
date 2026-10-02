@@ -33,12 +33,8 @@
   --c-border: #E2E8F0;
 
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
-  --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
-  --g-heart: linear-gradient(135deg, #EC4899, #8B5CF6);
-  --g-call:  linear-gradient(180deg, #0E9487 0%, #076B5F 50%, #0F172A 100%);
 
   --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
-  --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
 
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
@@ -55,12 +51,17 @@ html, body {
   -webkit-font-smoothing: antialiased;
   background: #E2E8F0;
   overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html[lang="ar"] body { font-family: var(--f-ar); }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input { font-family: inherit; }
 
-/* PHONE FRAME */
+/* ============================================
+   PHONE FRAME
+============================================ */
 .stage {
   width: 100vw; height: 100vh;
   display: flex; align-items: center; justify-content: center;
@@ -100,63 +101,36 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .phone::before { display: none; }
 }
 
-/* SCREEN */
+/* ============================================
+   SCREEN — ✅ خلفية تدرج فاتحة من ألوان Omega
+============================================ */
 .screen {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
-  background: var(--g-call);
+  background: linear-gradient(180deg,
+    #ECFDF5 0%,
+    #F0F9FF 35%,
+    #F5F3FF 70%,
+    #FAFAFF 100%);
   overflow: hidden;
 }
 
-/* Soft radial overlays */
+/* Soft glow overlays خفيفة جدًا */
 .screen::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 30%, rgba(46, 196, 182, 0.25) 0%, transparent 55%),
-    radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.18), transparent 50%),
-    radial-gradient(circle at 85% 90%, rgba(59, 130, 246, 0.15), transparent 50%);
+    radial-gradient(circle at 30% 20%, rgba(46, 196, 182, 0.10) 0%, transparent 50%),
+    radial-gradient(circle at 75% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 55%);
   pointer-events: none;
   z-index: 0;
-}
-
-/* Floating orbs */
-.orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(40px);
-  opacity: 0.4;
-  pointer-events: none;
-  z-index: 0;
-}
-.orb.o1 {
-  width: 180px; height: 180px;
-  background: radial-gradient(circle, #2EC4B6, transparent 70%);
-  top: -40px; left: -40px;
-  animation: orbFloat 12s ease-in-out infinite;
-}
-.orb.o2 {
-  width: 220px; height: 220px;
-  background: radial-gradient(circle, #8B5CF6, transparent 70%);
-  bottom: -60px; right: -60px;
-  animation: orbFloat 14s ease-in-out infinite 2s;
-}
-.orb.o3 {
-  width: 140px; height: 140px;
-  background: radial-gradient(circle, #3B82F6, transparent 70%);
-  top: 40%; right: -40px;
-  animation: orbFloat 10s ease-in-out infinite 1s;
-}
-@keyframes orbFloat {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(20px, -20px) scale(1.1); }
 }
 
 /* ============================================
-   TOP BAR — Timer + Status
+   TOP BAR — Timer + Live
 ============================================ */
 .topbar {
   position: relative;
@@ -173,23 +147,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #fff;
+  border: 1px solid rgba(14, 148, 135, 0.15);
   border-radius: var(--r-pill);
-  color: #fff;
+  color: var(--c-primary);
   font-size: 11.5px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.3px;
-  font-feature-settings: "tnum";
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
 .call-status-badge .live-dot {
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: #22C55E;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+  background: var(--c-success);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
   animation: liveDot 1.4s ease-in-out infinite;
 }
 
@@ -201,15 +173,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .call-timer {
   font-size: 13px;
   font-weight: 700;
-  color: #fff;
+  color: var(--c-navy);
   letter-spacing: 0.5px;
   font-feature-settings: "tnum";
   padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #fff;
+  border: 1px solid rgba(14, 148, 135, 0.15);
   border-radius: var(--r-pill);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
 
 /* ============================================
@@ -223,145 +194,155 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 24px;
   padding: 20px 24px;
   min-height: 0;
   text-align: center;
 }
 
-/* Avatar rings */
+/* Avatar wrap */
 .avatar-wrap {
   position: relative;
-  width: 170px;
-  height: 170px;
+  width: 140px;
+  height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.ring {
+/* Soft halo خفيف */
+.avatar-halo {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(46, 196, 182, 0.28) 0%, transparent 65%);
+  filter: blur(20px);
+  z-index: 0;
+  animation: haloPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes haloPulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.08); }
+}
+
+/* Ring حول الأفاتار (أخضر خفيف) */
+.avatar-ring {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 2px solid rgba(46, 196, 182, 0.4);
-  opacity: 0;
-  pointer-events: none;
+  border: 2px solid rgba(14, 148, 135, 0.25);
+  transition: border-color 0.4s ease;
 }
 
-.avatar-wrap.speaking .ring {
-  animation: ringPulse 2.2s ease-out infinite;
-}
-.avatar-wrap.speaking .ring.r2 { animation-delay: 0.7s; }
-.avatar-wrap.speaking .ring.r3 { animation-delay: 1.4s; }
-
-@keyframes ringPulse {
-  0%   { opacity: 0.9; transform: scale(0.85); border-color: rgba(46, 196, 182, 0.6); }
-  100% { opacity: 0; transform: scale(1.5); border-color: rgba(46, 196, 182, 0); }
+.avatar-wrap.speaking .avatar-ring {
+  border-color: rgba(14, 148, 135, 0.6);
 }
 
-/* Glow */
-.avatar-glow {
+/* Ring ثاني خارجي */
+.avatar-ring-2 {
   position: absolute;
-  inset: -20px;
+  inset: -12px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(46, 196, 182, 0.55) 0%, transparent 65%);
-  filter: blur(30px);
-  z-index: 0;
-  animation: glowPulse 3s ease-in-out infinite;
-}
-.avatar-wrap.speaking .avatar-glow {
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.65) 0%, transparent 65%);
-  animation: glowPulse 1.4s ease-in-out infinite;
+  border: 1.5px solid rgba(139, 92, 246, 0.15);
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50%      { opacity: 1; transform: scale(1.12); }
+.avatar-wrap.speaking .avatar-ring-2 {
+  opacity: 1;
+  animation: ringWave 2.4s ease-out infinite;
+}
+
+@keyframes ringWave {
+  0%   { transform: scale(0.95); opacity: 0.6; }
+  100% { transform: scale(1.4); opacity: 0; }
 }
 
 /* Avatar core */
 .avatar-core {
   position: relative;
-  width: 130px; height: 130px;
+  width: 108px; height: 108px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0E9487 0%, #2EC4B6 50%, #3B82F6 100%);
+  background: var(--g-brand);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow:
-    0 20px 50px rgba(14, 148, 135, 0.5),
-    inset 0 -6px 20px rgba(0, 0, 0, 0.15),
-    inset 0 6px 20px rgba(255, 255, 255, 0.25);
   z-index: 2;
+  box-shadow:
+    0 12px 32px rgba(14, 148, 135, 0.28),
+    inset 0 -4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 4px 12px rgba(255, 255, 255, 0.35);
   overflow: hidden;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  animation: coreFloat 4s ease-in-out infinite;
+  border: 3px solid #fff;
+  transition: transform 0.3s ease;
 }
 
-@keyframes coreFloat {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
+.avatar-wrap.speaking .avatar-core {
+  transform: scale(1.04);
 }
 
 .avatar-core::before {
   content: '';
   position: absolute;
-  top: -30%; right: -20%;
-  width: 100px; height: 100px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, transparent 70%);
+  top: -25%; right: -20%;
+  width: 80px; height: 80px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
   border-radius: 50%;
+  pointer-events: none;
 }
 
 .avatar-core svg {
-  width: 60px;
-  height: 60px;
+  width: 52px;
+  height: 52px;
   position: relative;
   z-index: 2;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
-/* Name + status */
+/* Name + Status */
 .call-name {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.5px;
+  color: var(--c-navy);
+  letter-spacing: -0.4px;
   line-height: 1.2;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
 }
-html[lang="ar"] .call-name { font-family: var(--f-ar); font-size: 23px; letter-spacing: 0; }
+html[lang="ar"] .call-name { font-family: var(--f-ar); font-size: 21px; letter-spacing: 0; }
 
 .call-status-text {
   font-size: 13.5px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.75);
-  letter-spacing: 0.3px;
+  color: var(--c-slate);
+  letter-spacing: 0.2px;
   min-height: 20px;
+  margin-top: 4px;
 }
 html[lang="ar"] .call-status-text { font-family: var(--f-ar); font-size: 14.5px; }
 
-/* Waveform */
+/* Waveform — بسيط جدًا */
 .waveform {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  height: 34px;
-  margin-top: 4px;
-}
-
-.waveform span {
-  width: 4px;
-  background: linear-gradient(180deg, #2EC4B6, #3B82F6);
-  border-radius: var(--r-pill);
-  height: 8px;
-  opacity: 0.5;
+  gap: 3px;
+  height: 24px;
+  margin-top: 2px;
+  opacity: 0.3;
   transition: opacity 0.3s ease;
 }
 
+.waveform.active { opacity: 1; }
+
+.waveform span {
+  width: 3px;
+  background: linear-gradient(180deg, #0E9487, #2EC4B6);
+  border-radius: var(--r-pill);
+  height: 6px;
+}
+
 .waveform.active span {
-  opacity: 1;
   animation: waveBar 1.2s ease-in-out infinite;
 }
 
@@ -372,16 +353,14 @@ html[lang="ar"] .call-status-text { font-family: var(--f-ar); font-size: 14.5px;
 .waveform span:nth-child(5) { animation-delay: 0.4s;  }
 .waveform span:nth-child(6) { animation-delay: 0.5s;  }
 .waveform span:nth-child(7) { animation-delay: 0.6s;  }
-.waveform span:nth-child(8) { animation-delay: 0.7s;  }
-.waveform span:nth-child(9) { animation-delay: 0.8s;  }
 
 @keyframes waveBar {
-  0%, 100% { height: 8px; }
-  50%      { height: 28px; }
+  0%, 100% { height: 6px; }
+  50%      { height: 20px; }
 }
 
 /* ============================================
-   TRANSCRIPT OVERLAY (collapsible)
+   TRANSCRIPT BUTTON
 ============================================ */
 .transcript-btn {
   position: relative;
@@ -390,43 +369,54 @@ html[lang="ar"] .call-status-text { font-family: var(--f-ar); font-size: 14.5px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 9px 16px;
+  background: #fff;
+  border: 1px solid rgba(14, 148, 135, 0.15);
   border-radius: var(--r-pill);
-  color: #fff;
+  color: var(--c-navy);
   font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0.2px;
   transition: all 0.25s ease;
-  margin-bottom: 6px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+  margin-bottom: 12px;
 }
-.transcript-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+.transcript-btn:hover {
+  border-color: rgba(14, 148, 135, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
 .transcript-btn:active { transform: scale(0.96); }
+
 .transcript-btn svg {
   width: 13px; height: 13px;
-  stroke: currentColor; stroke-width: 2.4; fill: none;
+  stroke: var(--c-primary);
+  stroke-width: 2.4; fill: none;
   stroke-linecap: round; stroke-linejoin: round;
 }
+
 html[lang="ar"] .transcript-btn { font-family: var(--f-ar); font-size: 12.5px; letter-spacing: 0; }
 
-/* Transcript sheet */
+/* ============================================
+   TRANSCRIPT SHEET — فاتح
+============================================ */
 .transcript-sheet {
   position: absolute;
   left: 0; right: 0; bottom: 0;
   background: #fff;
   border-radius: 28px 28px 0 0;
-  max-height: 60%;
+  max-height: 65%;
   display: flex;
   flex-direction: column;
   z-index: 30;
   transform: translateY(100%);
   transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
-  box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 -20px 60px rgba(15, 23, 42, 0.18);
   overflow: hidden;
 }
+
 .transcript-sheet.show { transform: translateY(0); }
 
 .sheet-handle {
@@ -445,6 +435,7 @@ html[lang="ar"] .transcript-btn { font-family: var(--f-ar); font-size: 12.5px; l
   justify-content: space-between;
   flex-shrink: 0;
 }
+
 .sheet-title {
   font-size: 15px;
   font-weight: 800;
@@ -460,7 +451,9 @@ html[lang="ar"] .sheet-title { font-family: var(--f-ar); font-size: 16px; letter
   display: flex; align-items: center; justify-content: center;
   transition: all 0.2s ease;
 }
+
 .sheet-close:hover { background: rgba(14, 148, 135, 0.15); transform: rotate(90deg); }
+
 .sheet-close svg {
   width: 13px; height: 13px;
   stroke: var(--c-slate); stroke-width: 2.4; fill: none;
@@ -477,6 +470,7 @@ html[lang="ar"] .sheet-title { font-family: var(--f-ar); font-size: 16px; letter
   gap: 10px;
   min-height: 0;
 }
+
 .transcript-body::-webkit-scrollbar { display: none; }
 
 .t-line {
@@ -484,6 +478,7 @@ html[lang="ar"] .sheet-title { font-family: var(--f-ar); font-size: 16px; letter
   gap: 8px;
   animation: lineIn 0.35s ease;
 }
+
 @keyframes lineIn {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -501,19 +496,21 @@ html[lang="ar"] .sheet-title { font-family: var(--f-ar); font-size: 16px; letter
   line-height: 1.5;
   letter-spacing: 0.1px;
 }
+
 html[lang="ar"] .t-bubble { font-family: var(--f-ar); font-size: 14px; letter-spacing: 0; }
 
 .t-line.ai .t-bubble {
-  background: linear-gradient(135deg, rgba(14, 148, 135, 0.1), rgba(46, 196, 182, 0.08));
-  border: 1px solid rgba(14, 148, 135, 0.2);
+  background: linear-gradient(135deg, rgba(14, 148, 135, 0.08), rgba(46, 196, 182, 0.06));
+  border: 1px solid rgba(14, 148, 135, 0.15);
   color: var(--c-navy);
   border-top-left-radius: 4px;
 }
+
 .t-line.me .t-bubble {
   background: var(--g-brand);
   color: #fff;
   border-top-right-radius: 4px;
-  box-shadow: 0 6px 16px rgba(14, 148, 135, 0.25);
+  box-shadow: 0 6px 16px rgba(14, 148, 135, 0.22);
 }
 
 /* ============================================
@@ -525,14 +522,14 @@ html[lang="ar"] .t-bubble { font-family: var(--f-ar); font-size: 14px; letter-sp
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
-  padding: 20px 24px 44px;
+  gap: 28px;
+  padding: 20px 24px 50px;
   flex-shrink: 0;
 }
 
 .ctrl-btn {
-  width: 60px;
-  height: 60px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -544,51 +541,65 @@ html[lang="ar"] .t-bubble { font-family: var(--f-ar); font-size: 14px; letter-sp
 
 .ctrl-btn:active { transform: scale(0.92); }
 
-/* Mute */
-.ctrl-btn.mute {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+/* Mute + Speaker — خفيف رمادي */
+.ctrl-btn.small {
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
 }
-.ctrl-btn.mute:hover { background: rgba(255, 255, 255, 0.25); }
-.ctrl-btn.mute svg {
-  width: 24px; height: 24px;
+
+.ctrl-btn.small:hover {
+  border-color: rgba(14, 148, 135, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+.ctrl-btn.small svg {
+  width: 22px; height: 22px;
+  stroke: var(--c-navy); stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+.ctrl-btn.small.active {
+  background: var(--g-brand);
+  border-color: transparent;
+}
+
+.ctrl-btn.small.active svg { stroke: #fff; }
+
+/* Mic — الكبير في النص */
+.ctrl-btn.mic {
+  width: 74px;
+  height: 74px;
+  background: var(--g-brand);
+  box-shadow:
+    0 12px 28px rgba(14, 148, 135, 0.35),
+    0 0 0 0 rgba(14, 148, 135, 0.4);
+  position: relative;
+}
+
+.ctrl-btn.mic:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(14, 148, 135, 0.45);
+}
+
+.ctrl-btn.mic svg {
+  width: 30px; height: 30px;
   stroke: #fff; stroke-width: 2.2; fill: none;
   stroke-linecap: round; stroke-linejoin: round;
 }
 
-/* Mic — big center */
-.ctrl-btn.mic {
-  width: 78px;
-  height: 78px;
-  background: #fff;
-  box-shadow:
-    0 14px 32px rgba(0, 0, 0, 0.25),
-    0 0 0 0 rgba(255, 255, 255, 0.4);
-  position: relative;
-}
-.ctrl-btn.mic:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
-.ctrl-btn.mic svg {
-  width: 30px; height: 30px;
-  stroke: var(--c-primary); stroke-width: 2.2; fill: none;
-  stroke-linecap: round; stroke-linejoin: round;
-  transition: stroke 0.25s ease;
-}
-
-/* Mic — listening state */
+/* Mic listening state */
 .ctrl-btn.mic.listening {
   background: linear-gradient(135deg, #EF4444, #F87171);
   animation: micPulse 1.4s ease-in-out infinite;
 }
-.ctrl-btn.mic.listening svg { stroke: #fff; }
 
 @keyframes micPulse {
-  0%, 100% { box-shadow: 0 14px 32px rgba(239, 68, 68, 0.4), 0 0 0 0 rgba(239, 68, 68, 0.5); }
-  50%      { box-shadow: 0 14px 32px rgba(239, 68, 68, 0.5), 0 0 0 18px rgba(239, 68, 68, 0); }
+  0%, 100% { box-shadow: 0 12px 28px rgba(239, 68, 68, 0.4), 0 0 0 0 rgba(239, 68, 68, 0.5); }
+  50%      { box-shadow: 0 12px 28px rgba(239, 68, 68, 0.5), 0 0 0 16px rgba(239, 68, 68, 0); }
 }
 
-/* Mic — disabled */
 .ctrl-btn.mic.disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -597,27 +608,33 @@ html[lang="ar"] .t-bubble { font-family: var(--f-ar); font-size: 14px; letter-sp
 /* End call */
 .ctrl-btn.end {
   background: linear-gradient(135deg, #EF4444, #DC2626);
-  box-shadow: 0 14px 32px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 12px 28px rgba(239, 68, 68, 0.4);
 }
-.ctrl-btn.end:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(239, 68, 68, 0.5); }
+
+.ctrl-btn.end:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(239, 68, 68, 0.5);
+}
+
 .ctrl-btn.end svg {
-  width: 26px; height: 26px;
+  width: 24px; height: 24px;
   stroke: #fff; stroke-width: 2.2; fill: none;
   stroke-linecap: round; stroke-linejoin: round;
 }
 
-/* Control labels */
+/* Labels */
 .ctrl-label {
   position: absolute;
-  bottom: -22px;
+  bottom: -24px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 10.5px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--c-slate);
   white-space: nowrap;
   letter-spacing: 0.3px;
 }
+
 html[lang="ar"] .ctrl-label { font-family: var(--f-ar); font-size: 11.5px; letter-spacing: 0; }
 
 /* ============================================
@@ -626,19 +643,19 @@ html[lang="ar"] .ctrl-label { font-family: var(--f-ar); font-size: 11.5px; lette
 .text-input-wrap {
   position: absolute;
   left: 16px; right: 16px;
-  bottom: 118px;
+  bottom: 120px;
   display: none;
   align-items: center;
   gap: 8px;
   padding: 8px 8px 8px 16px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #fff;
+  border: 1.5px solid rgba(14, 148, 135, 0.15);
   border-radius: var(--r-pill);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
   z-index: 20;
   animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
 .text-input-wrap.show { display: flex; }
 
 @keyframes slideUp {
@@ -657,7 +674,9 @@ html[lang="ar"] .ctrl-label { font-family: var(--f-ar); font-size: 11.5px; lette
   font-family: inherit;
   padding: 6px 0;
 }
+
 .text-input-wrap input::placeholder { color: #94A3B8; font-weight: 400; }
+
 html[lang="ar"] .text-input-wrap input { font-family: var(--f-ar); font-size: 15px; }
 
 .text-send {
@@ -669,13 +688,16 @@ html[lang="ar"] .text-input-wrap input { font-family: var(--f-ar); font-size: 15
   box-shadow: 0 6px 16px rgba(14, 148, 135, 0.3);
   transition: transform 0.2s ease;
 }
+
 .text-send:hover { transform: scale(1.08); }
 .text-send:active { transform: scale(0.94); }
+
 .text-send svg {
   width: 16px; height: 16px;
   stroke: #fff; stroke-width: 2.4; fill: none;
   stroke-linecap: round; stroke-linejoin: round;
 }
+
 html[dir="rtl"] .text-send svg { transform: scaleX(-1); }
 
 /* ============================================
@@ -684,9 +706,9 @@ html[dir="rtl"] .text-send svg { transform: scaleX(-1); }
 .end-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: none;
   align-items: center;
   justify-content: center;
@@ -694,7 +716,9 @@ html[dir="rtl"] .text-send svg { transform: scaleX(-1); }
   padding: 30px;
   animation: fadeIn 0.3s ease;
 }
+
 .end-overlay.show { display: flex; }
+
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .end-card {
@@ -708,7 +732,9 @@ html[dir="rtl"] .text-send svg { transform: scaleX(-1); }
   flex-direction: column;
   gap: 14px;
   animation: cardPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
 }
+
 @keyframes cardPop {
   0%   { transform: scale(0.85); opacity: 0; }
   60%  { transform: scale(1.04); opacity: 1; }
@@ -723,6 +749,7 @@ html[dir="rtl"] .text-send svg { transform: scaleX(-1); }
   margin: 0 auto;
   box-shadow: 0 12px 30px rgba(14, 148, 135, 0.35);
 }
+
 .end-icon svg {
   width: 30px; height: 30px;
   stroke: #fff; stroke-width: 2.4; fill: none;
@@ -735,6 +762,7 @@ html[dir="rtl"] .text-send svg { transform: scaleX(-1); }
   color: var(--c-navy);
   letter-spacing: -0.3px;
 }
+
 html[lang="ar"] .end-title { font-family: var(--f-ar); font-size: 18px; letter-spacing: 0; }
 
 .end-desc {
@@ -743,6 +771,7 @@ html[lang="ar"] .end-title { font-family: var(--f-ar); font-size: 18px; letter-s
   line-height: 1.55;
   font-weight: 500;
 }
+
 html[lang="ar"] .end-desc { font-family: var(--f-ar); font-size: 13.5px; }
 
 .end-stats {
@@ -750,6 +779,7 @@ html[lang="ar"] .end-desc { font-family: var(--f-ar); font-size: 13.5px; }
   gap: 8px;
   justify-content: center;
 }
+
 .end-stat {
   flex: 1;
   padding: 12px 8px;
@@ -762,6 +792,7 @@ html[lang="ar"] .end-desc { font-family: var(--f-ar); font-size: 13.5px; }
   gap: 3px;
   min-width: 0;
 }
+
 .end-stat-value {
   font-size: 18px;
   font-weight: 800;
@@ -770,6 +801,7 @@ html[lang="ar"] .end-desc { font-family: var(--f-ar); font-size: 13.5px; }
   letter-spacing: -0.4px;
   line-height: 1;
 }
+
 .end-stat-label {
   font-size: 9.5px;
   font-weight: 700;
@@ -778,6 +810,7 @@ html[lang="ar"] .end-desc { font-family: var(--f-ar); font-size: 13.5px; }
   text-transform: uppercase;
   text-align: center;
 }
+
 html[lang="ar"] .end-stat-label {
   font-family: var(--f-ar);
   text-transform: none; letter-spacing: 0;
@@ -796,41 +829,17 @@ html[lang="ar"] .end-stat-label {
   transition: transform 0.2s ease, box-shadow 0.25s ease;
   display: flex; align-items: center; justify-content: center; gap: 8px;
 }
+
 .end-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(14, 148, 135, 0.4); }
 .end-btn:active { transform: scale(0.97); }
+
 .end-btn svg {
   width: 15px; height: 15px;
   stroke: #fff; stroke-width: 2.4; fill: none;
   stroke-linecap: round; stroke-linejoin: round;
 }
-html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
 
-/* ============================================
-   THINKING DOTS
-============================================ */
-.thinking {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  padding: 3px 8px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: var(--r-pill);
-  margin-inline-start: 6px;
-  vertical-align: middle;
-}
-.thinking span {
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: #fff;
-  animation: dotBounce 1.2s ease-in-out infinite;
-}
-.thinking span:nth-child(1) { animation-delay: 0s; }
-.thinking span:nth-child(2) { animation-delay: 0.15s; }
-.thinking span:nth-child(3) { animation-delay: 0.30s; }
-@keyframes dotBounce {
-  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
-  30%           { transform: translateY(-4px); opacity: 1; }
-}
+html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
 
 /* ============================================
    REDUCED MOTION
@@ -851,11 +860,6 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
   <div class="phone">
     <div class="screen">
 
-      <!-- Floating orbs -->
-      <div class="orb o1"></div>
-      <div class="orb o2"></div>
-      <div class="orb o3"></div>
-
       <!-- Top Bar -->
       <div class="topbar">
         <div class="call-status-badge">
@@ -870,17 +874,16 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
 
         <!-- AI Avatar -->
         <div class="avatar-wrap" id="avatarWrap">
-          <div class="ring"></div>
-          <div class="ring r2"></div>
-          <div class="ring r3"></div>
-          <div class="avatar-glow"></div>
+          <div class="avatar-halo"></div>
+          <div class="avatar-ring"></div>
+          <div class="avatar-ring-2"></div>
           <div class="avatar-core">
             <!-- Omega logo (mini) -->
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="omegaGradCall" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%"   stop-color="#ffffff"/>
-                  <stop offset="100%" stop-color="#D1FAF5"/>
+                  <stop offset="100%" stop-color="#E0F7F4"/>
                 </linearGradient>
               </defs>
               <path d="M 60 142 C 44 122 36 98 44 74 C 54 44 76 28 100 28 C 124 28 146 44 156 74 C 164 98 156 122 140 142"
@@ -903,18 +906,18 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
           </div>
         </div>
 
-        <!-- Name -->
+        <!-- Name + Status -->
         <div>
           <div class="call-name" id="callName">Omega AI</div>
-          <div class="call-status-text" id="callStatus">
+          <div class="call-status-text">
             <span id="statusText">Connecting...</span>
           </div>
         </div>
 
         <!-- Waveform -->
         <div class="waveform" id="waveform">
-          <span></span><span></span><span></span><span></span><span></span>
           <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span>
         </div>
 
       </div>
@@ -937,7 +940,7 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
 
       <!-- Controls -->
       <div class="controls">
-        <button class="ctrl-btn mute" id="muteBtn">
+        <button class="ctrl-btn small" id="muteBtn" aria-label="Mute">
           <svg id="muteIcon" viewBox="0 0 24 24">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
             <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
@@ -945,7 +948,7 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
           <span class="ctrl-label" id="muteLabel">Mute</span>
         </button>
 
-        <button class="ctrl-btn mic" id="micBtn">
+        <button class="ctrl-btn mic" id="micBtn" aria-label="Talk">
           <svg viewBox="0 0 24 24">
             <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
             <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
@@ -955,7 +958,7 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
           <span class="ctrl-label" id="micLabel">Tap to talk</span>
         </button>
 
-        <button class="ctrl-btn end" id="endBtn">
+        <button class="ctrl-btn end" id="endBtn" aria-label="End call">
           <svg viewBox="0 0 24 24">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" transform="rotate(135 12 12)"></path>
           </svg>
@@ -1015,14 +1018,12 @@ const I18N = {
     aiSpeaking: 'Omega is speaking...',
     yourTurn: 'Your turn — tap the mic',
     listening: 'Listening...',
-    thinking: 'Thinking',
     mute: 'Mute',
     unmute: 'Unmute',
     tapToTalk: 'Tap to talk',
     stopTalk: 'Tap to stop',
     end: 'End',
     transcriptLabel: 'Show Transcript',
-    hideTranscript: 'Hide Transcript',
     sheetTitle: 'Conversation',
     inputPlaceholder: 'Type your answer...',
     endTitle: 'Call Ended',
@@ -1031,14 +1032,14 @@ const I18N = {
     turnsLabel: 'Questions',
     backHome: 'Back to Home',
     noSpeechSupport: 'Voice not supported — typing mode enabled',
-    intro1: 'Hi {name}! I\'m Omega. Ready for a quick memory chat?',
-    intro2: 'Let\'s talk about the people and moments you care about.',
+    intro1: "Hi {name}! I'm Omega. Ready for a quick memory chat?",
+    intro2: "Let's talk about the people and moments you care about.",
     noMemoryBank: 'It looks like your Memory Bank is empty. Add some people first!',
     qWho: 'Tell me about {person}. Who are they to you?',
     qWhere: 'What do you remember about {place}?',
     qWhen: 'When did {event} happen? Tell me about it.',
-    feedback: 'That\'s wonderful. Thanks for sharing.',
-    nextQ: 'Let\'s continue.'
+    feedback: "That's wonderful. Thanks for sharing.",
+    nextQ: "Let's continue."
   },
   ar: {
     liveText: 'مباشر',
@@ -1046,14 +1047,12 @@ const I18N = {
     aiSpeaking: 'أوميجا يتحدث...',
     yourTurn: 'دورك — اضغط المايك',
     listening: 'أستمع إليك...',
-    thinking: 'أفكر',
     mute: 'كتم',
     unmute: 'إلغاء الكتم',
     tapToTalk: 'اضغط للتحدث',
     stopTalk: 'اضغط للإيقاف',
     end: 'إنهاء',
     transcriptLabel: 'عرض المحادثة',
-    hideTranscript: 'إخفاء المحادثة',
     sheetTitle: 'المحادثة',
     inputPlaceholder: 'اكتب ردك...',
     endTitle: 'انتهت المكالمة',
@@ -1211,7 +1210,6 @@ function addTranscriptLine(role, text) {
 ============================================ */
 function speak(text, callback) {
   if (!('speechSynthesis' in window) || state.isMuted) {
-    // No TTS support → just simulate timing
     const delay = Math.max(1200, text.length * 45);
     state.isAISpeaking = true;
     setAISpeakingUI(true);
@@ -1229,7 +1227,6 @@ function speak(text, callback) {
   utter.rate = 0.95;
   utter.pitch = 1.05;
 
-  // Try to find a good voice
   const voices = window.speechSynthesis.getVoices();
   const langVoices = voices.filter(v => v.lang.startsWith(currentLang === 'ar' ? 'ar' : 'en'));
   if (langVoices.length > 0) utter.voice = langVoices[0];
@@ -1374,7 +1371,6 @@ function startConversation() {
   const userName = localStorage.getItem('omega_user_name') || 'there';
 
   if (state.memoryItems.length === 0) {
-    // No memory bank
     const msg = t.noMemoryBank;
     addTranscriptLine('ai', msg);
     speak(msg, () => {
@@ -1408,7 +1404,6 @@ function askNextQuestion() {
   speak(q.text, () => {
     if (state.isEnded) return;
     $('statusText').textContent = I18N[currentLang].yourTurn;
-    // Auto-start listening if voice supported
     if (state.speechSupported && !state.isMuted) {
       setTimeout(() => startListening(), 400);
     }
@@ -1423,7 +1418,6 @@ function handleUserAnswer(text) {
 
   addTranscriptLine('me', text);
 
-  // AI response
   const t = I18N[currentLang];
   const responses = [
     t.feedback,
@@ -1456,7 +1450,6 @@ function endCall() {
 
   $('endOverlay').classList.add('show');
 
-  // Save result
   try {
     const result = {
       duration,
@@ -1483,6 +1476,8 @@ $('micBtn').addEventListener('click', () => {
 $('muteBtn').addEventListener('click', () => {
   state.isMuted = !state.isMuted;
   const t = I18N[currentLang];
+
+  $('muteBtn').classList.toggle('active', state.isMuted);
 
   if (state.isMuted) {
     if (window.speechSynthesis) window.speechSynthesis.cancel();
@@ -1514,6 +1509,7 @@ $('endDoneBtn').addEventListener('click', () => {
 $('transcriptBtn').addEventListener('click', () => {
   $('transcriptSheet').classList.add('show');
 });
+
 $('sheetClose').addEventListener('click', () => {
   $('transcriptSheet').classList.remove('show');
 });
@@ -1526,6 +1522,7 @@ $('textSend').addEventListener('click', () => {
     $('textInput').value = '';
   }
 });
+
 $('textInput').addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -1548,7 +1545,6 @@ function init() {
   loadMemoryBank();
   initSpeechRecognition();
 
-  // Warn if no voice support
   if (!state.speechSupported) {
     setTimeout(() => {
       $('statusText').textContent = I18N[currentLang].noSpeechSupport;
@@ -1557,7 +1553,6 @@ function init() {
 
   startTimer();
 
-  // Small delay before starting conversation for smooth UX
   setTimeout(() => {
     startConversation();
   }, 900);
@@ -1565,7 +1560,7 @@ function init() {
 
 init();
 
-/* Clean up on page leave */
+/* Clean up on leave */
 window.addEventListener('beforeunload', () => {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   stopListening();
