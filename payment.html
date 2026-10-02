@@ -35,6 +35,7 @@
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
   --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
   --g-premium: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #0E9487 100%);
+  --g-success: linear-gradient(135deg, #22C55E, #4ADE80);
 
   --r-sm: 10px;
   --r-md: 14px;
@@ -44,6 +45,7 @@
 
   --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
   --sh-premium: 0 20px 60px rgba(139, 92, 246, 0.25);
+  --sh-focus: 0 0 0 4px rgba(139, 92, 246, 0.12);
 
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
@@ -431,39 +433,40 @@ html[lang="ar"] .section-label {
   border: 1.5px solid var(--c-border);
   border-radius: var(--r-lg);
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: all 0.3s cubic-bezier(0.65, 0, 0.35, 1);
   overflow: hidden;
 }
 
-.method-card:hover {
+.method-card:hover:not(.selected) {
   border-color: rgba(139, 92, 246, 0.4);
   transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(139, 92, 246, 0.1);
 }
 
 .method-card.selected {
-  border-color: transparent;
-  background:
-    linear-gradient(#fff, #fff) padding-box,
-    var(--g-premium) border-box;
-  border: 2px solid transparent;
-  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.2);
+  border-color: var(--c-purple);
+  border-width: 2px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.06), rgba(59, 130, 246, 0.04));
+  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.18);
+  transform: translateY(-2px);
+  padding: 13px 15px; /* compensate for 2px border */
 }
 
 .method-icon {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 11px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   background: rgba(139, 92, 246, 0.08);
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
 }
 
 .method-card.selected .method-icon {
   background: var(--g-premium);
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.35);
 }
 
 .method-icon svg {
@@ -474,7 +477,7 @@ html[lang="ar"] .section-label {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: stroke 0.25s ease;
+  transition: stroke 0.3s ease;
 }
 
 .method-card.selected .method-icon svg {
@@ -515,24 +518,26 @@ html[lang="ar"] .method-desc { font-family: var(--f-ar); font-size: 12px; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
+  background: #fff;
 }
 
 .method-radio::after {
   content: '';
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: var(--c-purple);
+  background: var(--g-premium);
   opacity: 0;
-  transform: scale(0.4);
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: scale(0.3);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .method-card.selected .method-radio {
   border-color: var(--c-purple);
-  background: rgba(139, 92, 246, 0.08);
+  border-width: 2.5px;
+  transform: scale(1.05);
 }
 
 .method-card.selected .method-radio::after {
@@ -541,27 +546,45 @@ html[lang="ar"] .method-desc { font-family: var(--f-ar); font-size: 12px; }
 }
 
 /* ============================================
-   CARD FORM (conditional)
+   CARD FORM — ✅ SMOOTH HEIGHT TRANSITION
 ============================================ */
+.card-form-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+              opacity 0.35s ease,
+              margin 0.35s ease;
+  opacity: 0;
+  margin-top: -8px;
+  overflow: hidden;
+}
+
+.card-form-wrapper.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: 0;
+}
+
+.card-form-inner {
+  overflow: hidden;
+}
+
 .card-form {
-  display: none;
+  display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   padding: 16px;
   background: #fff;
   border: 1.5px solid var(--c-border);
   border-radius: var(--r-lg);
-  animation: formIn 0.4s ease forwards;
+  transform: translateY(-6px);
   opacity: 0;
-  transform: translateY(-8px);
+  transition: transform 0.4s ease 0.1s, opacity 0.4s ease 0.1s;
 }
 
-.card-form.visible {
-  display: flex;
-}
-
-@keyframes formIn {
-  to { opacity: 1; transform: translateY(0); }
+.card-form-wrapper.open .card-form {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .form-field {
@@ -609,7 +632,7 @@ html[lang="ar"] .form-label {
 .form-input:focus {
   border-color: var(--c-purple);
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+  box-shadow: var(--sh-focus);
 }
 
 .form-input::placeholder {
@@ -660,7 +683,7 @@ html[lang="ar"] .security-note { font-family: var(--f-ar); font-size: 12px; }
   padding: 16px 24px 44px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -704,13 +727,8 @@ html[lang="ar"] .security-note { font-family: var(--f-ar); font-size: 12px; }
 
 .btn-primary:active { transform: scale(0.97); }
 
-.btn-primary.loading {
-  pointer-events: none;
-}
-
-.btn-primary.loading .arrow {
-  display: none;
-}
+.btn-primary.loading { pointer-events: none; }
+.btn-primary.loading .arrow { display: none; }
 
 .btn-primary.loading::after {
   content: '';
@@ -740,25 +758,64 @@ html[dir="rtl"] .btn-primary:hover .arrow { transform: scaleX(-1) translateX(4px
 
 html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16.5px; }
 
-.btn-cancel {
-  width: 100%;
-  padding: 14px;
-  color: var(--c-slate);
-  font-size: 13.5px;
+/* Cancel + Skip row */
+.bottom-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.btn-secondary {
+  flex: 1;
+  padding: 12px;
+  border-radius: var(--r-md);
+  font-size: 13px;
   font-weight: 600;
   text-align: center;
-  border-radius: var(--r-md);
   transition: all 0.25s ease;
-  opacity: 0;
-  animation: fadeUp 0.7s ease 0.75s forwards;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
-.btn-cancel:hover {
+.btn-secondary.cancel {
+  color: var(--c-slate);
+  background: rgba(100, 116, 139, 0.06);
+  border: 1.5px solid rgba(100, 116, 139, 0.15);
+}
+
+.btn-secondary.cancel:hover {
+  color: var(--c-error);
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.btn-secondary.skip {
   color: var(--c-primary);
   background: rgba(14, 148, 135, 0.06);
+  border: 1.5px solid rgba(14, 148, 135, 0.2);
 }
 
-html[lang="ar"] .btn-cancel { font-family: var(--f-ar); font-size: 14.5px; }
+.btn-secondary.skip:hover {
+  background: rgba(14, 148, 135, 0.12);
+  border-color: rgba(14, 148, 135, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active { transform: scale(0.97); }
+
+html[lang="ar"] .btn-secondary { font-family: var(--f-ar); font-size: 14px; }
+
+.btn-secondary svg {
+  width: 13px; height: 13px;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
 
 /* ============================================
    SUCCESS OVERLAY
@@ -825,7 +882,7 @@ html[lang="ar"] .btn-cancel { font-family: var(--f-ar); font-size: 14.5px; }
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #22C55E, #4ADE80);
+  background: var(--g-success);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -897,9 +954,9 @@ html[lang="ar"] .success-desc { font-family: var(--f-ar); font-size: 14.5px; }
     <div class="screen">
 
       <!-- ============================================
-           MAIN VIEW (Payment Form)
+           MAIN VIEW
       ============================================ -->
-      <div id="mainView">
+      <div id="mainView" style="display:flex; flex-direction:column; height:100%;">
 
         <!-- Top Bar -->
         <div class="topbar">
@@ -1001,30 +1058,34 @@ html[lang="ar"] .success-desc { font-family: var(--f-ar); font-size: 14.5px; }
 
           </div>
 
-          <!-- Card Form (visible only when card is selected) -->
-          <div class="card-form visible" id="cardForm">
+          <!-- Card Form (Smooth open/close) -->
+          <div class="card-form-wrapper open" id="cardFormWrapper">
+            <div class="card-form-inner">
+              <div class="card-form">
 
-            <div class="form-field">
-              <label class="form-label" id="labelCardNumber">Card Number</label>
-              <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric">
-            </div>
+                <div class="form-field">
+                  <label class="form-label" id="labelCardNumber">Card Number</label>
+                  <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric">
+                </div>
 
-            <div class="form-field">
-              <label class="form-label" id="labelCardName">Cardholder Name</label>
-              <input type="text" class="form-input" id="cardName" placeholder="Lamiaa Elsheikh">
-            </div>
+                <div class="form-field">
+                  <label class="form-label" id="labelCardName">Cardholder Name</label>
+                  <input type="text" class="form-input" id="cardName" placeholder="Lamiaa Elsheikh">
+                </div>
 
-            <div class="form-row">
-              <div class="form-field">
-                <label class="form-label" id="labelExpiry">Expiry</label>
-                <input type="text" class="form-input" id="expiry" placeholder="MM/YY" maxlength="5" inputmode="numeric">
+                <div class="form-row">
+                  <div class="form-field">
+                    <label class="form-label" id="labelExpiry">Expiry</label>
+                    <input type="text" class="form-input" id="expiry" placeholder="MM/YY" maxlength="5" inputmode="numeric">
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" id="labelCVC">CVC</label>
+                    <input type="text" class="form-input" id="cvc" placeholder="123" maxlength="4" inputmode="numeric">
+                  </div>
+                </div>
+
               </div>
-              <div class="form-field">
-                <label class="form-label" id="labelCVC">CVC</label>
-                <input type="text" class="form-input" id="cvc" placeholder="123" maxlength="4" inputmode="numeric">
-              </div>
             </div>
-
           </div>
 
           <!-- Security Note -->
@@ -1047,9 +1108,17 @@ html[lang="ar"] .success-desc { font-family: var(--f-ar); font-size: 14.5px; }
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </button>
-          <button class="btn-cancel" id="cancelBtn">
-            <span id="cancelLabel">Cancel</span>
-          </button>
+
+          <div class="bottom-actions">
+            <button class="btn-secondary cancel" id="cancelBtn">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              <span id="cancelLabel">Cancel</span>
+            </button>
+            <button class="btn-secondary skip" id="skipBtn">
+              <svg viewBox="0 0 24 24"><polyline points="5 4 15 12 5 20 5 4"></polyline><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+              <span id="skipLabel">Skip for now</span>
+            </button>
+          </div>
         </div>
 
       </div>
@@ -1066,7 +1135,7 @@ html[lang="ar"] .success-desc { font-family: var(--f-ar); font-size: 14.5px; }
           </div>
         </div>
         <h1 class="success-title" id="successTitle">Payment Successful!</h1>
-        <p class="success-desc" id="successDesc">Your weekly schedule is now unlocked. Redirecting you...</p>
+        <p class="success-desc" id="successDesc">Your weekly schedule is now unlocked. Taking you home...</p>
       </div>
 
     </div>
@@ -1106,9 +1175,10 @@ const I18N = {
 
     payLabel: 'Pay $4.99',
     cancelLabel: 'Cancel',
+    skipLabel: 'Skip for now',
 
     successTitle: 'Payment Successful!',
-    successDesc: 'Your weekly schedule is now unlocked. Redirecting you...'
+    successDesc: 'Your weekly schedule is now unlocked. Taking you home...'
   },
   ar: {
     headerTitle: 'أكمل الدفع',
@@ -1138,9 +1208,10 @@ const I18N = {
 
     payLabel: 'ادفع $4.99',
     cancelLabel: 'إلغاء',
+    skipLabel: 'تخطي الآن',
 
     successTitle: 'تم الدفع بنجاح!',
-    successDesc: 'تم فتح جدولك الأسبوعي. جاري تحويلك...'
+    successDesc: 'تم فتح جدولك الأسبوعي. جاري تحويلك للرئيسية...'
   }
 };
 
@@ -1190,6 +1261,7 @@ function applyLanguage(lang) {
   document.getElementById('securityText').textContent = t.securityText;
   document.getElementById('payLabel').textContent = t.payLabel;
   document.getElementById('cancelLabel').textContent = t.cancelLabel;
+  document.getElementById('skipLabel').textContent = t.skipLabel;
 
   document.getElementById('successTitle').textContent = t.successTitle;
   document.getElementById('successDesc').textContent = t.successDesc;
@@ -1200,21 +1272,24 @@ document.getElementById('langToggle').addEventListener('click', () => {
 });
 
 /* ============================================
-   PAYMENT METHOD SELECTION
+   PAYMENT METHOD SELECTION — ✅ smooth
 ============================================ */
 const methodCards = document.querySelectorAll('.method-card');
-const cardForm = document.getElementById('cardForm');
+const cardFormWrapper = document.getElementById('cardFormWrapper');
 
 methodCards.forEach(card => {
   card.addEventListener('click', () => {
+    if (card.classList.contains('selected')) return;
+
     methodCards.forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
 
     const method = card.dataset.method;
+
     if (method === 'card') {
-      cardForm.classList.add('visible');
+      cardFormWrapper.classList.add('open');
     } else {
-      cardForm.classList.remove('visible');
+      cardFormWrapper.classList.remove('open');
     }
   });
 });
@@ -1254,7 +1329,6 @@ cvcInput.addEventListener('input', (e) => {
 const payBtn = document.getElementById('payBtn');
 
 payBtn.addEventListener('click', () => {
-  // Validate based on selected method
   const selectedMethod = document.querySelector('.method-card.selected').dataset.method;
 
   if (selectedMethod === 'card') {
@@ -1263,9 +1337,7 @@ payBtn.addEventListener('click', () => {
     const exp = expiryInput.value.trim();
     const cvc = cvcInput.value.trim();
 
-    // Simple validation (in real app, more robust)
     if (num.length < 16 || name.length < 2 || exp.length < 5 || cvc.length < 3) {
-      // Shake the button to indicate error
       payBtn.style.animation = 'none';
       void payBtn.offsetWidth;
       payBtn.style.animation = 'shake 0.4s ease';
@@ -1278,21 +1350,18 @@ payBtn.addEventListener('click', () => {
   payBtn.classList.add('loading');
 
   setTimeout(() => {
-    // Mark as purchased
     localStorage.setItem(PURCHASE_KEY, 'true');
-
-    // Show success
     document.getElementById('successOverlay').classList.add('show');
 
-    // Redirect after 2.5 seconds
+    // ✅ Redirect to HOME (forward, not back)
     setTimeout(() => {
-      window.location.href = 'weekly-schedule.html';
+      window.location.href = 'home.html';
     }, 2500);
 
   }, 1800);
 });
 
-/* Shake animation for validation errors */
+/* Shake animation */
 const shakeStyle = document.createElement('style');
 shakeStyle.textContent = `
   @keyframes shake {
@@ -1306,17 +1375,22 @@ shakeStyle.textContent = `
 document.head.appendChild(shakeStyle);
 
 /* ============================================
-   CANCEL
+   ✅ NAVIGATION — Fixed!
 ============================================ */
-document.getElementById('cancelBtn').addEventListener('click', () => {
+
+/* Back (top-left arrow) → weekly-schedule.html (لورا - للمراجعة) */
+document.getElementById('backBtn').addEventListener('click', () => {
   window.location.href = 'weekly-schedule.html';
 });
 
-/* ============================================
-   BACK
-============================================ */
-document.getElementById('backBtn').addEventListener('click', () => {
-  window.location.href = 'weekly-schedule.html';
+/* Cancel → home.html (خروج آمن) */
+document.getElementById('cancelBtn').addEventListener('click', () => {
+  window.location.href = 'home.html';
+});
+
+/* Skip for now → home.html (تخطي الميزة المميزة) */
+document.getElementById('skipBtn').addEventListener('click', () => {
+  window.location.href = 'home.html';
 });
 
 /* ============================================
