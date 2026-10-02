@@ -30,6 +30,8 @@
   --c-border: #E2E8F0;
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
   --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
+  --g-success: linear-gradient(135deg, #22C55E, #4ADE80);
+  --g-error:   linear-gradient(135deg, #EF4444, #F87171);
   --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
   --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
   --f-en: 'Poppins', system-ui, sans-serif;
@@ -226,10 +228,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 html[lang="ar"] .status-text { font-family: var(--f-ar); font-size: 15.5px; }
 
-.status-sub {
-  font-size: 12px; color: var(--c-slate); font-weight: 500;
-}
-
+.status-sub { font-size: 12px; color: var(--c-slate); font-weight: 500; }
 html[lang="ar"] .status-sub { font-family: var(--f-ar); font-size: 13px; }
 
 /* PIPS */
@@ -247,21 +246,9 @@ html[lang="ar"] .status-sub { font-family: var(--f-ar); font-size: 13px; }
   transition: all 0.3s ease;
 }
 
-.pip.filled {
-  background: var(--g-brand);
-  transform: scale(1.1);
-  box-shadow: 0 0 6px rgba(14, 148, 135, 0.4);
-}
-
-.pip.correct {
-  background: var(--c-success);
-  box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
-}
-
-.pip.wrong {
-  background: var(--c-error);
-  box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
-}
+.pip.filled { background: var(--g-brand); transform: scale(1.1); box-shadow: 0 0 6px rgba(14, 148, 135, 0.4); }
+.pip.correct { background: var(--c-success); box-shadow: 0 0 6px rgba(34, 197, 94, 0.5); }
+.pip.wrong { background: var(--c-error); box-shadow: 0 0 6px rgba(239, 68, 68, 0.5); }
 
 /* GAME AREA */
 .game-area {
@@ -271,14 +258,9 @@ html[lang="ar"] .status-sub { font-family: var(--f-ar); font-size: 13px; }
   display: none;
 }
 
-.game-area.active {
-  display: flex;
-  flex-direction: column;
-}
+.game-area.active { display: flex; flex-direction: column; }
 
-/* ══════════════════════════════════════════
-   MEMORY MATCH — الجديد
-══════════════════════════════════════════ */
+/* MEMORY MATCH */
 .mem-recall-wrap {
   flex: 1;
   display: flex;
@@ -287,7 +269,6 @@ html[lang="ar"] .status-sub { font-family: var(--f-ar); font-size: 13px; }
   min-height: 0;
 }
 
-/* Timer bar top */
 .mem-timer-bar {
   display: flex;
   justify-content: center;
@@ -303,10 +284,7 @@ html[lang="ar"] .status-sub { font-family: var(--f-ar); font-size: 13px; }
   display: flex; align-items: center; justify-content: center;
 }
 
-.mem-timer-wrap svg {
-  width: 100%; height: 100%;
-  transform: rotate(-90deg);
-}
+.mem-timer-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 
 .mem-timer-track {
   fill: none;
@@ -345,7 +323,6 @@ html[lang="ar"] .status-sub { font-family: var(--f-ar); font-size: 13px; }
   50%      { opacity: 0.4; }
 }
 
-/* Grid */
 .mem-grid {
   flex: 1;
   display: grid;
@@ -378,9 +355,7 @@ html[lang="ar"] .status-sub { font-family: var(--f-ar); font-size: 13px; }
 
 .mem-grid.cols-4 .mem-card { font-size: 28px; border-radius: var(--r-md); }
 
-@keyframes memCardIn {
-  to { opacity: 1; transform: scale(1); }
-}
+@keyframes memCardIn { to { opacity: 1; transform: scale(1); } }
 
 .mem-card:nth-child(1) { animation-delay: 0.05s; }
 .mem-card:nth-child(2) { animation-delay: 0.10s; }
@@ -407,7 +382,6 @@ html[lang="ar"] .status-sub { font-family: var(--f-ar); font-size: 13px; }
 
 .mem-grid.cols-4 .mem-card.hidden-item::after { font-size: 22px; }
 
-/* Choice chips */
 .mem-choices-label {
   font-size: 11.5px;
   font-weight: 700;
@@ -479,13 +453,13 @@ html[lang="ar"] .mem-choices-label {
 }
 
 .mem-choice.correct-pick {
-  background: var(--g-success, linear-gradient(135deg, #22C55E, #4ADE80));
+  background: var(--g-success);
   border-color: transparent;
   box-shadow: 0 10px 24px rgba(34, 197, 94, 0.35);
 }
 
 .mem-choice.wrong-pick {
-  background: linear-gradient(135deg, #EF4444, #F87171);
+  background: var(--g-error);
   border-color: transparent;
   animation: wrongShake 0.4s ease;
 }
@@ -498,7 +472,6 @@ html[lang="ar"] .mem-choices-label {
 
 .mem-choice.locked { pointer-events: none; }
 
-/* Selected counter */
 .mem-counter {
   display: flex;
   align-items: center;
@@ -517,12 +490,7 @@ html[lang="ar"] .mem-choices-label {
 
 html[lang="ar"] .mem-counter { font-family: var(--f-ar); font-size: 13.5px; }
 
-/* ══════════════════════════════════════════
-   OTHER GAMES (Attention, Speed, etc.)
-   نستخدم ستايلات بسيطة زي القديم
-══════════════════════════════════════════ */
-
-/* Attention */
+/* ATTENTION */
 .attn-play-area {
   position: relative;
   flex: 1;
@@ -546,9 +514,7 @@ html[lang="ar"] .mem-counter { font-family: var(--f-ar); font-size: 13.5px; }
 
 .attn-target-reminder .shape-mini { width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; }
 
-.attn-target-reminder .reminder-text {
-  font-size: 12px; font-weight: 700; color: var(--c-navy);
-}
+.attn-target-reminder .reminder-text { font-size: 12px; font-weight: 700; color: var(--c-navy); }
 
 html[lang="ar"] .attn-target-reminder .reminder-text { font-family: var(--f-ar); font-size: 13px; }
 
@@ -595,7 +561,7 @@ html[lang="ar"] .attn-target-reminder .reminder-text { font-family: var(--f-ar);
   position: relative;
 }
 
-/* Speed */
+/* SPEED */
 .speed-scroll {
   flex: 1;
   overflow-y: auto;
@@ -608,10 +574,7 @@ html[lang="ar"] .attn-target-reminder .reminder-text { font-family: var(--f-ar);
 .speed-scroll::-webkit-scrollbar { display: none; }
 .speed-scroll > * { flex-shrink: 0; }
 
-.speed-timer-row {
-  display: flex; justify-content: center;
-  padding: 4px 0;
-}
+.speed-timer-row { display: flex; justify-content: center; padding: 4px 0; }
 
 .timer-wrap {
   position: relative;
@@ -619,10 +582,7 @@ html[lang="ar"] .attn-target-reminder .reminder-text { font-family: var(--f-ar);
   display: flex; align-items: center; justify-content: center;
 }
 
-.timer-wrap svg {
-  width: 100%; height: 100%;
-  transform: rotate(-90deg);
-}
+.timer-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 
 .timer-track {
   fill: none;
@@ -743,26 +703,26 @@ html[lang="ar"] .opt-btn { font-family: var(--f-ar); letter-spacing: 0; }
 .opt-btn:disabled { cursor: not-allowed; opacity: 0.5; }
 
 .opt-btn.correct {
-  background: linear-gradient(135deg, #22C55E, #4ADE80);
+  background: var(--g-success);
   border-color: transparent; color: #fff;
   box-shadow: 0 12px 28px rgba(34, 197, 94, 0.32);
   transform: translateY(-2px); opacity: 1;
 }
 
 .opt-btn.wrong {
-  background: linear-gradient(135deg, #EF4444, #F87171);
+  background: var(--g-error);
   border-color: transparent; color: #fff;
   box-shadow: 0 12px 28px rgba(239, 68, 68, 0.32);
   animation: wrongShake 0.4s ease; opacity: 1;
 }
 
 .opt-btn.revealed {
-  background: linear-gradient(135deg, #22C55E, #4ADE80);
+  background: var(--g-success);
   border-color: transparent; color: #fff;
   opacity: 1;
 }
 
-/* Problem */
+/* PROBLEM */
 .problem-scroll {
   flex: 1;
   overflow-y: auto;
@@ -846,11 +806,7 @@ html[lang="ar"] .p-sequence { font-family: var(--f-ar); letter-spacing: 0; }
   padding: 6px 0;
 }
 
-.attempts-label {
-  font-size: 11px; color: var(--c-slate); font-weight: 600;
-  margin-inline-end: 4px;
-}
-
+.attempts-label { font-size: 11px; color: var(--c-slate); font-weight: 600; margin-inline-end: 4px; }
 html[lang="ar"] .attempts-label { font-family: var(--f-ar); font-size: 12px; }
 
 .attempt-dot {
@@ -905,10 +861,7 @@ html[lang="ar"] .attempts-label { font-family: var(--f-ar); font-size: 12px; }
 
 .hint-box.explain .hint-icon { background: var(--g-brand); }
 
-.hint-icon svg {
-  width: 14px; height: 14px;
-  stroke: #fff; stroke-width: 2.4; fill: none;
-}
+.hint-icon svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 2.4; fill: none; }
 
 .hint-content { flex: 1; display: flex; flex-direction: column; gap: 2px; }
 
@@ -923,12 +876,7 @@ html[lang="ar"] .attempts-label { font-family: var(--f-ar); font-size: 12px; }
 
 html[lang="ar"] .hint-label { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 11px; }
 
-.hint-text {
-  font-size: 12.5px; font-weight: 500;
-  color: var(--c-navy);
-  line-height: 1.5;
-}
-
+.hint-text { font-size: 12.5px; font-weight: 500; color: var(--c-navy); line-height: 1.5; }
 html[lang="ar"] .hint-text { font-family: var(--f-ar); font-size: 13.5px; }
 
 .try-again-banner {
@@ -941,14 +889,11 @@ html[lang="ar"] .hint-text { font-family: var(--f-ar); font-size: 13.5px; }
   color: var(--c-error);
 }
 
-.try-again-banner svg {
-  width: 14px; height: 14px;
-  stroke: currentColor; stroke-width: 2.5; fill: none;
-}
+.try-again-banner svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.5; fill: none; }
 
 html[lang="ar"] .try-again-banner { font-family: var(--f-ar); font-size: 13.5px; }
 
-/* Visual */
+/* VISUAL */
 .visual-scroll {
   flex: 1;
   overflow-y: auto;
@@ -973,11 +918,7 @@ html[lang="ar"] .try-again-banner { font-family: var(--f-ar); font-size: 13.5px;
   text-align: center;
 }
 
-.visual-instr svg {
-  width: 14px; height: 14px;
-  stroke: currentColor; stroke-width: 2.4; fill: none;
-  flex-shrink: 0;
-}
+.visual-instr svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.4; fill: none; flex-shrink: 0; }
 
 html[lang="ar"] .visual-instr { font-family: var(--f-ar); font-size: 13px; }
 
@@ -1050,7 +991,7 @@ html[lang="ar"] .visual-target-label { font-family: var(--f-ar); text-transform:
   opacity: 0.7;
 }
 
-/* Language */
+/* LANGUAGE */
 .lang-scroll {
   flex: 1;
   overflow-y: auto;
@@ -1073,10 +1014,7 @@ html[lang="ar"] .visual-target-label { font-family: var(--f-ar); text-transform:
   display: flex; align-items: center; justify-content: center;
 }
 
-.lang-timer-wrap svg {
-  width: 100%; height: 100%;
-  transform: rotate(-90deg);
-}
+.lang-timer-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 
 .lang-timer-ring {
   fill: none;
@@ -1111,7 +1049,6 @@ html[lang="ar"] .visual-target-label { font-family: var(--f-ar); text-transform:
 }
 
 html[lang="ar"] .lang-reading-label { font-family: var(--f-ar); font-size: 14px; }
-
 .lang-reading-label b { color: var(--c-warning); font-weight: 700; }
 
 .lang-story-card {
@@ -1167,7 +1104,7 @@ html[lang="ar"] .lang-story-text { font-family: var(--f-ar); font-size: 16px; li
   border-radius: 4px;
 }
 
-/* Numerical */
+/* NUMERICAL */
 .num-scroll {
   flex: 1;
   overflow-y: auto;
@@ -1285,14 +1222,29 @@ html[lang="ar"] .levelup-title { font-family: var(--f-ar); font-size: 25px; lett
 
 html[lang="ar"] .levelup-sub { font-family: var(--f-ar); font-size: 14.5px; }
 
-/* Game over */
+/* ============================================
+   ✅ GAME OVER ICON — FIXED (Green/Red)
+============================================ */
 .gameover-icon {
   width: 100px; height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #EF4444, #F87171);
+  background: var(--g-error);
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 20px 40px rgba(239, 68, 68, 0.4);
   animation: gameOverPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* ✅ WIN — الأخضر */
+.gameover-icon.win {
+  background: var(--g-success);
+  box-shadow: 0 20px 40px rgba(34, 197, 94, 0.4);
+}
+
+/* ✅ LOSE — الأحمر (الافتراضي) */
+.gameover-icon.lose {
+  background: var(--g-error);
+  box-shadow: 0 20px 40px rgba(239, 68, 68, 0.4);
 }
 
 @keyframes gameOverPop {
@@ -1339,8 +1291,7 @@ html[lang="ar"] .gameover-sub { font-family: var(--f-ar); font-size: 14.5px; }
 .gameover-stat-value {
   font-size: 22px; font-weight: 800;
   color: var(--c-navy);
-  letter-spacing: -0.8px;
-  line-height: 1;
+  letter-spacing: -0.8px; line-height: 1;
   font-feature-settings: "tnum";
 }
 
@@ -1364,7 +1315,7 @@ html[lang="ar"] .gameover-stat-label {
   font-size: 11px;
 }
 
-/* Comparison row (مقارنة مع آخر مرة) */
+/* Comparison row */
 .compare-row {
   display: flex;
   align-items: center;
@@ -1378,20 +1329,10 @@ html[lang="ar"] .gameover-stat-label {
   max-width: 280px;
 }
 
-.compare-row .compare-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--c-slate);
-}
-
+.compare-row .compare-label { font-size: 12px; font-weight: 600; color: var(--c-slate); }
 html[lang="ar"] .compare-row .compare-label { font-family: var(--f-ar); font-size: 13px; }
 
-.compare-row .compare-value {
-  font-size: 14px;
-  font-weight: 800;
-  font-feature-settings: "tnum";
-}
-
+.compare-row .compare-value { font-size: 14px; font-weight: 800; font-feature-settings: "tnum"; }
 .compare-row .compare-value.up { color: var(--c-success); }
 .compare-row .compare-value.down { color: var(--c-error); }
 .compare-row .compare-value.same { color: var(--c-slate); }
@@ -1518,11 +1459,10 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
         <!-- Progress Pips -->
         <div class="pips-row" id="pipsRow"></div>
 
-        <!-- GAME 1: MEMORY MATCH (الجديد) -->
+        <!-- GAME 1: MEMORY MATCH -->
         <div class="game-area" id="gameMemory">
           <div class="mem-recall-wrap">
 
-            <!-- Timer -->
             <div class="mem-timer-bar">
               <div class="mem-timer-wrap" id="memTimerWrap">
                 <svg viewBox="0 0 50 50">
@@ -1533,16 +1473,12 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
               </div>
             </div>
 
-            <!-- Grid -->
             <div class="mem-grid cols-2" id="memGrid"></div>
 
-            <!-- Label -->
             <div class="mem-choices-label" id="memChoicesLabel">Pick the missing ones</div>
 
-            <!-- Choices -->
             <div class="mem-choices" id="memChoices"></div>
 
-            <!-- Counter -->
             <div class="mem-counter">
               <span id="memCounterLabel">Selected:</span>
               <b><span id="memCounterNum">0</span> / <span id="memCounterMax">1</span></b>
@@ -1697,7 +1633,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 
       <!-- Game Over Overlay -->
       <div class="overlay hidden" id="gameOverOverlay">
-        <div class="gameover-icon">
+        <div class="gameover-icon lose" id="gameOverIcon">
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </div>
         <div class="gameover-title" id="gameOverTitle">Great effort!</div>
@@ -1878,19 +1814,17 @@ const state = {
   gameActive: false
 };
 
-/* Memory Match */
 const memState = {
-  gridItems: [],      // items shown initially
-  targetItems: [],    // items that will be hidden
-  hiddenIndices: [],  // indices in gridItems that will be hidden
-  choices: [],        // choice chips (targets + distractors)
+  gridItems: [],
+  targetItems: [],
+  hiddenIndices: [],
+  choices: [],
   selected: new Set(),
   targetCount: 1,
   memorizeTime: 5,
   lastResult: null
 };
 
-/* Attention */
 const attnState = {
   targetType: null,
   hits: 0,
@@ -1901,19 +1835,10 @@ const attnState = {
   timeLeft: 30
 };
 
-/* Speed */
 const speedState = { currentQuestion: null, timerInterval: null, timerCountdown: null, timeLeft: 15 };
-
-/* Problem */
 const probState = { currentQuestion: null, attemptInQ: 0 };
-
-/* Visual */
 const visState = { currentPuzzle: null };
-
-/* Language */
 const langState = { currentStory: null, currentQIdx: 0, readingTimer: null, readingCountdown: null, responseTimes: [] };
-
-/* Numerical */
 const numState = { currentQuestion: null, timerInterval: null, timerCountdown: null, timeLeft: 15 };
 
 /* DOM Refs */
@@ -1964,7 +1889,6 @@ function renderPips(filledCount = 0, mode = 'filled') {
   }
 }
 
-/* Load Exercise */
 function loadExercise() {
   try {
     const ex = JSON.parse(localStorage.getItem('omega_current_exercise') || '{}');
@@ -1999,10 +1923,8 @@ async function showCountdown() {
 }
 
 /* ============================================
-   ⭐ MEMORY MATCH — التمرين الجديد
+   MEMORY MATCH
 ============================================ */
-
-// Round config: صعوبة متزايدة تدريجيًا
 const MEM_ROUNDS = [
   { gridCount: 4, cols: 2, hide: 1, time: 5 },
   { gridCount: 6, cols: 3, hide: 2, time: 5 },
@@ -2015,25 +1937,20 @@ const MEM_ROUNDS = [
 ];
 
 function getMemRoundConfig(idx) {
-  const config = MEM_ROUNDS[Math.min(idx, MEM_ROUNDS.length - 1)];
-  return config;
+  return MEM_ROUNDS[Math.min(idx, MEM_ROUNDS.length - 1)];
 }
 
 function buildMemRound() {
   const config = getMemRoundConfig(state.currentIdx);
-
-  // 1) اختر صور عشوائية للشبكة
   const pool = shuffle(EMOJI_POOL);
   memState.gridItems = pool.slice(0, config.gridCount);
 
-  // 2) اختر اللي هيختفي (hide count) عشوائيًا من الشبكة
   const indices = [];
   for (let i = 0; i < config.gridCount; i++) indices.push(i);
   const shuffledIndices = shuffle(indices);
   memState.hiddenIndices = shuffledIndices.slice(0, config.hide);
   memState.targetItems = memState.hiddenIndices.map(i => memState.gridItems[i]);
 
-  // 3) الخيارات: الـ targets + distractors من الـ pool
   const distractors = pool.filter(e => !memState.gridItems.includes(e));
   const shuffledDistractors = shuffle(distractors).slice(0, Math.max(2, config.hide + 1));
   memState.choices = shuffle([...memState.targetItems, ...shuffledDistractors]);
@@ -2041,12 +1958,6 @@ function buildMemRound() {
   memState.targetCount = config.hide;
   memState.memorizeTime = config.time;
   memState.selected.clear();
-
-  console.log('🎯 Memory round:', {
-    grid: memState.gridItems.length,
-    targets: memState.targetItems.length,
-    choices: memState.choices.length
-  });
 }
 
 function renderMemGrid(hideTargets = false) {
@@ -2095,9 +2006,6 @@ function onMemChoiceTap(btn, emoji) {
   if (state.locked) return;
   if (btn.classList.contains('correct-pick') || btn.classList.contains('wrong-pick')) return;
 
-  const isTarget = memState.targetItems.includes(emoji);
-
-  // ✅ اختر (toggle) — بس لازم يكون في حدود العدد المطلوب
   if (memState.selected.has(emoji)) {
     memState.selected.delete(emoji);
     btn.classList.remove('selected');
@@ -2109,7 +2017,6 @@ function onMemChoiceTap(btn, emoji) {
 
   updateMemCounter();
 
-  // لو المستخدم اختار العدد المطلوب → قيّم
   if (memState.selected.size === memState.targetCount) {
     evaluateMemSelection();
   }
@@ -2136,7 +2043,6 @@ async function evaluateMemSelection() {
     }
   });
 
-  // اظهر الـ missing في الشبكة
   renderMemGrid(false);
 
   const pip = pipsRow.children[state.currentIdx];
@@ -2155,18 +2061,7 @@ async function evaluateMemSelection() {
   }
 
   updateHUD();
-
-  // ✅ احفظ نتيجة كل جولة
-  const roundResult = {
-    round: state.currentIdx + 1,
-    targets: memState.targetCount,
-    correct: correct,
-    wrong: wrong,
-    success: roundSuccess
-  };
-
-  // سجل في تاريخ اللعبة
-  saveRoundResult(roundResult);
+  saveRoundResult({ round: state.currentIdx + 1, targets: memState.targetCount, correct, wrong, success: roundSuccess });
 
   await sleep(1400);
 
@@ -2193,8 +2088,6 @@ async function memNextRound() {
   renderPips(state.currentIdx);
 
   buildMemRound();
-
-  // ✅ عرض الشبكة كاملة (بدون إخفاء) + العداد
   renderMemGrid(false);
   $('memChoices').innerHTML = '';
   $('memChoicesLabel').textContent = '';
@@ -2204,14 +2097,10 @@ async function memNextRound() {
   setStatus(I18N[currentLang].watch, '');
   state.locked = true;
 
-  // شغّل المؤقت
   startMemTimer(memState.memorizeTime, async () => {
-    // 1) اخفي الـ targets
     renderMemGrid(true);
-
     await sleep(400);
 
-    // 2) أظهر الخيارات
     $('memChoicesLabel').textContent = I18N[currentLang].pickMissing;
     $('memCounterLabel').textContent = I18N[currentLang].selectedLabel;
     renderMemChoices();
@@ -2253,7 +2142,7 @@ function startMemTimer(seconds, onComplete) {
 }
 
 /* ============================================
-   ROUND HISTORY + COMPARISON
+   ROUND HISTORY
 ============================================ */
 function saveRoundResult(roundResult) {
   const key = 'omega_history_' + state.exerciseKey;
@@ -2264,14 +2153,12 @@ function saveRoundResult(roundResult) {
 
   const today = new Date().toISOString().split('T')[0];
 
-  // لو آخر سجل هو نفس اليوم، حدّثه. غير كده، أضف جديد
   if (history.length > 0 && history[history.length - 1].date === today) {
     history[history.length - 1].rounds.push(roundResult);
   } else {
     history.push({ date: today, rounds: [roundResult] });
   }
 
-  // احتفظ بآخر 20 يوم فقط
   history = history.slice(-20);
   localStorage.setItem(key, JSON.stringify(history));
 }
@@ -2283,11 +2170,8 @@ function getLastSessionScore() {
     history = JSON.parse(localStorage.getItem(key) || '[]');
   } catch (e) { history = []; }
 
-  // آخر جلسة مكتملة (مش الجلسة الحالية)
-  // ابحث عن آخر تاريخ غير النهاردة
   const today = new Date().toISOString().split('T')[0];
 
-  // ارجع للخلف — آخر يوم مكتمل قبل النهاردة
   for (let i = history.length - 1; i >= 0; i--) {
     if (history[i].date !== today) {
       const sessions = history[i].rounds;
@@ -2435,7 +2319,7 @@ function endAttnGame() {
   state.wrongCount = attnState.wrongTaps;
   state.totalRounds = totalTargets || 1;
   saveExerciseResult(accuracy);
-  showGameOver(true);
+  showGameOver(accuracy >= 50);
 }
 
 /* ============================================
@@ -2986,7 +2870,7 @@ function handleNumTimeout() {
 }
 
 /* ============================================
-   SAVE RESULT + COMPARISON
+   SAVE RESULT
 ============================================ */
 function saveExerciseResult(accuracy) {
   const result = {
@@ -3014,13 +2898,20 @@ function saveExerciseResult(accuracy) {
 }
 
 /* ============================================
-   GAME OVER — مع المقارنة
+   ✅ GAME OVER — مع إصلاح الأيقونة
 ============================================ */
 function showGameOver(isWin = false) {
   state.gameActive = false;
   state.isPlaying = false;
   const t = I18N[currentLang];
   const overlay = $('gameOverOverlay');
+
+  // ✅ إصلاح: غير أيقونة الـ game over حسب النتيجة
+  const iconEl = $('gameOverIcon');
+  if (iconEl) {
+    iconEl.classList.remove('win', 'lose');
+    iconEl.classList.add(isWin ? 'win' : 'lose');
+  }
 
   // حساب الدقة الحالية
   const accuracy = state.totalRounds > 0
@@ -3031,11 +2922,13 @@ function showGameOver(isWin = false) {
   $('finalCorrect').textContent = state.correctCount;
   $('finalScoreLabel').textContent = t.score;
   $('finalCorrectLabel').textContent = t.correctCount;
+
+  // ✅ العنوان
   $('gameOverTitle').textContent = isWin ? '🏆 ' + t.correct : t.gameOverTitle;
   $('gameOverSub').textContent = t.gameOverSub;
   $('gameOverBtnLabel').textContent = t.finishExercise;
 
-  // ⭐ المقارنة مع آخر مرة
+  // المقارنة مع آخر مرة
   const previousAccuracy = getLastSessionScore();
   const compareRow = $('compareRow');
   const compareValue = $('compareValue');
@@ -3044,7 +2937,6 @@ function showGameOver(isWin = false) {
   compareLabel.textContent = t.vsLastTime;
 
   if (previousAccuracy === null) {
-    // أول مرة
     compareValue.textContent = t.noRecord;
     compareValue.className = 'compare-value same';
     compareRow.style.display = 'flex';
@@ -3063,9 +2955,7 @@ function showGameOver(isWin = false) {
     compareRow.style.display = 'flex';
   }
 
-  // احفظ النتيجة (بعد حساب المقارنة)
   saveExerciseResult(accuracy);
-
   overlay.classList.remove('hidden');
 }
 
@@ -3080,37 +2970,14 @@ async function startExercise() {
   await showCountdown();
 
   switch (state.exerciseKey) {
-    case 'memory':
-      activateArea('gameMemory');
-      memNextRound();
-      break;
-    case 'attention':
-      activateArea('gameAttention');
-      attnStart();
-      break;
-    case 'speed':
-      activateArea('gameSpeed');
-      speedRenderQuestion();
-      break;
-    case 'problem':
-      activateArea('gameProblem');
-      probRenderQuestion();
-      break;
-    case 'visual':
-      activateArea('gameVisual');
-      visRenderPuzzle();
-      break;
-    case 'language':
-      activateArea('gameLanguage');
-      langRenderStory();
-      break;
-    case 'numerical':
-      activateArea('gameNumerical');
-      numRenderQuestion();
-      break;
-    default:
-      activateArea('gameMemory');
-      memNextRound();
+    case 'memory': activateArea('gameMemory'); memNextRound(); break;
+    case 'attention': activateArea('gameAttention'); attnStart(); break;
+    case 'speed': activateArea('gameSpeed'); speedRenderQuestion(); break;
+    case 'problem': activateArea('gameProblem'); probRenderQuestion(); break;
+    case 'visual': activateArea('gameVisual'); visRenderPuzzle(); break;
+    case 'language': activateArea('gameLanguage'); langRenderStory(); break;
+    case 'numerical': activateArea('gameNumerical'); numRenderQuestion(); break;
+    default: activateArea('gameMemory'); memNextRound();
   }
 }
 
